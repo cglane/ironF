@@ -23,7 +23,7 @@ module.exports = Backbone.View.extend({
       self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
-      self.$el.find('aside').html(formHTML.render().el);
+      self.$el.find('.col-md-4').html(formHTML.render().el);
     });
 
 
