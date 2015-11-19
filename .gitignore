@@ -1,3 +1,4 @@
+node_modules
 # Created by https://www.gitignore.io/api/intellij
 
 ### Intellij ###
@@ -47,3 +48,4 @@ atlassian-ide-plugin.xml
 com_crashlytics_export_strings.xml
 crashlytics.properties
 crashlytics-build.properties
+>>>>>>> 0c8aa74f7f44f961cff5f89a10ea269224981f48
