@@ -39,13 +39,14 @@ module.exports = Backbone.View.extend({
   onAddProject: function (evt) {
     evt.preventDefault();
     var newProject = {
-      title: this.$el.find('input[name="title"]').val(),
-      startdate: this.$el.find('input[name="startDate"]').val(),
-      photo: this.$el.find('input[name="photo"]').val(),
-      finishdate: this.$el.find('input[name="finishDate"]').val(),
-      description: this.$el.find('textarea[name="description"]').val(),
+      title: this.$el.find('input[id="title"]').val(),
+      // startdate: this.$el.find('input[id="startDate"]').val(),
+      // startDate: new Date.getTime(),
+      // photo: this.$el.find('input[id="image"]').val(),
+      finishdate: this.$el.find('input[id="finishDate"]').val(),
+      description: this.$el.find('textarea[id="description"]').val(),
       balance: this.$el.find('input[name="balance"]').val(),
-      goal: this.$el.find('input[name="goal"]').val()
+      goal: this.$el.find('input[id="Goal"]').val()
     };
 
     this.model.set(newProject);
@@ -87,7 +88,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/bbjetchs2015',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
   model: IronFundModel,
   initialize: function () {
 
@@ -12882,20 +12883,20 @@ module.exports = {
       // "<div class='<%= \"row\" %>'>",
       // "<div class='<%= \"col-sm-6 col-md-4\" %>'>",
       "<div class='<%= \"thumbnail\" %>'>",
-      "<img src='<%= photo %>' >",
+      // "<img src='<%= photo %>'>",
       "<div class='<%= \"title\" %>'>",
       "<h3><%= title %></h3>",
       "<h4><%= startDate %></h4>",
       "<h4><%= finishDate %></h4>",
       "<p><%= description %></p>",
       "<p>",
-      "<h4><%= balance %></h4>",
+      // "<h4><%= balance %></h4>",
       "<h4><%= goal %></h4>",
 
       "<form class='<%= \"form-inline\" %>'>",
         // "<div class='form-group'>",
       "<input type='<%= \"text\" %>' class='<%= \"form-control\" %>' id='<%= \"title\" %>' name='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
-      "</div>",
+      // "</div>",
       "</form>",
       "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
       "</button>",
@@ -12911,32 +12912,30 @@ module.exports = {
       // "</div>",
 
   ].join(""),
-  form: [
-       '<form class = "first-form" role="form">',
-       '<div class="form-group">',
-       '<label for="title">Movie Title:</label>',
-       '<input type="text" class="form-control" textarea= "movie title" id="title">',
-       '</div>',
-       '<div class="form-group">',
-       '<label for="release">Release Year:</label>',
-       '<input type="text" class="form-control" id="release">',
-       '</div>',
-       '<div class="form-group">',
-       '<label for="cover">Cover Img:</label>',
-       '<input type="text" class="form-control" id="cover">',
-       '</div>',
-       '<div class="form-group">',
-       '<label for="plot">Plot:</label>',
-       '<input type="text" class="form-control" id="plots">',
-       '</div>',
-       '<div class="form-group">',
-       '<label for="rating">Rating:</label>',
-       '<input type="text" class="form-control" id="rating">',
-       '</div>',
-       '<button  id= "submitted"class="btn btn-default">Submit</button>',
-       '</form>',
-       '<body>',
-  ].join(""),
+ form: [
+      '<form class = "first-form" role="form">',
+      '<div class="form-group">',
+      '<label for="title">Fund Title:</label>',
+      '<input type="text" class="form-control" id="title">',
+      '</div>',
+      '<div class="form-group description">',
+      '<label for="release">Description:</label>',
+      '<input type="text" class="form-control description" id="description">',
+      '</div>',
+      '<div class="form-group">',
+      '<label for="plot">Finish Date:</label>',
+      '<input type="text" value = "09/01/2015"class="form-control" id="finishDate">',
+      '</div>',
+      '<div class="form-group">',
+      '<label for="rating">Funding Goal:</label>',
+      '<input type="text" class="form-control" id="Goal">',
+      '</div>',
+      '<label for="cover">Cover Img:</label>',
+      '<input class = "form-group" type="file" name="pic" id="image" accept="image/*">',
+      '<button  id= "submitted"class="btn btn-default">Create New Fund</button>',
+      '</form>',
+      '<body>',
+ ].join(""),
   header: [
     "<h2>Iron Fund</h2>",
     // "<nav>",
