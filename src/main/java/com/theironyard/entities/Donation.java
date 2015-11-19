@@ -1,8 +1,7 @@
 package com.theironyard.entities;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -13,9 +12,20 @@ public class Donation {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    int id;
+    public int id;
 
     @Column(nullable = false)
-    double amount;
+    public double amount;
+
+    @Column(nullable = false)
+    public LocalDateTime date;
+
+    @ManyToOne
+    public Project p;
+
+    @ManyToOne
+    public User u;
+
+
 
 }

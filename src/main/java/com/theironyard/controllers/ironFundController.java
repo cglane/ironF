@@ -1,16 +1,23 @@
 package com.theironyard.controllers;
 import com.theironyard.Stats;
+import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
 import com.theironyard.entities.User;
+import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import com.theironyard.services.UserRepo;
 import com.theironyard.util.PasswordHash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -23,6 +30,9 @@ public class ironFundController {
 
     @Autowired
     ProjectRepo projects;
+
+    @Autowired
+    DonationRepo donations;
 
     @RequestMapping("/login")
     public User login(
@@ -92,24 +102,68 @@ public class ironFundController {
         return all;
     }
 
-//    @RequestMapping("/stats")
-//    public Stats stats(HttpSession session) throws Exception {
-//        String username = (String) session.getAttribute("username");
-//        if (username==null) {
-//            throw new Exception("Not logged in.");
-//        }
-//        long i = projects.count();
-//        Project p = projects.findOne((int) i);
-//        Stats s = new Stats();
-//        s.totalDonations = projects.getTotalDonated();
-//        s.totalProjects = projects.count();
-//        s.totalUsers = users.count();
-//        s.date = p.startDate;
-//        s.user =
-//
-//
-//        return s;
-//    }
+    @RequestMapping("/stats")
+    public Stats stats(HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username==null) {
+            throw new Exception("Not logged in.");
+        }
+        long last = donations.count();
+        Donation d = donations.findLast(last);
+        Stats s = new Stats();
+        s.totalDonations = projects.getTotalDonated();
+        s.totalProjects = projects.count();
+        s.totalUsers = users.count();
+        s.user = d.u.username;
+        s.date = d.date;
+        s.amount = d.amount;
+        String time = s.date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+        s.project = d.p.title;
+        s.mostRecent = String.format("%s donated %f on %s towards %s", s.user, s.amount, time, s.project);
+        return s;
+    }
 
+    @RequestMapping ("/create")
+    public void addProject (
+            String title,
+            String description,
+            String finishDate,
+            double balance, double goal,
+            HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            throw new Exception("Not Logged in");
+        }
+        User user = users.findOneByUsername(username);
+
+        Project project = new Project();
+        project.title = title;
+        project.balance = balance;
+        project.description = description;
+        project.finishDate = LocalDateTime.parse(finishDate);
+        project.startDate = LocalDateTime.now();
+        project.goal = goal;
+        projects.save(project);
+
+    }
+    @RequestMapping ("/edit")
+    public void editProject (
+            int id,
+            String title,
+            String description,
+            HttpSession session,
+            double goal)
+            throws Exception {
+        if (session.getAttribute("username") == null){
+            throw new Exception("Not Logged in");
+        }
+
+        Project project = projects.findOne(id);
+        project.title = title;
+        project.description = description;
+        project.goal = goal;
+        projects.save(project);
+
+    }
     
 }
