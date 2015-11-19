@@ -2,6 +2,7 @@ package com.theironyard.controllers;
 import com.theironyard.Stats;
 import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
+import com.theironyard.entities.Project;
 import com.theironyard.entities.User;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.time.LocalDateTime;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -33,6 +35,8 @@ public class ironFundController {
 
     @Autowired
     DonationRepo donations;
+
+
 
     @RequestMapping("/login")
     public User login(
@@ -71,6 +75,47 @@ public class ironFundController {
         projects.save(p);
     }
 
+    @RequestMapping ("/create")
+    public void addProject (
+          String title,
+          String description,
+          String finishDate,
+          double balance, double goal,
+          HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            throw new Exception("Not Logged in");
+        }
+        Project project = new Project();
+        project.title = title;
+        project.balance = balance;
+        project.description = description;
+        project.finishDate = LocalDateTime.parse(finishDate);
+        project.startDate = LocalDateTime.now();
+        project.goal = goal;
+        projects.save(project);
+
+    }
+    @RequestMapping ("/edit")
+    public void editProject (
+            int id,
+            String title,
+            String description,
+            HttpSession session,
+            double goal)
+            throws Exception {
+        if (session.getAttribute("username") == null){
+            throw new Exception("Not Logged in");
+        }
+
+        Project project = projects.findOne(id);
+        project.title = title;
+        project.description = description;
+        project.goal = goal;
+        projects.save(project);
+
+    }
+
     @RequestMapping("/delete")
     public void delete(HttpSession session, int id) throws Exception {
         String username = (String) session.getAttribute("username");
@@ -86,10 +131,11 @@ public class ironFundController {
         if (username==null) {
             throw new Exception("Not logged in.");
         }
+        User user = users.findOneByUsername(username);
 
         Project p = projects.findOne(id);
         return p;
-    }
+}
 
     @RequestMapping("/all")
     public List<Project> all(HttpSession session) throws Exception {
@@ -121,49 +167,6 @@ public class ironFundController {
         s.project = d.p.title;
         s.mostRecent = String.format("%s donated %f on %s towards %s", s.user, s.amount, time, s.project);
         return s;
-    }
-
-    @RequestMapping ("/create")
-    public void addProject (
-            String title,
-            String description,
-            String finishDate,
-            double balance, double goal,
-            HttpSession session) throws Exception {
-        String username = (String) session.getAttribute("username");
-        if (username == null) {
-            throw new Exception("Not Logged in");
-        }
-        User user = users.findOneByUsername(username);
-
-        Project project = new Project();
-        project.title = title;
-        project.balance = balance;
-        project.description = description;
-        project.finishDate = LocalDateTime.parse(finishDate);
-        project.startDate = LocalDateTime.now();
-        project.goal = goal;
-        projects.save(project);
-
-    }
-    @RequestMapping ("/edit")
-    public void editProject (
-            int id,
-            String title,
-            String description,
-            HttpSession session,
-            double goal)
-            throws Exception {
-        if (session.getAttribute("username") == null){
-            throw new Exception("Not Logged in");
-        }
-
-        Project project = projects.findOne(id);
-        project.title = title;
-        project.description = description;
-        project.goal = goal;
-        projects.save(project);
-
     }
     
 }
