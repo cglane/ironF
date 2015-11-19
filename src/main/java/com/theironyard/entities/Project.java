@@ -1,8 +1,5 @@
 package com.theironyard.entities;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -13,6 +10,9 @@ public class Project {
     @Id
     @GeneratedValue
     public int id;
+
+    @ManyToOne
+    User user;
 
     @Column(nullable = false)
     public String title;
@@ -31,6 +31,7 @@ public class Project {
 
     @Column (nullable = false)
     public double goal;
+
 
 
 
