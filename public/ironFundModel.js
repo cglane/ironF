@@ -3,6 +3,9 @@ var Backbone = require('backbone');
 
 module.exports = Backbone.Model.extend({
   urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
+  default{
+    balance:0;
+  }
   // idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here

@@ -19,15 +19,14 @@ module.exports = Backbone.View.extend({
   onAddProject: function (evt) {
     evt.preventDefault();
     var newProject = {
-      title: this.$el.find('input[name="title"]').val(),
-      releasedate: this.$el.find('input[name="releasedate"]').val(),
-      cover: this.$el.find('input[name="coverPhoto"]').val(),
-      rating: this.$el.find('input[name="rating"]').val(),
-      plot: this.$el.find('textarea[name="plot"]').val()
+      title: this.$el.find('input[id="title"]').val(),
+      // photo: this.$el.find('input[id="releaseda"]').val(),
+      finishDate: this.$el.find('input[id="finishDate"]').val(),
+      description: this.$el.find('input[id="description"]').val(),
+      goal: this.$el.find('input[id="Goal"]').val()
     };
     this.model.set(newProject);
     this.model.save();
-    this.$el.find('input, textarea').val('');
 
   },
   template: _.template(tmpl.form),
