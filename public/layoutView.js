@@ -13,7 +13,6 @@ module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
     var self = this;
-    console.log(HeaderView);
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
     var formHTML = new FormView();

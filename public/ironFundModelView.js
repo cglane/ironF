@@ -24,7 +24,7 @@ module.exports = Backbone.View.extend({
 
   render: function () {
     var markup = this.template(this.model.toJSON());
-    this.$el.html(markup);
+    this.$el.append(markup);
     // in order to call .el off of render we need to return this
     // projectViewInstance.render().el - yields all markup and data from model
     return this;
