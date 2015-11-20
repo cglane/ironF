@@ -1,6 +1,7 @@
 package com.theironyard.entities;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -12,7 +13,10 @@ public class Project {
     public int id;
 
     @ManyToOne
-    User user;
+    public User u;
+
+    @OneToMany(mappedBy = "project")
+    public List<Donation> donationList;
 
     @Column(nullable = false)
     public String title;
