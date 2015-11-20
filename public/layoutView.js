@@ -7,7 +7,7 @@ var FooterView = require('./footerView');
 var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
-
+var ModelView = require('./ironFundModelView');
 
 module.exports = Backbone.View.extend({
   el: '#layoutView',

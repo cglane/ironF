@@ -14,7 +14,7 @@ module.exports = Backbone.View.extend({
   events: {
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
-    "keypress article"  : "updateOnEnter",
+    "click .confirm-edit"  : "close",
   },
 
   deleteProject: function(event) {
@@ -25,27 +25,28 @@ module.exports = Backbone.View.extend({
   editProject:function(event){
     event.preventDefault();
     this.$el.attr('contenteditable','true');
-    console.log(this.$el.find('h3'));
+    this.$el.find('.confirm-edit').removeClass('display-none');
   },
-  updateOnEnter:function(e){
-    if(e.keycode ==13){
-      this.close();
-    }
-  },
-  close:function(){
+  close:function(event){
+    event.preventDefault();
+    // console.log( $(event.target.closest('h3')));
         var object = {
-          title: this.$el.find('h3').val(),
+          title: this.$el.find('.title').text(),
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
-          finishdate: this.$el.find('.finish-date').val(),
-          description: this.$el.find('.description').val(),
+          finishdate: this.$el.find('.finish-date').text(),
+          description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
-          goal: this.$el.find('.goal').val()
+          goal: this.$el.find('.goal').text()
         }
         console.log(object);
-      //  this.model.save({title: value});
-     
+        this.model.destroy();
+       this.model.set(object);
+       this.model.save();
+       console.log(this.model);
+       this.$el.find('.confirm-edit').addClass('display-none');
+
   },
   render: function () {
     var markup = this.template(this.model.toJSON());

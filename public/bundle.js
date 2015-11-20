@@ -180,7 +180,7 @@ module.exports = Backbone.View.extend({
   events: {
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
-    "keypress article"  : "updateOnEnter",
+    "click .confirm-edit"  : "close",
   },
 
   deleteProject: function(event) {
@@ -191,27 +191,28 @@ module.exports = Backbone.View.extend({
   editProject:function(event){
     event.preventDefault();
     this.$el.attr('contenteditable','true');
-    console.log(this.$el.find('h3'));
+    this.$el.find('.confirm-edit').removeClass('display-none');
   },
-  updateOnEnter:function(e){
-    if(e.keycode ==13){
-      this.close();
-    }
-  },
-  close:function(){
+  close:function(event){
+    event.preventDefault();
+    // console.log( $(event.target.closest('h3')));
         var object = {
-          title: this.$el.find('h3').val(),
+          title: this.$el.find('.title').text(),
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
-          finishdate: this.$el.find('.finish-date').val(),
-          description: this.$el.find('.description').val(),
+          finishdate: this.$el.find('.finish-date').text(),
+          description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
-          goal: this.$el.find('.goal').val()
+          goal: this.$el.find('.goal').text()
         }
         console.log(object);
-      //  this.model.save({title: value});
-     
+        this.model.destroy();
+       this.model.set(object);
+       this.model.save();
+       console.log(this.model);
+       this.$el.find('.confirm-edit').addClass('display-none');
+
   },
   render: function () {
     var markup = this.template(this.model.toJSON());
@@ -232,19 +233,18 @@ var FooterView = require('./footerView');
 var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
-
+var ModelView = require('./ironFundModelView');
 
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
     var self = this;
-    console.log(HeaderView);
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
-    var formHTML = new FormView();
     var ironFundCollection = new IronFundCollection();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
+      var formHTML = new FormView({collection:ironFundCollection});
       self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
@@ -256,7 +256,7 @@ module.exports = Backbone.View.extend({
 
 });
 
-},{"./footerView":2,"./formView":3,"./headerView":4,"./ironFundCollection":5,"./ironFundCollectionView":6,"backbone":11,"jquery":12,"underscore":13}],10:[function(require,module,exports){
+},{"./footerView":2,"./formView":3,"./headerView":4,"./ironFundCollection":5,"./ironFundCollectionView":6,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],10:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 
@@ -12932,7 +12932,7 @@ module.exports = {
       "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
       "<div class='<%= \"title\" %>'>",
-      "<h3><%= title %></h3>",
+      "<h3 class = 'title'><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
       "<h4 class = 'finish-date'><%= finishdate %></h4>",
       "<p class = 'description'><%= description %></p>",
@@ -12948,6 +12948,9 @@ module.exports = {
       "</div>",
       "<div class='<%= \"form-group\"%>'>",
       "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
       "</div>",
       // "<form class='<%= \"form-inline\" %>'>",
       "<div class='<%= \"form-group donateNow\"%>'>",
