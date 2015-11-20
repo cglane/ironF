@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2018',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
   model: IronFundModel,
   initialize: function () {
 
@@ -99,18 +99,8 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
-var Backbone = require('backbone');
-var IronFundModel = require('./ironFundModel');
-
-module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
-  model: IronFundModel,
-  initialize: function () {
-
-  }
-});
-
-},{"./ironFundModel":7,"backbone":11}],6:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./ironFundModel":7,"backbone":11,"dup":1}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -12963,23 +12953,18 @@ module.exports = {
   ].join(""),
 
   header: [
-    "<h2>Iron Fund</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<nav class="navbar navbar-inverse navbar-fixed-top">',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<button type="button" class="btn btn-default navbar-btn navbar-right">Sign-in / Create Account</button>',
   ].join(""),
   footer: [
-    "<div class='<%= \"footer-links\" %>'>",
-    "<a href='<%= \"#\" %>'><%= \"Home\" %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-    "<a href='<%= \"#\" %>'><%= \"Add a Project\" %></a>",
-    // "<h2>Footer</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<div class="footer-links">',
+    '<nav class="navbar navbar-inverse navbar-fixed-bottom">',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<a href="#">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<a href="#">Add a Project</a>',
+    '</nav>',
+    '</div>',
   ].join(""),
 };
 

@@ -62,22 +62,17 @@ module.exports = {
   ].join(""),
 
   header: [
-    "<h2>Iron Fund</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<nav class="navbar navbar-inverse navbar-fixed-top">',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<button type="button" class="btn btn-default navbar-btn navbar-right">Sign-in / Create Account</button>',
   ].join(""),
   footer: [
-    "<div class='<%= \"footer-links\" %>'>",
-    "<a href='<%= \"#\" %>'><%= \"Home\" %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-    "<a href='<%= \"#\" %>'><%= \"Add a Project\" %></a>",
-    // "<h2>Footer</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<div class="footer-links">',
+    '<nav class="navbar navbar-inverse navbar-fixed-bottom">',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<a href="#">Home</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    '<a href="#">Add a Project</a>',
+    '</nav>',
+    '</div>',
   ].join(""),
 };
