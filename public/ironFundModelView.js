@@ -14,6 +14,7 @@ module.exports = Backbone.View.extend({
   events: {
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
+    "keypress article"  : "updateOnEnter",
   },
 
   deleteProject: function(event) {
@@ -21,7 +22,30 @@ module.exports = Backbone.View.extend({
     this.model.destroy();
     this.$el.remove();
   },
-
+  editProject:function(event){
+    event.preventDefault();
+    this.$el.attr('contenteditable','true');
+    console.log(this.$el.find('h3'));
+  },
+  updateOnEnter:function(e){
+    if(e.keycode ==13){
+      this.close();
+    }
+  },
+  close:function(){
+        var object = {
+          title: this.$el.find('h3').val(),
+          // startdate: this.$el.find('input[id="startDate"]').val(),
+          // startDate: new Date.getTime(),
+          // photo: this.$el.find('input[id="image"]').val(),
+          finishdate: this.$el.find('.finish-date').val(),
+          description: this.$el.find('.description').val(),
+          // balance: this.$el.find('input[name="balance"]').val(),
+          goal: this.$el.find('.goal').val()
+        }
+       this.model.save({title: value});
+     }
+  },
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);
