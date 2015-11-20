@@ -18,8 +18,13 @@ module.exports = Backbone.View.extend({
 
   deleteProject: function(event) {
     event.preventDefault();
-    this.model.destroy();
+    console.log('this is being deleted');
+    console.log('the model is: ', this.model);
+
     this.$el.remove();
+    this.model.destroy({success: function(model, response) {
+      console.log('response', response);
+    }});
   },
 
   render: function () {
