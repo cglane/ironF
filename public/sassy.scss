@@ -1,4 +1,10 @@
-
+.row{
+  margin-top: 50px;
+  margin-right : 5px;
+  margin-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
 .description  {
   height: 100px;
   margin-bottom: 40px;
@@ -13,14 +19,19 @@
   }
 .form-group{
 font-family: "Lucida Console", Courier, monospace;
+// margin-left: 5px;
 
 }
 .form-control{
   border: solid green 1px;
+  // margin-left: 5px;
 }
 .donateNow {
   float:right;
 }
 .btn {
   margin-right: 5px;
+}
+aside{
+  margin-left: 20px;
 }
