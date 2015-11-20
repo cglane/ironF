@@ -1,5 +1,17 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":7,"backbone":11}],2:[function(require,module,exports){
+var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
@@ -17,17 +29,19 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],2:[function(require,module,exports){
+},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
 var IronFundModel = require('./ironFundModel');
+var IronFundCollection = require('./ironFundCollection');
 
 module.exports = Backbone.View.extend({
   className: 'addProject',
-  model: null, // just here as placeholder, but need a model up on instantiation
+  template: _.template(tmpl.form),
+  // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
     'submit form': 'onAddProject'
   },
@@ -44,17 +58,18 @@ module.exports = Backbone.View.extend({
       // startDate: new Date.getTime(),
       // photo: this.$el.find('input[id="image"]').val(),
       finishdate: this.$el.find('input[id="finishDate"]').val(),
-      description: this.$el.find('textarea[id="description"]').val(),
-      balance: this.$el.find('input[name="balance"]').val(),
+      description: this.$el.find('input[id="description"]').val(),
+      // balance: this.$el.find('input[name="balance"]').val(),
       goal: this.$el.find('input[id="Goal"]').val()
     };
-
     this.model.set(newProject);
     this.model.save();
-    this.$el.find('input, textarea').val('');
-
+    this.collection.add(this.model);
+    // console.log("this.model:", this.model);
+    // console.log("this:", this);
+    console.log("this.collection:", this.collection);
+    this.$el.find('input, value').val('');
   },
-  template: _.template(tmpl.form),
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.html(markup);
@@ -64,7 +79,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundModel":6,"./templates":13,"backbone":10,"jquery":11,"underscore":12}],3:[function(require,module,exports){
+},{"./ironFundCollection":5,"./ironFundModel":7,"./templates":14,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -83,34 +98,30 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],4:[function(require,module,exports){
-var Backbone = require('backbone');
-var IronFundModel = require('./ironFundModel');
-
-module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
-  model: IronFundModel,
-  initialize: function () {
-
-  }
-});
-
-},{"./ironFundModel":6,"backbone":10}],5:[function(require,module,exports){
+},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./ironFundModel":7,"backbone":11,"dup":1}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 Backbone.$ = $;
 var IronFundView = require('./ironFundModelView');
-
+var IronFundCollection = require('./IronFundCollection');
+var IronFundModel = require('./ironFundModel');
 module.exports = Backbone.View.extend({
   el: '.content',
-  collection: null, // just a placeholder
+  collection: null,
+
+ // just a placeholder
+
   initialize: function () {
     // console.log(this.collection);
     this.addAll();
+    this.listenTo(this.collection, 'add',this.addOne);
   },
+
   addOne: function (ironFundModel) {
-    console.log("iron fund model", ironFundModel);
+    console.log('fired');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },
@@ -119,12 +130,13 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundModelView":7,"backbone":10,"jquery":11,"underscore":12}],6:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":7,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
   urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+
   // idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
@@ -141,7 +153,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":10}],7:[function(require,module,exports){
+},{"backbone":11}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -168,14 +180,14 @@ module.exports = Backbone.View.extend({
 
   render: function () {
     var markup = this.template(this.model.toJSON());
-    this.$el.html(markup);
+    this.$el.append(markup);
     // in order to call .el off of render we need to return this
     // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],8:[function(require,module,exports){
+},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -191,13 +203,12 @@ module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
     var self = this;
-    console.log(HeaderView);
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
-    var formHTML = new FormView();
     var ironFundCollection = new IronFundCollection();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
+      var formHTML = new FormView({collection:ironFundCollection});
       self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
@@ -209,7 +220,7 @@ module.exports = Backbone.View.extend({
 
 });
 
-},{"./footerView":1,"./formView":2,"./headerView":3,"./ironFundCollection":4,"./ironFundCollectionView":5,"backbone":10,"jquery":11,"underscore":12}],9:[function(require,module,exports){
+},{"./footerView":2,"./formView":3,"./headerView":4,"./ironFundCollection":5,"./ironFundCollectionView":6,"backbone":11,"jquery":12,"underscore":13}],10:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 
@@ -217,7 +228,7 @@ $(function () {
   new LayoutView();
 });
 
-},{"./layoutView":8,"jquery":11}],10:[function(require,module,exports){
+},{"./layoutView":9,"jquery":12}],11:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2115,7 +2126,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":11,"underscore":12}],11:[function(require,module,exports){
+},{"jquery":12,"underscore":13}],12:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11327,7 +11338,7 @@ return jQuery;
 
 }));
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -12877,7 +12888,7 @@ return jQuery;
   }
 }.call(this));
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = {
   project: [
       // "<div class='<%= \"row\" %>'>",
@@ -12887,7 +12898,7 @@ module.exports = {
       "<div class='<%= \"title\" %>'>",
       "<h3><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
-      // "<h4><%= finishDate %></h4>",
+      "<h4><%= finishdate %></h4>",
       "<p><%= description %></p>",
       // "<h4><%= balance %></h4>",
       "<h4><%= goal %></h4>",
@@ -12916,30 +12927,31 @@ module.exports = {
       // "</div>",
 
   ].join(""),
- form: [
-      '<form class = "first-form" role="form">',
-      '<div class="form-group">',
-      '<label for="title">Fund Title:</label>',
-      '<input type="text" class="form-control" id="title">',
-      '</div>',
-      '<div class="form-group description">',
-      '<label for="release">Description:</label>',
-      '<input type="text" class="form-control description" id="description">',
-      '</div>',
-      '<div class="form-group">',
-      '<label for="plot">Finish Date:</label>',
-      '<input type="text" value = "09/01/2015"class="form-control" id="finishDate">',
-      '</div>',
-      '<div class="form-group">',
-      '<label for="rating">Funding Goal:</label>',
-      '<input type="text" class="form-control" id="Goal">',
-      '</div>',
-      '<label for="cover">Cover Img:</label>',
-      '<input class = "form-group" type="file" name="pic" id="image" accept="image/*">',
-      '<button  id= "submitted"class="btn btn-default">Create New Fund</button>',
-      '</form>',
-      '<body>',
- ].join(""),
+  form: [
+       '<form class = "first-form" role="form">',
+       '<div class="form-group">',
+       '<label for="title">Fund Title:</label>',
+       '<input type="text" class="form-control" id="title">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="release">Description:</label>',
+       '<input type="text" class="form-control description" id="description">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="plot">Finish Date:</label>',
+       '<input type="text" value = "09/01/2015" class="form-control" id="finishDate">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="rating">Funding Goal:</label>',
+       '<input type="text" class="form-control" id="Goal">',
+       '</div>',
+       '<label for="cover">Cover Img:</label>',
+       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
+       '</form>',
+       '<body>',
+  ].join(""),
+
   header: [
     '<nav class="navbar navbar-inverse navbar-fixed-top">',
     '<a class="navbar-brand" href="#">Iron Fund</a>',
@@ -12956,4 +12968,4 @@ module.exports = {
   ].join(""),
 };
 
-},{}]},{},[9]);
+},{}]},{},[10]);
