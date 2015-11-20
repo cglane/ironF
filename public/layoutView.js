@@ -15,10 +15,10 @@ module.exports = Backbone.View.extend({
     var self = this;
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
-    var formHTML = new FormView();
     var ironFundCollection = new IronFundCollection();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
+      var formHTML = new FormView({collection:ironFundCollection});
       self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);

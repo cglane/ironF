@@ -14,7 +14,6 @@ public class Project {
     @ManyToOne
     User user;
 
-
     @Column(nullable = false)
     public String title;
 

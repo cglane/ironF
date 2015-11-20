@@ -36,10 +36,12 @@ Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
 var IronFundModel = require('./ironFundModel');
+var IronFundCollection = require('./ironFundCollection');
 
 module.exports = Backbone.View.extend({
   className: 'addProject',
-  model: null, // just here as placeholder, but need a model up on instantiation
+  template: _.template(tmpl.form),
+  // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
     'submit form': 'onAddProject'
   },
@@ -50,7 +52,6 @@ module.exports = Backbone.View.extend({
   },
   onAddProject: function (evt) {
     evt.preventDefault();
-    var newCollection = new IronFundCollection();
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -60,13 +61,15 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       // balance: this.$el.find('input[name="balance"]').val(),
       goal: this.$el.find('input[id="Goal"]').val()
-
     };
-  this.model.save();
-  this.$el.find('input, value').val('');
-
+    this.model.set(newProject);
+    this.model.save();
+    this.collection.add(this.model);
+    // console.log("this.model:", this.model);
+    // console.log("this:", this);
+    console.log("this.collection:", this.collection);
+    this.$el.find('input, value').val('');
   },
-  template: _.template(tmpl.form),
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.html(markup);
@@ -76,7 +79,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundModel":7,"./templates":14,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
+},{"./ironFundCollection":5,"./ironFundModel":7,"./templates":14,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -96,14 +99,25 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":7,"backbone":11,"dup":1}],6:[function(require,module,exports){
+var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":7,"backbone":11}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 Backbone.$ = $;
 var IronFundView = require('./ironFundModelView');
 var IronFundCollection = require('./IronFundCollection');
+var IronFundModel = require('./ironFundModel');
 module.exports = Backbone.View.extend({
   el: '.content',
   collection: null,
@@ -113,9 +127,11 @@ module.exports = Backbone.View.extend({
   initialize: function () {
     // console.log(this.collection);
     this.addAll();
+    this.listenTo(this.collection, 'add',this.addOne);
   },
 
   addOne: function (ironFundModel) {
+    console.log('fired');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },
@@ -124,12 +140,12 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./IronFundCollection":1,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],7:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":7,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2018',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
 
   // idAttribute: '_id',
   // defaults: function () {
@@ -199,10 +215,10 @@ module.exports = Backbone.View.extend({
     var self = this;
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
-    var formHTML = new FormView();
     var ironFundCollection = new IronFundCollection();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
+      var formHTML = new FormView({collection:ironFundCollection});
       self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
@@ -12894,23 +12910,27 @@ module.exports = {
       // "<h4><%= startDate %></h4>",
       "<h4><%= finishdate %></h4>",
       "<p><%= description %></p>",
-      "<p>",
       // "<h4><%= balance %></h4>",
       "<h4><%= goal %></h4>",
+      "<div class='<%= \"progress\" %>'>",
+      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
+      "</div>",
 
       "<form class='<%= \"form-inline\" %>'>",
-        // "<div class='form-group'>",
-      "<input type='<%= \"text\" %>' class='<%= \"form-control\" %>' id='<%= \"title\" %>' name='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
-      // "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
+      "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "</div>",
+      // "<form class='<%= \"form-inline\" %>'>",
+      "<div class='<%= \"form-group donateNow\"%>'>",
+      "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
+      "</button>",
+
+      "</div>",
       "</form>",
-      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
-      "</button>",
-      //Donate Now
-      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %>",
-      "</button>  ",
-      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %>",
-      "</button>",
-      "</p>",
       "</div>",
       "</div>",
       // "</div>",

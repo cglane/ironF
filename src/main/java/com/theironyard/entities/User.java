@@ -16,7 +16,7 @@ public class User {
     @Column(nullable = false)
     public int id;
 
-    @OneToMany (mappedBy = "user")
+    @OneToMany(mappedBy = "user")
     public List<Project> projectList;
 
     @Column(nullable = false)
@@ -30,5 +30,8 @@ public class User {
 //
 //    @Column(nullable = false)
 //    public MultipartFile photo;
+
+//    @Column(nullable = false);
+//    public double donated;
     
 }

@@ -4,6 +4,7 @@ var $ = require('jquery');
 Backbone.$ = $;
 var IronFundView = require('./ironFundModelView');
 var IronFundCollection = require('./IronFundCollection');
+var IronFundModel = require('./ironFundModel');
 module.exports = Backbone.View.extend({
   el: '.content',
   collection: null,
@@ -13,9 +14,11 @@ module.exports = Backbone.View.extend({
   initialize: function () {
     // console.log(this.collection);
     this.addAll();
+    this.listenTo(this.collection, 'add',this.addOne);
   },
 
   addOne: function (ironFundModel) {
+    console.log('fired');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },
