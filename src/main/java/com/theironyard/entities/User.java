@@ -19,7 +19,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     public List<Project> projectList;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "u")
     public List<Donation> donationList;
 
     @Column(nullable = false)

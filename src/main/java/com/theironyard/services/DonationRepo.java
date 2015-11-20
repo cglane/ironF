@@ -10,5 +10,12 @@ public interface DonationRepo extends CrudRepository<Donation, Integer> {
 
     @Query("SELECT d FROM Donation d WHERE ROWNUM = ?")
     Donation findLast(long last);
+
+    @Query("SELECT MAX(amount) FROM Donation WHERE P_ID = ?")
+    Donation findLGDonation2Proj(int id);
+
+    @Query("SELECT MAX(amount) FROM Donation WHERE U_ID = ?")
+    Donation findLargestDonationByUser(int id);
+
     
 }
