@@ -6,7 +6,7 @@
 #image{
   margin-top: 30px;
   margin-bottom: 30px;
-  font-family: "Lucida Console", Courier, monospace;}
+  font-family: "Lucida Console", Courier, monospace;
 }
 #submitted{
   margin-top:50px;
@@ -17,4 +17,10 @@ font-family: "Lucida Console", Courier, monospace;
 }
 .form-control{
   border: solid green 1px;
+}
+.donateNow {
+  float:right;
+}
+.btn {
+  margin-right: 5px;
 }
