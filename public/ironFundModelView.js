@@ -19,8 +19,13 @@ module.exports = Backbone.View.extend({
 
   deleteProject: function(event) {
     event.preventDefault();
-    this.model.destroy();
+    console.log('this is being deleted');
+    console.log('the model is: ', this.model);
+
     this.$el.remove();
+    this.model.destroy({success: function(model, response) {
+      console.log('response', response);
+    }});
   },
   editProject:function(event){
     event.preventDefault();
@@ -41,7 +46,6 @@ module.exports = Backbone.View.extend({
           goal: this.$el.find('.goal').text()
         }
         console.log(object);
-        this.model.destroy();
        this.model.set(object);
        this.model.save();
        console.log(this.model);

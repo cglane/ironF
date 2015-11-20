@@ -29,7 +29,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],3:[function(require,module,exports){
+},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -79,7 +79,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundCollection":5,"./ironFundModel":7,"./templates":14,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
+},{"./ironFundCollection":5,"./ironFundModel":7,"./templates":15,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -98,7 +98,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
+},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
@@ -147,7 +147,7 @@ var Backbone = require('backbone');
 module.exports = Backbone.Model.extend({
   urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
 
-  // idAttribute: '_id',
+  idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {
@@ -185,8 +185,13 @@ module.exports = Backbone.View.extend({
 
   deleteProject: function(event) {
     event.preventDefault();
-    this.model.destroy();
+    console.log('this is being deleted');
+    console.log('the model is: ', this.model);
+
     this.$el.remove();
+    this.model.destroy({success: function(model, response) {
+      console.log('response', response);
+    }});
   },
   editProject:function(event){
     event.preventDefault();
@@ -207,7 +212,6 @@ module.exports = Backbone.View.extend({
           goal: this.$el.find('.goal').text()
         }
         console.log(object);
-        this.model.destroy();
        this.model.set(object);
        this.model.save();
        console.log(this.model);
@@ -223,7 +227,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":14,"backbone":11,"jquery":12,"underscore":13}],9:[function(require,module,exports){
+},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -245,7 +249,7 @@ module.exports = Backbone.View.extend({
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
       var formHTML = new FormView({collection:ironFundCollection});
-      self.$el.find('section').html();
+      // self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
       self.$el.find('aside').html(formHTML.render().el);
@@ -259,12 +263,15 @@ module.exports = Backbone.View.extend({
 },{"./footerView":2,"./formView":3,"./headerView":4,"./ironFundCollection":5,"./ironFundCollectionView":6,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],10:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
+var Router = require('./router');
 
 $(function () {
   new LayoutView();
+  // new Router();
+  // Backbone.history.start();
 });
 
-},{"./layoutView":9,"jquery":12}],11:[function(require,module,exports){
+},{"./layoutView":9,"./router":14,"jquery":12}],11:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -12925,6 +12932,37 @@ return jQuery;
 }.call(this));
 
 },{}],14:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+
+module.exports = Backbone.Router.extend({
+  routes: {
+    '': 'homePage',
+    'about': 'aboutPage',
+    'blahblah': 'someShit'
+  },
+  initialize: function (options) {
+    // if(!this.layout) {
+    //   this.layout = options.layout;
+    // }
+  },
+  someShit: function () {
+    console.log("some shits");
+  },
+  homePage: function () {
+    console.log("you've made it to home!!");
+  },
+  aboutPage: function () {
+    console.log("you've made it to the about page");
+  }
+
+
+
+
+});
+
+},{"backbone":11,"jquery":12,"underscore":13}],15:[function(require,module,exports){
 module.exports = {
   project: [
       // "<div class='<%= \"row\" %>'>",
