@@ -43,8 +43,9 @@ module.exports = Backbone.View.extend({
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').val()
         }
-       this.model.save({title: value});
-     }
+        console.log(object);
+      //  this.model.save({title: value});
+     
   },
   render: function () {
     var markup = this.template(this.model.toJSON());
