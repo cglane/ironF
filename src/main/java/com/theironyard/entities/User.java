@@ -20,6 +20,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     public List<Project> projectList;
 
+    @OneToMany(mappedBy = "u")
+    public List<Donation> donationList;
+
     @Column(nullable = false)
     public String username;
 
@@ -29,6 +32,21 @@ public class User {
     /*
     @Column(nullable = false)
     public boolean admin = false;
+
+//    @Column(nullable = false);
+//    public double donated;
+    public User(){}
+
+    public User(String username) {
+
+        this.username = username;
+    }
+    public User(List<Project> projectList, List<Donation> donationList, String username) {
+
+        this.projectList = projectList;
+        this.donationList = donationList;
+        this.username = username;
+    }
 
     @Column(nullable = false)
     public MultipartFile photo;

@@ -1,5 +1,38 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2018',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":8,"backbone":12}],2:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+
+  initialize: function () {},
+  template: _.template(tmpl.donate),
+
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],3:[function(require,module,exports){
+var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
@@ -17,17 +50,19 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],2:[function(require,module,exports){
+},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
 var IronFundModel = require('./ironFundModel');
+var IronFundCollection = require('./ironFundCollection');
 
 module.exports = Backbone.View.extend({
   className: 'addProject',
-  model: null, // just here as placeholder, but need a model up on instantiation
+  template: _.template(tmpl.form),
+  // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
     'submit form': 'onAddProject'
   },
@@ -44,17 +79,18 @@ module.exports = Backbone.View.extend({
       // startDate: new Date.getTime(),
       // photo: this.$el.find('input[id="image"]').val(),
       finishdate: this.$el.find('input[id="finishDate"]').val(),
-      description: this.$el.find('textarea[id="description"]').val(),
-      balance: this.$el.find('input[name="balance"]').val(),
+      description: this.$el.find('input[id="description"]').val(),
+      // balance: this.$el.find('input[name="balance"]').val(),
       goal: this.$el.find('input[id="Goal"]').val()
     };
-
     this.model.set(newProject);
     this.model.save();
-    this.$el.find('input, textarea').val('');
-
+    this.collection.add(this.model);
+    // console.log("this.model:", this.model);
+    // console.log("this:", this);
+    console.log("this.collection:", this.collection);
+    this.$el.find('input, value').val('');
   },
-  template: _.template(tmpl.form),
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.html(markup);
@@ -64,7 +100,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundModel":6,"./templates":13,"backbone":10,"jquery":11,"underscore":12}],3:[function(require,module,exports){
+},{"./ironFundCollection":6,"./ironFundModel":8,"./templates":16,"backbone":12,"jquery":13,"underscore":14}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -83,34 +119,40 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],4:[function(require,module,exports){
+},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
   model: IronFundModel,
   initialize: function () {
 
   }
 });
 
-},{"./ironFundModel":6,"backbone":10}],5:[function(require,module,exports){
+},{"./ironFundModel":8,"backbone":12}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 Backbone.$ = $;
 var IronFundView = require('./ironFundModelView');
-
+var IronFundCollection = require('./IronFundCollection');
+var IronFundModel = require('./ironFundModel');
 module.exports = Backbone.View.extend({
   el: '.content',
-  collection: null, // just a placeholder
+  collection: null,
+
+ // just a placeholder
+
   initialize: function () {
     // console.log(this.collection);
     this.addAll();
+    this.listenTo(this.collection, 'add',this.addOne);
   },
+
   addOne: function (ironFundModel) {
-    console.log("iron fund model", ironFundModel);
+    console.log('fired');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },
@@ -119,13 +161,14 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundModelView":7,"backbone":10,"jquery":11,"underscore":12}],6:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":8,"./ironFundModelView":9,"backbone":12,"jquery":13,"underscore":14}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
-  // idAttribute: '_id',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+
+  idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {
@@ -141,7 +184,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":10}],7:[function(require,module,exports){
+},{"backbone":12}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -158,24 +201,91 @@ module.exports = Backbone.View.extend({
   events: {
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
+    "click .confirm-edit"  : "close",
+    'click .donateNow':'onDonateNow',
   },
 
   deleteProject: function(event) {
     event.preventDefault();
-    this.model.destroy();
+    console.log('this is being deleted');
+    console.log('the model is: ', this.model);
+
     this.$el.remove();
+    this.model.destroy({success: function(model, response) {
+      console.log('response', response);
+    }});
+  },
+  editProject:function(event){
+    event.preventDefault();
+    this.$el.find('.titles').attr('contenteditable','true');
+    this.$el.find('.finish-date').attr('contenteditable','true');
+    this.$el.find('.description').attr('contenteditable','true');
+    this.$el.find('.goal').attr('contenteditable','true');
+    this.$el.find('.confirm-edit').removeClass('display-none');
+  },
+  close:function(event){
+    event.preventDefault();
+    // console.log( $(event.target.closest('h3')));
+        var object = {
+          title: this.$el.find('.titles').text(),
+          // startdate: this.$el.find('input[id="startDate"]').val(),
+          // startDate: new Date.getTime(),
+          // photo: this.$el.find('input[id="image"]').val(),
+          finishdate: this.$el.find('.finish-date').text(),
+          description: this.$el.find('.description').text(),
+          // balance: this.$el.find('input[name="balance"]').val(),
+          goal: this.$el.find('.goal').text()
+        }
+        console.log(object);
+       this.model.set(object);
+       this.model.save();
+       this.$el.find('.confirm-edit').addClass('display-none');
+  },
+  onDonateNow:function(event){
+    var currModel = this.model;
+    event.preventDefault();
+    $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
+    $('.body-container').addClass('blur');
+    $('.donate-btn').on('click',function(){
+        $('.body-container').removeClass('blur');
+        $('.placeholder-for-donate').addClass('display-none');
+        console.log(this.id);
+        var donation;
+        var id = this.id;;
+        if(id == "ten"){
+          donation = 10;
+        }else if (id == "twenty") {
+          donation = 20;
+        }else if(id == "fifty"){
+          donation = 50;
+        }
+        console.log(donation);
+        // console.log(this.find('input[id = "donation-input"]'))
+    });
+    $('.placeholder-for-donate').on('keypress',function(e){
+      var value = $(this).closest('div').find('input').val();
+      if(e.which == 13){
+        if(value == '' || isNaN(value)){
+          console.log('invalid input');
+        }else{
+          $('.body-container').removeClass('blur');
+          $('.placeholder-for-donate').addClass('display-none');
+          console.log('thank you for your donation');
+        }
+      }
+    });
   },
 
   render: function () {
     var markup = this.template(this.model.toJSON());
-    this.$el.html(markup);
+    this.$el.append(markup);
     // in order to call .el off of render we need to return this
     // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],8:[function(require,module,exports){
+},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -185,23 +295,24 @@ var FooterView = require('./footerView');
 var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
-
-
+var ModelView = require('./ironFundModelView');
+var DonateView = require("./donateView")
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
     var self = this;
-    console.log(HeaderView);
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
-    var formHTML = new FormView();
     var ironFundCollection = new IronFundCollection();
+    var donateHTML = new DonateView();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
-      self.$el.find('section').html();
+      var formHTML = new FormView({collection:ironFundCollection});
+      // self.$el.find('section').html();
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
       self.$el.find('aside').html(formHTML.render().el);
+      self.$el.find('.placeholder-for-donate').html(donateHTML.render().el);
     });
 
 
@@ -209,15 +320,18 @@ module.exports = Backbone.View.extend({
 
 });
 
-},{"./footerView":1,"./formView":2,"./headerView":3,"./ironFundCollection":4,"./ironFundCollectionView":5,"backbone":10,"jquery":11,"underscore":12}],9:[function(require,module,exports){
+},{"./donateView":2,"./footerView":3,"./formView":4,"./headerView":5,"./ironFundCollection":6,"./ironFundCollectionView":7,"./ironFundModelView":9,"backbone":12,"jquery":13,"underscore":14}],11:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
+var Router = require('./router');
 
 $(function () {
   new LayoutView();
+  // new Router();
+  // Backbone.history.start();
 });
 
-},{"./layoutView":8,"jquery":11}],10:[function(require,module,exports){
+},{"./layoutView":10,"./router":15,"jquery":13}],12:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2115,7 +2229,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":11,"underscore":12}],11:[function(require,module,exports){
+},{"jquery":13,"underscore":14}],13:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11327,7 +11441,7 @@ return jQuery;
 
 }));
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -12877,7 +12991,38 @@ return jQuery;
   }
 }.call(this));
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+var _ = require('underscore');
+
+module.exports = Backbone.Router.extend({
+  routes: {
+    '': 'homePage',
+    'about': 'aboutPage',
+    'blahblah': 'someShit'
+  },
+  initialize: function (options) {
+    // if(!this.layout) {
+    //   this.layout = options.layout;
+    // }
+  },
+  someShit: function () {
+    console.log("some shits");
+  },
+  homePage: function () {
+    console.log("you've made it to home!!");
+  },
+  aboutPage: function () {
+    console.log("you've made it to the about page");
+  }
+
+
+
+
+});
+
+},{"backbone":12,"jquery":13,"underscore":14}],16:[function(require,module,exports){
 module.exports = {
   project: [
       // "<div class='<%= \"row\" %>'>",
@@ -12885,12 +13030,12 @@ module.exports = {
       "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
       "<div class='<%= \"title\" %>'>",
-      "<h3><%= title %></h3>",
-      "<h4><%= startDate %></h4>",
-      "<h4><%= finishDate %></h4>",
-      "<p><%= description %></p>",
+      "<h3 class = 'titles'><%= title %></h3>",
+      // "<h4><%= startDate %></h4>",
+      "<h4 class = 'finish-date'><%= finishdate %></h4>",
+      "<p class = 'description'><%= description %></p>",
       // "<h4><%= balance %></h4>",
-      "<h4><%= goal %></h4>",
+      "<h4 class = 'goal'><%= goal %></h4>",
       "<div class='<%= \"progress\" %>'>",
       "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
       "</div>",
@@ -12902,9 +13047,12 @@ module.exports = {
       "<div class='<%= \"form-group\"%>'>",
       "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
       "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
+      "</div>",
       // "<form class='<%= \"form-inline\" %>'>",
       "<div class='<%= \"form-group donateNow\"%>'>",
-      "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+      // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
       "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
       "</button>",
 
@@ -12916,49 +13064,94 @@ module.exports = {
       // "</div>",
 
   ].join(""),
- form: [
-      '<form class = "first-form" role="form">',
-      '<div class="form-group">',
-      '<label for="title">Fund Title:</label>',
-      '<input type="text" class="form-control" id="title">',
-      '</div>',
-      '<div class="form-group description">',
-      '<label for="release">Description:</label>',
-      '<input type="text" class="form-control description" id="description">',
-      '</div>',
-      '<div class="form-group">',
-      '<label for="plot">Finish Date:</label>',
-      '<input type="text" value = "09/01/2015"class="form-control" id="finishDate">',
-      '</div>',
-      '<div class="form-group">',
-      '<label for="rating">Funding Goal:</label>',
-      '<input type="text" class="form-control" id="Goal">',
-      '</div>',
-      '<label for="cover">Cover Img:</label>',
-      '<input class = "form-group" type="file" name="pic" id="image" accept="image/*">',
-      '<button  id= "submitted"class="btn btn-default">Create New Fund</button>',
-      '</form>',
-      '<body>',
- ].join(""),
+  form: [
+       '<form class = "first-form" role="form">',
+       '<div class="form-group">',
+       '<label for="title">Fund Title:</label>',
+       '<input type="text" class="form-control" id="title">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="release">Description:</label>',
+       '<input type="text" class="form-control description" id="description">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="plot">Finish Date:</label>',
+       '<input type="text" value = "09/01/2015" class="form-control" id="finishDate">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="rating">Funding Goal:</label>',
+       '<input type="text" class="form-control" id="Goal">',
+       '</div>',
+       '<label for="cover">Cover Img:</label>',
+       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
+       '</form>',
+       '<body>',
+  ].join(""),
+
   header: [
-    "<h2>Iron Fund</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<nav class="navbar navbar-inverse navbar-fixed-top">',
+    '<div class="container-fluid">',
+      // <!-- Brand and toggle get grouped for better mobile display -->
+      '<div class="navbar-header">',
+        '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">',
+          '<span class="sr-only">Toggle navigation</span>',
+          '<span class="icon-bar"></span>',
+          '<span class="icon-bar"></span>',
+          '<span class="icon-bar"></span>',
+        '</button>',
+        '<a class="navbar-brand" href="#">Iron Fund</a>',
+        '<ul class="nav navbar-nav">',
+        '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>',
+        '<li><a href="#">Add a Project</a></li>',
+        '</ul>',
+      '</div>',
+
+      // <!-- Collect the nav links, forms, and other content for toggling -->
+      '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
+        '<ul class="nav navbar-nav navbar-right">',
+          // '<li><a href="#">Link</a></li>',
+          '<li class="dropdown">',
+            '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>',
+            '<ul class="dropdown-menu">',
+              '<li><a href="#">Action</a></li>',
+              '<li><a href="#">Another action</a></li>',
+              '<li><a href="#">Something else here</a></li>',
+              '<li role="separator" class="divider"></li>',
+              '<li><a href="#">Separated link</a></li>',
+            '</ul>',
+          '</li>',
+        '</ul>',
+      '</div>', //<!-- /.navbar-collapse -->
+    '</div>', //<!-- /.container-fluid -->
+'</nav>',
   ].join(""),
   footer: [
-    "<div class='<%= \"footer-links\" %>'>",
-    "<a href='<%= \"#\" %>'><%= \"Home\" %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-    "<a href='<%= \"#\" %>'><%= \"Add a Project\" %></a>",
-    // "<h2>Footer</h2>",
-    // "<nav>",
-    // "<ul>",
-    // "<li>home</li>",
-    // "</ul>",
-    // "</nav>"
+    '<div class="footer-links">',
+    '<nav class="navbar navbar-inverse navbar-fixed-bottom">',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<ul class="nav navbar-nav">',
+    '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>',
+    '<li><a href="#">Add a Project</a></li>',
+    '</ul>',
+    '</nav>',
+    '</div>',
+  ].join(""),
+  donate:[
+    '<div class = "donate">',
+    '<p>How much would you like to donate?</p>',
+    '<button  class = "donate-btn" id= "ten" class="btn btn-default">$10</button>',
+    '<button class = "donate-btn"  id= "twenty" class="btn btn-default">$20</button>',
+    '<button  class = "donate-btn" id= "fifty" class="btn btn-default">$50</button>',
+    '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
+    '</div>'
+  ].join(""),
+  login: [
+
+  ].join(""),
+  createuser: [
+
   ].join(""),
 };
 
-},{}]},{},[9]);
+},{}]},{},[11]);

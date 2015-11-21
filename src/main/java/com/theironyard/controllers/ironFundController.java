@@ -15,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -24,7 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.time.LocalDateTime;
-import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -91,7 +93,8 @@ public class ironFundController {
             throw new Exception("Wrong Password.");
         }
         session.setAttribute("username", username);
-        return user;
+        User safeUser = new User(user.username);
+        return safeUser;
     }
 
     @RequestMapping("/logout")
@@ -100,15 +103,21 @@ public class ironFundController {
     }
 
     @RequestMapping("/donate")
-    public void donate(HttpSession session, double donate, int id) throws Exception {
+    public void donate(HttpSession session, HttpServletResponse response, double donate, int id, double amount) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
-            throw new Exception("Not logged in.");
+            response.sendRedirect("403");
         }
 
         Project p = projects.findOne(id);
         p.balance = donate + p.balance;
         projects.save(p);
+        Donation d = new Donation();
+        d.amount = amount;
+        d.date = LocalDateTime.now();
+        d.u = users.findOneByUsername(username);
+        d.p = projects.findOne(id);
+        donations.save(d);
     }
 
     @RequestMapping ("/create")
@@ -116,15 +125,15 @@ public class ironFundController {
           String title,
           String description,
           String finishDate,
-          double balance, double goal,
-          HttpSession session) throws Exception {
+          double goal,
+          HttpSession session,
+          HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username == null) {
-            throw new Exception("Not Logged in");
+            response.sendRedirect("403");
         }
         Project project = new Project();
         project.title = title;
-        project.balance = balance;
         project.description = description;
         project.finishDate = LocalDateTime.parse(finishDate);
         project.startDate = LocalDateTime.now();
@@ -138,10 +147,12 @@ public class ironFundController {
             String title,
             String description,
             HttpSession session,
-            double goal)
+            double goal,
+            HttpServletResponse response)
             throws Exception {
-        if (session.getAttribute("username") == null){
-            throw new Exception("Not Logged in");
+        String username = (String) session.getAttribute("username");
+        if (username == null || !projects.findOne(id).user.username.equals(username)){
+            response.sendRedirect("403");
         }
 
         Project project = projects.findOne(id);
@@ -153,31 +164,29 @@ public class ironFundController {
     }
 
     @RequestMapping("/delete")
-    public void delete(HttpSession session, int id) throws Exception {
+    public void delete(HttpSession session, HttpServletResponse response, int id) throws Exception {
         String username = (String) session.getAttribute("username");
-        if (username==null) {
-            throw new Exception("Not logged in.");
+        if (username==null || !projects.findOne(id).user.username.equals(username)) {
+            response.sendRedirect("403");
         }
         projects.delete(id);
     }
 
     @RequestMapping("/single")
-    public Project single(HttpSession session, int id) throws Exception {
+    public Project single(HttpSession session, HttpServletResponse response, int id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
-            throw new Exception("Not logged in.");
+            response.sendRedirect("403");
         }
-        User user = users.findOneByUsername(username);
-
         Project p = projects.findOne(id);
         return p;
 }
 
     @RequestMapping("/all")
-    public List<Project> all(HttpSession session) throws Exception {
+    public List<Project> all(HttpSession session, HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
-            throw new Exception("Not logged in.");
+            response.sendRedirect("403");
         }
 
         List<Project> all = (List<Project>) projects.findAll();
@@ -185,10 +194,10 @@ public class ironFundController {
     }
 
     @RequestMapping("/stats")
-    public Stats stats(HttpSession session) throws Exception {
+    public Stats stats(HttpSession session, HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
-            throw new Exception("Not logged in.");
+            response.sendRedirect("403");
         }
         long last = donations.count();
         Donation d = donations.findLast(last);
@@ -204,5 +213,31 @@ public class ironFundController {
         s.mostRecent = String.format("%s donated %f on %s towards %s", s.user, s.amount, time, s.project);
         return s;
     }
+
+    @RequestMapping("/allUsers")
+    public List<User> allUsers(HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username==null) {
+            throw new Exception("Not logged in.");
+        }
+        List<User> allUsers = (List<User>) users.findAll();
+        allUsers.stream()
+                .filter(pass -> pass.password != null)
+                .collect(Collectors.toList());
+        return allUsers;
+    }
+
+    @RequestMapping("/user")
+    public User user(HttpSession session, HttpServletResponse response, int id) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username==null) {
+            throw new Exception("Not logged in.");
+        }
+        User user = users.findOneByUsername(username);
+        User safeUser = new User(user.projectList, user.donationList, user.username);
+        return safeUser;
+    }
+
+
     
 }
