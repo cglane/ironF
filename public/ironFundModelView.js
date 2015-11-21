@@ -94,9 +94,10 @@ module.exports = Backbone.View.extend({
         }else{
           var updatedBalance = balance + value;
           currModel.set('balance',updatedBalance);
+          console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
-          $(this).closest('div').find('input').val('')
+          $(this).closest('div').find('input').val('');
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
         }
