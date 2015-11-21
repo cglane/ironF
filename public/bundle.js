@@ -78,9 +78,9 @@ module.exports = Backbone.View.extend({
       // startdate: this.$el.find('input[id="startDate"]').val(),
       // startDate: new Date.getTime(),
       // photo: this.$el.find('input[id="image"]').val(),
-      finishdate: this.$el.find('input[id="finishDate"]').val(),
+      finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
-      // balance: this.$el.find('input[name="balance"]').val(),
+      balance: 0,
       goal: this.$el.find('input[id="Goal"]').val()
     };
     this.model.set(newProject);
@@ -242,25 +242,38 @@ module.exports = Backbone.View.extend({
         console.log(this.id);
         var donation;
         var id = this.id;
+        var balance = currModel.get('balance');
         if(id == "ten"){
           donation = 10;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }
-        console.log(donation);
+        console.log('current model',currModel);
+        console.log(currModel.get('balance'));
+
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
-      var value = $(this).closest('div').find('input').val();
+      var value = parseInt($(this).closest('div').find('input').val());
+      var balance = currModel.get('balance');
       if(e.which == 13){
         if(value == '' || isNaN(value)) {
           console.log('invalid input');
         }else{
+          var updatedBalance = balance + value;
+          currModel.set('balance',updatedBalance);
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           console.log('thank you for your donation');
+          console.log(currModel.get('balance'));
         }
       }
     });
@@ -13011,7 +13024,7 @@ module.exports = {
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
-      "<h4 class = 'finish-date'><%= finishdate %></h4>",
+      "<h4 class = 'finish-date'><%= finishDate %></h4>",
       "<p class = 'description'><%= description %></p>",
       // "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
@@ -13052,11 +13065,11 @@ module.exports = {
        '</div>',
        '<div class="form-group">',
        '<label for="plot">Finish Date:</label>',
-       '<input type="text" value = "09/01/2015" class="form-control" id="finishDate">',
+       '<input type="datetime-local" value = "09/01/2015" class="form-control" id="finishDate">',
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
-       '<input type="text" class="form-control" id="Goal">',
+       '<input type="number" class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
        '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
