@@ -70,6 +70,7 @@ public class IronFundApplicationTests {
 
 		);
 		assertTrue(projects.count()==1);
+
 	}
 
 }

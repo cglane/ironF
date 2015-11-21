@@ -33,8 +33,6 @@ public class User {
     @Column(nullable = false)
     public boolean admin = false;
 
-//    @Column(nullable = false);
-//    public double donated;
     public User(){}
 
     public User(String username) {
@@ -48,11 +46,8 @@ public class User {
         this.username = username;
     }
 
-    @Column(nullable = false)
-    public MultipartFile photo;
-
-     @Column(nullable = false)
-     public double donated;
+//    @Column(nullable = false)
+//    public MultipartFile photo;
 
 
     

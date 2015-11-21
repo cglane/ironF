@@ -17,8 +17,8 @@ public interface DonationRepo extends CrudRepository<Donation, Integer> {
     @Query("SELECT MAX(amount) FROM Donation WHERE U_ID = ?")
     Donation findLargestDonationByUser(int id);
 
-    @Query("SELECT U_ID, SUM(amount) AS total_amount FROM Donation WHERE U_ID GROUP BY U_ID LIMIT 1")
-    Donation findLargestDonator();
+//    @Query("SELECT U_ID, SUM(amount) AS total_amount FROM Donation WHERE U_ID GROUP BY U_ID LIMIT 1")
+//    Donation findLargestDonator();
 
     @Query("SELECT SUM(amount) FROM Donation WHERE U_ID = ?")
     Donation findUserTotalDonation(int id);
