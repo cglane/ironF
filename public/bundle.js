@@ -10,7 +10,47 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"./ironFundModel":7,"backbone":11}],2:[function(require,module,exports){
+},{"./ironFundModel":9,"backbone":14}],2:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+  initialize: function () {},
+  template: _.template(tmpl.createuser),
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],3:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+
+  initialize: function () {},
+  template: _.template(tmpl.donate),
+
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -29,7 +69,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],3:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -43,7 +83,7 @@ module.exports = Backbone.View.extend({
   template: _.template(tmpl.form),
   // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
-    'submit form': 'onAddProject'
+    'submit form': 'onAddProject',
   },
   initialize: function () {
     if(!this.model) {
@@ -79,7 +119,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundCollection":5,"./ironFundModel":7,"./templates":15,"backbone":11,"jquery":12,"underscore":13}],4:[function(require,module,exports){
+},{"./ironFundCollection":7,"./ironFundModel":9,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -98,9 +138,9 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],5:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],7:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":7,"backbone":11,"dup":1}],6:[function(require,module,exports){
+},{"./ironFundModel":9,"backbone":14,"dup":1}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -130,7 +170,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./IronFundCollection":1,"./ironFundModel":7,"./ironFundModelView":8,"backbone":11,"jquery":12,"underscore":13}],7:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":9,"./ironFundModelView":10,"backbone":14,"jquery":15,"underscore":16}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
@@ -153,7 +193,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":11}],8:[function(require,module,exports){
+},{"backbone":14}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -170,6 +210,8 @@ module.exports = Backbone.View.extend({
   events: {
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
+    "click .confirm-edit"  : "close",
+    'click .donateNow':'onDonateNow',
   },
 
   deleteProject: function(event) {
@@ -182,6 +224,66 @@ module.exports = Backbone.View.extend({
       console.log('response', response);
     }});
   },
+  editProject:function(event){
+    event.preventDefault();
+    this.$el.find('.titles').attr('contenteditable','true');
+    this.$el.find('.finish-date').attr('contenteditable','true');
+    this.$el.find('.description').attr('contenteditable','true');
+    this.$el.find('.goal').attr('contenteditable','true');
+    this.$el.find('.confirm-edit').removeClass('display-none');
+  },
+  close:function(event){
+    event.preventDefault();
+    // console.log( $(event.target.closest('h3')));
+        var object = {
+          title: this.$el.find('.titles').text(),
+          // startdate: this.$el.find('input[id="startDate"]').val(),
+          // startDate: new Date.getTime(),
+          // photo: this.$el.find('input[id="image"]').val(),
+          finishdate: this.$el.find('.finish-date').text(),
+          description: this.$el.find('.description').text(),
+          // balance: this.$el.find('input[name="balance"]').val(),
+          goal: this.$el.find('.goal').text()
+        };
+        console.log(object);
+       this.model.set(object);
+       this.model.save();
+       this.$el.find('.confirm-edit').addClass('display-none');
+  },
+  onDonateNow:function(event){
+    var currModel = this.model;
+    event.preventDefault();
+    $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
+    $('.body-container').addClass('blur');
+    $('.donate-btn').on('click',function(){
+        $('.body-container').removeClass('blur');
+        $('.placeholder-for-donate').addClass('display-none');
+        console.log(this.id);
+        var donation;
+        var id = this.id;
+        if(id == "ten"){
+          donation = 10;
+        }else if (id == "twenty") {
+          donation = 20;
+        }else if(id == "fifty"){
+          donation = 50;
+        }
+        console.log(donation);
+        // console.log(this.find('input[id = "donation-input"]'))
+    });
+    $('.placeholder-for-donate').on('keypress',function(e){
+      var value = $(this).closest('div').find('input').val();
+      if(e.which == 13){
+        if(value === '' || isNaN(value)){
+          console.log('invalid input');
+        }else{
+          $('.body-container').removeClass('blur');
+          $('.placeholder-for-donate').addClass('display-none');
+          console.log('thank you for your donation');
+        }
+      }
+    });
+  },
 
   render: function () {
     var markup = this.template(this.model.toJSON());
@@ -192,7 +294,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":15,"backbone":11,"jquery":12,"underscore":13}],9:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],11:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -202,15 +304,25 @@ var FooterView = require('./footerView');
 var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
-
-
+var ModelView = require('./ironFundModelView');
+var DonateView = require("./donateView");
+var LoginView = require('./loginView');
+var CreateUserView = require('./createUserView');
 module.exports = Backbone.View.extend({
+  className: 'showLogin',
+  template: _.template(tmpl.login),
+  // model: null, // just here as placeholder, but need a model up on instantiation
+  events: {
+    'click .show-login-form' : 'showLogin',
+  },
   el: '#layoutView',
   initialize: function () {
     var self = this;
     var headerHTML = new HeaderView();
     var footerHTML = new FooterView();
     var ironFundCollection = new IronFundCollection();
+    var donateHTML = new DonateView();
+    var loginHTML = new LoginView();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
       var formHTML = new FormView({collection:ironFundCollection});
@@ -218,6 +330,8 @@ module.exports = Backbone.View.extend({
       self.$el.find('header').html(headerHTML.render().el);
       self.$el.find('footer').html(footerHTML.render().el);
       self.$el.find('aside').html(formHTML.render().el);
+      self.$el.find('.placeholder-for-donate').html(donateHTML.render().el);
+      self.$el.find('.placeholder-for-login-form').html(loginHTML.render().el);
     });
 
 
@@ -225,7 +339,26 @@ module.exports = Backbone.View.extend({
 
 });
 
-},{"./footerView":2,"./formView":3,"./headerView":4,"./ironFundCollection":5,"./ironFundCollectionView":6,"backbone":11,"jquery":12,"underscore":13}],10:[function(require,module,exports){
+},{"./createUserView":2,"./donateView":3,"./footerView":4,"./formView":5,"./headerView":6,"./ironFundCollection":7,"./ironFundCollectionView":8,"./ironFundModelView":10,"./loginView":12,"backbone":14,"jquery":15,"underscore":16}],12:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+  initialize: function () {},
+  template: _.template(tmpl.login),
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],13:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 var Router = require('./router');
@@ -236,7 +369,7 @@ $(function () {
   // Backbone.history.start();
 });
 
-},{"./layoutView":9,"./router":14,"jquery":12}],11:[function(require,module,exports){
+},{"./layoutView":11,"./router":17,"jquery":15}],14:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2134,7 +2267,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":12,"underscore":13}],12:[function(require,module,exports){
+},{"jquery":15,"underscore":16}],15:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11346,7 +11479,7 @@ return jQuery;
 
 }));
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -12896,7 +13029,7 @@ return jQuery;
   }
 }.call(this));
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -12927,20 +13060,18 @@ module.exports = Backbone.Router.extend({
 
 });
 
-},{"backbone":11,"jquery":12,"underscore":13}],15:[function(require,module,exports){
+},{"backbone":14,"jquery":15,"underscore":16}],18:[function(require,module,exports){
 module.exports = {
   project: [
-    // "<div class='<%= \"row\" %>'>",
-    // "<div class='<%= \"col-sm-6 col-md-4\" %>'>",
     "<div class='<%= \"thumbnail\" %>'>",
     // "<img src='<%= photo %>'>",
     "<div class='<%= \"title\" %>'>",
-    "<h3><%= title %></h3>",
+    "<h3 class = 'titles'><%= title %></h3>",
     // "<h4><%= startDate %></h4>",
-    "<h4><%= finishdate %></h4>",
-    "<p><%= description %></p>",
+    "<h4 class = 'finish-date'><%= finishdate %></h4>",
+    "<p class = 'description'><%= description %></p>",
     // "<h4><%= balance %></h4>",
-    "<h4><%= goal %></h4>",
+    "<h4 class = 'goal'><%= goal %></h4>",
     "<div class='<%= \"progress\" %>'>",
     "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
     "</div>",
@@ -12952,12 +13083,20 @@ module.exports = {
     "<div class='<%= \"form-group\"%>'>",
     "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
     "</div>",
+    "<div class='<%= \"form-group\"%>'>",
+    "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
+    "</div>",
     // "<form class='<%= \"form-inline\" %>'>",
     "<div class='<%= \"form-group donateNow\"%>'>",
-    "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+    // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
     "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
     "</button>",
-
+    "</div>",
+    "</form>",
+    "</div>",
+    "</div>",
+    // "</div>",
+    // "</div>",
     "</div>",
     "</form>",
     "</div>",
@@ -13012,15 +13151,8 @@ module.exports = {
     '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
     // '<li><a href="#">Link</a></li>',
-    '<li class="dropdown">',
-    '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>',
-    '<ul class="dropdown-menu">',
-    '<li><a href="#">Action</a></li>',
-    '<li><a href="#">Another action</a></li>',
-    '<li><a href="#">Something else here</a></li>',
-    '<li role="separator" class="divider"></li>',
-    '<li><a href="#">Separated link</a></li>',
-    '</ul>',
+    '<li class="show-login-form">',
+    '<a href="login-form" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->
@@ -13038,12 +13170,77 @@ module.exports = {
     '</nav>',
     '</div>',
   ].join(""),
+  donate:[
+    '<div class = "donate">',
+    '<p>How much would you like to donate?</p>',
+    '<button  class = "donate-btn" id= "ten" class="btn btn-default">$10</button>',
+    '<button class = "donate-btn"  id= "twenty" class="btn btn-default">$20</button>',
+    '<button  class = "donate-btn" id= "fifty" class="btn btn-default">$50</button>',
+    '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
+    '</div>'
+  ].join(""),
   login: [
-
+    '<div class="login-form">',
+    '<form class="form-horizontal">',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Email">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<div class="checkbox">',
+    '<label>',
+    '<input type="checkbox"> Remember me',
+    '</label>',
+    '</div>',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<button type="submit" name="submit" class="btn btn-default">Sign in</button>',
+    '<a class="createUser" href="#">Create New Account</a>',
+    '</div>',
+    '</div>',
+    '</form>',
+    '</div>',
   ].join(""),
   createuser: [
-
+    '<div class="createuser-form">',
+    '<form class="form-horizontal">',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Email">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<div class="checkbox">',
+    '<label>',
+    '<input type="checkbox"> Remember me',
+    '</label>',
+    '</div>',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<button type="submit" name="submit" class="btn btn-default">Create New Account</button>',
+    '<a class="createUser" href="#">Sig-in to Existing Account</a>',
+    '</div>',
+    '</div>',
+    '</form>',
+    '</div>',
   ].join(""),
 };
 
-},{}]},{},[10]);
+},{}]},{},[13]);

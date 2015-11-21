@@ -32,4 +32,55 @@ font-family: "Lucida Console", Courier, monospace;
 }
 aside{
   margin-left: 20px;
+  float: left;
+}
+.display-none{
+  display:none;
+}
+.display-block{
+  display: block;
+}
+.first-form{
+  position: fixed;
+}
+.col-md-8{
+  float: right;
+}
+.placeholder-for-donate{
+  -webkit-transition: all .3s ease .15s;
+-moz-transition: all .3s ease .15s;
+-o-transition: all .3s ease .15s;
+-ms-transition: all .3s ease .15s;
+transition: all .3s ease .15s;
+  button{
+    width: 30%;
+    margin-left:2%;
+    margin-top: 1%;
+
+  }
+  input{
+    margin-top: 8%;
+    width: 80%;
+    margin-left: 10%;
+  }
+  position: absolute;
+  background-color: #6495ED;
+  font-size:2em;
+  width: 60%;
+  height: 30%;
+  left:20%;
+  top: 30%;
+  z-index: 3;
+}
+
+.blur{
+  -webkit-filter: blur(5px);
+ -moz-filter: blur(5px);
+ -o-filter: blur(5px);
+ -ms-filter: blur(5px);
+ filter: blur(5px);
+}
+
+.login-form .createuser-form {
+  margin-top: 15%;
 }

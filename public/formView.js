@@ -11,7 +11,7 @@ module.exports = Backbone.View.extend({
   template: _.template(tmpl.form),
   // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
-    'submit form': 'onAddProject'
+    'submit form': 'onAddProject',
   },
   initialize: function () {
     if(!this.model) {
