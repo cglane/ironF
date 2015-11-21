@@ -12,7 +12,7 @@ public class Project {
     public int id;
 
     @ManyToOne
-    User user;
+    public User user;
 
     @Column(nullable = false)
     public String title;

@@ -8,13 +8,18 @@ import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import com.theironyard.services.UserRepo;
 import com.theironyard.util.PasswordHash;
+import jdk.nashorn.internal.ir.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
@@ -36,7 +41,39 @@ public class ironFundController {
     @Autowired
     DonationRepo donations;
 
+    @PostConstruct
+    public void init() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        if (users.count() == 0 ){
+            User user = new User();
+            user.username = "Admin";
+            user.password = PasswordHash.createHash("1234");
+            users.save(user);
 
+            Project project = new Project();
+            project.goal = 500.00;
+            project.user.id = 1;
+            project.startDate = LocalDateTime.now();
+            project.finishDate = LocalDateTime.now().plusDays(2);
+            project.description = "Description for Project";
+            project.title = "Alice's Project";
+            projects.save(project);
+
+            User user2 = new User();
+            user2.username = "Test";
+            user2.password = PasswordHash.createHash("4321");
+            users.save(user2);
+
+            Project project1 = new Project();
+            project1.goal = 500.00;
+            project1.user.id = 2;
+            project1.startDate = LocalDateTime.now();
+            project1.finishDate = LocalDateTime.now().plusDays(2);
+            project1.description = "Description for Project";
+            project1.title = "Test Project";
+            projects.save(project);
+
+        }
+    }
 
     @RequestMapping("/login")
     public User login(
@@ -68,8 +105,7 @@ public class ironFundController {
         if (username==null) {
             throw new Exception("Not logged in.");
         }
-//        User user = users.findOneByUsername(username);
-//        user.donated = user.donated + donate;
+
         Project p = projects.findOne(id);
         p.balance = donate + p.balance;
         projects.save(p);
