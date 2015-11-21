@@ -12,7 +12,7 @@ module.exports = {
       // "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
       "<div class='<%= \"progress\" %>'>",
-      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
+      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= balance%></div>",
       "</div>",
 
       "<form class='<%= \"form-inline\" %>'>",

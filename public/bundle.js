@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: '/all',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
   model: IronFundModel,
   initialize: function () {
 
@@ -81,7 +81,8 @@ module.exports = Backbone.View.extend({
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
-      goal: this.$el.find('input[id="Goal"]').val()
+      goal: this.$el.find('input[id="Goal"]').val(),
+      percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();
@@ -156,7 +157,7 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: '/all',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
 
   // defaults: function () {
   //   // write your if statement here
@@ -241,18 +242,19 @@ module.exports = Backbone.View.extend({
         console.log(this.id);
         var donation;
         var balance = currModel.get('balance');
+        var updatedBalance;
         var id = this.id;;
         if(id == "ten"){
           donation = 10;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }
         console.log('current model',currModel);
@@ -269,9 +271,10 @@ module.exports = Backbone.View.extend({
         }else{
           var updatedBalance = balance + value;
           currModel.set('balance',updatedBalance);
+          console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
-          $(this).closest('div').find('input').val('')
+          $(this).closest('div').find('input').val('');
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
         }
@@ -13040,7 +13043,7 @@ module.exports = {
       // "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
       "<div class='<%= \"progress\" %>'>",
-      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
+      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= balance%></div>",
       "</div>",
 
       "<form class='<%= \"form-inline\" %>'>",
@@ -13079,7 +13082,7 @@ module.exports = {
        '</div>',
        '<div class="form-group">',
        '<label for="plot">Finish Date:</label>',
-       '<input type="datetime-local" value = "09/01/2015" class="form-control" id="finishDate">',
+       '<input type="datetime-local" class="form-control" id="finishDate">',
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
