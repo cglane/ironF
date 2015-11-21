@@ -8,7 +8,8 @@ var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
 var ModelView = require('./ironFundModelView');
-var DonateView = require("./donateView")
+var DonateView = require("./donateView");
+
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
