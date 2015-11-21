@@ -45,36 +45,36 @@ public class ironFundController {
     DonationRepo donations;
 
     @PostConstruct
-    public void init() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if (users.count() == 0 ){
+    public void init() throws Exception {
+        if (users.count() == 0 ) {
             User user = new User();
             user.username = "Admin";
             user.password = PasswordHash.createHash("1234");
             users.save(user);
 
-            Project project = new Project();
-            project.goal = 500.00;
-            project.user.id = 1;
-            project.startDate = LocalDateTime.now();
-            project.finishDate = LocalDateTime.now().plusDays(2);
-            project.description = "Description for Project";
-            project.title = "Alice's Project";
-            projects.save(project);
-
             User user2 = new User();
             user2.username = "Test";
             user2.password = PasswordHash.createHash("4321");
             users.save(user2);
+            if (projects.count()==0) {
+                Project project = new Project();
+                project.goal = 500.00;
+                project.user = user;
+                project.startDate = LocalDateTime.now();
+                project.finishDate = LocalDateTime.now().plusDays(2);
+                project.description = "Description for Project";
+                project.title = "Alice's Project";
+                projects.save(project);
 
-            Project project1 = new Project();
-            project1.goal = 500.00;
-            project1.user.id = 2;
-            project1.startDate = LocalDateTime.now();
-            project1.finishDate = LocalDateTime.now().plusDays(2);
-            project1.description = "Description for Project";
-            project1.title = "Test Project";
-            projects.save(project);
-
+                Project project1 = new Project();
+                project1.goal = 500.00;
+                project1.user = user2;
+                project1.startDate = LocalDateTime.now();
+                project1.finishDate = LocalDateTime.now().plusDays(2);
+                project1.description = "Description for Project";
+                project1.title = "Test Project";
+                projects.save(project1);
+            }
         }
     }
 
@@ -94,7 +94,7 @@ public class ironFundController {
             throw new Exception("Wrong Password.");
         }
         session.setAttribute("username", username);
-        User safeUser = new User(user.username);
+        User safeUser = new User(user.id, user.username);
         return safeUser;
     }
 
@@ -185,10 +185,10 @@ public class ironFundController {
 
     @RequestMapping(name = "/all", method = RequestMethod.GET)
     public List<Project> all(HttpSession session, HttpServletResponse response) throws Exception {
-        String username = (String) session.getAttribute("username");
-        if (username==null) {
-            response.sendRedirect("403");
-        }
+//        String username = (String) session.getAttribute("username");
+//        if (username==null) {
+////            response.sendRedirect("403");
+//        }
 
         List<Project> all = (List<Project>) projects.findAll();
         return all;
@@ -222,9 +222,9 @@ public class ironFundController {
             throw new Exception("Not logged in.");
         }
         List<User> allUsers = (List<User>) users.findAll();
-        allUsers.stream()
-                .filter(pass -> pass.password != null)
-                .collect(Collectors.toList());
+        for (User user : allUsers) {
+            user.password = null;
+        }
         return allUsers;
     }
 
@@ -235,7 +235,7 @@ public class ironFundController {
             throw new Exception("Not logged in.");
         }
         User user = users.findOneByUsername(username);
-        User safeUser = new User(user.projectList, user.donationList, user.username);
+        User safeUser = new User(user.id, user.username);
         return safeUser;
     }
 
