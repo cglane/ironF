@@ -27,7 +27,7 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishdate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
-      // balance: this.$el.find('input[name="balance"]').val(),
+      balance: 0,
       goal: this.$el.find('input[id="Goal"]').val()
     };
     this.model.set(newProject);

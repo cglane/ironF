@@ -55,7 +55,7 @@ module.exports = {
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
-       '<input type="text" class="form-control" id="Goal">',
+       '<input type="number" class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
        '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',

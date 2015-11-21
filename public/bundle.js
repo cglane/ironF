@@ -80,7 +80,7 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishdate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
-      // balance: this.$el.find('input[name="balance"]').val(),
+      balance: 0,
       goal: this.$el.find('input[id="Goal"]').val()
     };
     this.model.set(newProject);
@@ -120,8 +120,18 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],6:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":8,"backbone":12,"dup":1}],7:[function(require,module,exports){
+var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2021',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":8,"backbone":12}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -156,7 +166,7 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: '/all',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2021',
 
   idAttribute: '_id',
   // defaults: function () {
@@ -241,27 +251,38 @@ module.exports = Backbone.View.extend({
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
+        var balance = currModel.get('balance');
         var id = this.id;;
         if(id == "ten"){
           donation = 10;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }
-        console.log(donation);
+        console.log('current model',currModel);
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = $(this).closest('div').find('input').val();
+      var balance = currModel.get('balance');
       if(e.which == 13){
         if(value == '' || isNaN(value)){
           console.log('invalid input');
         }else{
+          var updatedBalance = balance + value;
+          currModel.set('balance',updatedBalance);
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('')
           console.log('thank you for your donation');
+          console.log(currModel.get('balance'));
         }
       }
     });
@@ -13071,7 +13092,7 @@ module.exports = {
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
-       '<input type="text" class="form-control" id="Goal">',
+       '<input type="number" class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
        '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
