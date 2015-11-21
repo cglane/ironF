@@ -10,26 +10,7 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"./ironFundModel":9,"backbone":14}],2:[function(require,module,exports){
-var Backbone = require('backbone');
-var $ = require('jquery');
-Backbone.$ = $;
-var _ = require('underscore');
-var tmpl = require('./templates');
-
-module.exports = Backbone.View.extend({
-  initialize: function () {},
-  template: _.template(tmpl.createuser),
-  render: function () {
-    var markup = this.template({});
-    this.$el.html(markup);
-    // in order to call .el off of render we need to return this
-    // projectViewInstance.render().el - yields all markup and data from model
-    return this;
-  }
-});
-
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],3:[function(require,module,exports){
+},{"./ironFundModel":8,"backbone":13}],2:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -50,7 +31,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],4:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -69,7 +50,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],5:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -119,7 +100,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundCollection":7,"./ironFundModel":9,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],6:[function(require,module,exports){
+},{"./ironFundCollection":6,"./ironFundModel":8,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -138,9 +119,9 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],7:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":9,"backbone":14,"dup":1}],8:[function(require,module,exports){
+},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -170,7 +151,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./IronFundCollection":1,"./ironFundModel":9,"./ironFundModelView":10,"backbone":14,"jquery":15,"underscore":16}],9:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":8,"./ironFundModelView":9,"backbone":13,"jquery":14,"underscore":15}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
@@ -193,7 +174,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":14}],10:[function(require,module,exports){
+},{"backbone":13}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -212,7 +193,19 @@ module.exports = Backbone.View.extend({
     'click .editProject' : 'editProject',
     "click .confirm-edit"  : "close",
     'click .donateNow':'onDonateNow',
+    'click .show-login-form' : 'onShowLogin',
   },
+
+  onShowLogin: function (evt) {
+    console.log('hello');
+    $('.placeholder-login-form').stop(true,false).removeClass('display-none', {duration:500});
+    $('.body-container').addClass('blur');
+    $('.show-login-form').on('click',function(onShowLogin){
+        $('.body-container').addClass('display-none');
+        console.log('hello');
+        $('.placeholder-login-form').removeClass('display-none');
+      });
+},
 
   deleteProject: function(event) {
     event.preventDefault();
@@ -294,7 +287,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],11:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -307,14 +300,8 @@ var IronFundCollection = require('./ironFundCollection');
 var ModelView = require('./ironFundModelView');
 var DonateView = require("./donateView");
 var LoginView = require('./loginView');
-var CreateUserView = require('./createUserView');
+// var CreateUserView = require('./createUserView');
 module.exports = Backbone.View.extend({
-  className: 'showLogin',
-  template: _.template(tmpl.login),
-  // model: null, // just here as placeholder, but need a model up on instantiation
-  events: {
-    'click .show-login-form' : 'showLogin',
-  },
   el: '#layoutView',
   initialize: function () {
     var self = this;
@@ -334,12 +321,11 @@ module.exports = Backbone.View.extend({
       self.$el.find('.placeholder-for-login-form').html(loginHTML.render().el);
     });
 
-
   }
 
 });
 
-},{"./createUserView":2,"./donateView":3,"./footerView":4,"./formView":5,"./headerView":6,"./ironFundCollection":7,"./ironFundCollectionView":8,"./ironFundModelView":10,"./loginView":12,"backbone":14,"jquery":15,"underscore":16}],12:[function(require,module,exports){
+},{"./donateView":2,"./footerView":3,"./formView":4,"./headerView":5,"./ironFundCollection":6,"./ironFundCollectionView":7,"./ironFundModelView":9,"./loginView":11,"backbone":13,"jquery":14,"underscore":15}],11:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -358,7 +344,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],13:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],12:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 var Router = require('./router');
@@ -369,7 +355,7 @@ $(function () {
   // Backbone.history.start();
 });
 
-},{"./layoutView":11,"./router":17,"jquery":15}],14:[function(require,module,exports){
+},{"./layoutView":10,"./router":16,"jquery":14}],13:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2267,7 +2253,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":15,"underscore":16}],15:[function(require,module,exports){
+},{"jquery":14,"underscore":15}],14:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11479,7 +11465,7 @@ return jQuery;
 
 }));
 
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13029,7 +13015,7 @@ return jQuery;
   }
 }.call(this));
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -13060,7 +13046,7 @@ module.exports = Backbone.Router.extend({
 
 });
 
-},{"backbone":14,"jquery":15,"underscore":16}],18:[function(require,module,exports){
+},{"backbone":13,"jquery":14,"underscore":15}],17:[function(require,module,exports){
 module.exports = {
   project: [
     "<div class='<%= \"thumbnail\" %>'>",
@@ -13150,9 +13136,9 @@ module.exports = {
   // <!-- Collect the nav links, forms, and other content for toggling -->
     '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
-    // '<li><a href="#">Link</a></li>',
-    '<li class="show-login-form">',
-    '<a href="login-form" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '<li><a href="#">Link</a></li>',
+    '<li class="show-login">',
+    '<a class="show-login-form" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->
@@ -13243,4 +13229,4 @@ module.exports = {
   ].join(""),
 };
 
-},{}]},{},[13]);
+},{}]},{},[12]);

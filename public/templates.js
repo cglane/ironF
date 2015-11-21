@@ -87,9 +87,9 @@ module.exports = {
   // <!-- Collect the nav links, forms, and other content for toggling -->
     '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
-    // '<li><a href="#">Link</a></li>',
-    '<li class="show-login-form">',
-    '<a href="login-form" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '<li><a href="#">Link</a></li>',
+    '<li class="show-login">',
+    '<a class="show-login-form" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->

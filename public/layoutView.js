@@ -10,14 +10,8 @@ var IronFundCollection = require('./ironFundCollection');
 var ModelView = require('./ironFundModelView');
 var DonateView = require("./donateView");
 var LoginView = require('./loginView');
-var CreateUserView = require('./createUserView');
+// var CreateUserView = require('./createUserView');
 module.exports = Backbone.View.extend({
-  className: 'showLogin',
-  template: _.template(tmpl.login),
-  // model: null, // just here as placeholder, but need a model up on instantiation
-  events: {
-    'click .show-login-form' : 'showLogin',
-  },
   el: '#layoutView',
   initialize: function () {
     var self = this;
@@ -36,7 +30,6 @@ module.exports = Backbone.View.extend({
       self.$el.find('.placeholder-for-donate').html(donateHTML.render().el);
       self.$el.find('.placeholder-for-login-form').html(loginHTML.render().el);
     });
-
 
   }
 
