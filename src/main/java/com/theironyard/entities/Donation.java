@@ -25,7 +25,4 @@ public class Donation {
 
     @ManyToOne
     public User u;
-
-
-
 }
