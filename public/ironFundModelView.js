@@ -65,18 +65,19 @@ module.exports = Backbone.View.extend({
         console.log(this.id);
         var donation;
         var balance = currModel.get('balance');
+        var updatedBalance;
         var id = this.id;;
         if(id == "ten"){
           donation = 10;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
-          var updatedBalance = balance + donation;
+          updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
         }
         console.log('current model',currModel);

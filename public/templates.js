@@ -51,7 +51,7 @@ module.exports = {
        '</div>',
        '<div class="form-group">',
        '<label for="plot">Finish Date:</label>',
-       '<input type="datetime-local" value = "09/01/2015" class="form-control" id="finishDate">',
+       '<input type="datetime-local" class="form-control" id="finishDate">',
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
