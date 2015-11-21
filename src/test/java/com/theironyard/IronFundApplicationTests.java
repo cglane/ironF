@@ -23,4 +23,54 @@ import static junit.framework.TestCase.assertTrue;
 @WebAppConfiguration
 public class IronFundApplicationTests {
 
+	@Autowired
+	UserRepo users;
+
+	@Autowired
+	DonationRepo donations;
+
+	@Autowired
+	ProjectRepo projects;
+
+	@Autowired
+	WebApplicationContext wap;
+
+	MockMvc mockMvc;
+
+	@org.junit.Before
+	public void before(){
+	users.deleteAll();
+	donations.deleteAll();
+	projects.deleteAll();
+	mockMvc = MockMvcBuilders.webAppContextSetup(wap).build();
+
+	}
+	@Test
+	public void testLogin() throws Exception {
+		mockMvc.perform(
+			MockMvcRequestBuilders.post("/login")
+				.param("username","test")
+				.param("password","test")
+
+		);
+		assertTrue(users.count()==1);
+	}
+	@Test
+	public void testAdd() throws Exception {
+		mockMvc.perform(
+		MockMvcRequestBuilders.post("/create")
+            .sessionAttr("username", "Nathan")
+			.param("title", "Test")
+			.param("balance", "11.0")
+			.param("description", "Test")
+			.param("finishDate", "2015-11-16T22:23:48")
+			.param("startDate", "2015-11-16T22:23:48")
+			.param("goal", "11.0")
+
+
+		);
+		assertTrue(projects.count()==1);
+
+	}
+
 }
