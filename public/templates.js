@@ -7,7 +7,7 @@ module.exports = {
       "<div class='<%= \"title\" %>'>",
       "<h3 class = 'titles'><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
-      "<h4 class = 'finish-date'><%= finishdate %></h4>",
+      "<h4 class = 'finish-date'><%= finishDate %></h4>",
       "<p class = 'description'><%= description %></p>",
       // "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
