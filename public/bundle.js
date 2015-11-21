@@ -12,7 +12,7 @@ module.exports = Backbone.View.extend({
     var markup = this.template({});
     this.$el.html(markup);
     // in order to call .el off of render we need to return this
-    // movieViewInstance.render().el - yields all markup and data from model
+    // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
@@ -23,29 +23,33 @@ var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
-var MovieModel = require('./movieModel');
+var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.View.extend({
-  className: 'addMovie',
+  className: 'addProject',
   model: null, // just here as placeholder, but need a model up on instantiation
   events: {
-    'submit form': 'onAddMovie'
+    'submit form': 'onAddProject'
   },
   initialize: function () {
     if(!this.model) {
-      this.model = new MovieModel();
+      this.model = new IronFundModel();
     }
   },
-  onAddMovie: function (evt) {
+  onAddProject: function (evt) {
     evt.preventDefault();
-    var newMovie = {
-      title: this.$el.find('input[name="title"]').val(),
-      releasedate: this.$el.find('input[name="releasedate"]').val(),
-      cover: this.$el.find('input[name="coverPhoto"]').val(),
-      rating: this.$el.find('input[name="rating"]').val(),
-      plot: this.$el.find('textarea[name="plot"]').val()
+    var newProject = {
+      title: this.$el.find('input[id="title"]').val(),
+      // startdate: this.$el.find('input[id="startDate"]').val(),
+      // startDate: new Date.getTime(),
+      // photo: this.$el.find('input[id="image"]').val(),
+      finishdate: this.$el.find('input[id="finishDate"]').val(),
+      description: this.$el.find('textarea[id="description"]').val(),
+      balance: this.$el.find('input[name="balance"]').val(),
+      goal: this.$el.find('input[id="Goal"]').val()
     };
-    this.model.set(newMovie);
+
+    this.model.set(newProject);
     this.model.save();
     this.$el.find('input, textarea').val('');
 
@@ -55,12 +59,12 @@ module.exports = Backbone.View.extend({
     var markup = this.template(this.model.toJSON());
     this.$el.html(markup);
     // in order to call .el off of render we need to return this
-    // movieViewInstance.render().el - yields all markup and data from model
+    // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
 
-},{"./movieModel":8,"./templates":13,"backbone":10,"jquery":11,"underscore":12}],3:[function(require,module,exports){
+},{"./ironFundModel":6,"./templates":13,"backbone":10,"jquery":11,"underscore":12}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -74,71 +78,29 @@ module.exports = Backbone.View.extend({
     var markup = this.template({});
     this.$el.html(markup);
     // in order to call .el off of render we need to return this
-    // movieViewInstance.render().el - yields all markup and data from model
+    // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
 
 },{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],4:[function(require,module,exports){
 var Backbone = require('backbone');
-var $ = require('jquery');
-Backbone.$ = $;
-var _ = require('underscore');
-var HeaderView = require('./headerView');
-var FooterView = require('./footerView');
-var FormView = require('./formView');
-var MoviesView = require('./movieCollectionView');
-var MovieCollection = require('./movieCollection');
-
-
-module.exports = Backbone.View.extend({
-  el: '#layoutView',
-  initialize: function () {
-    var self = this;
-    console.log(HeaderView);
-    var headerHTML = new HeaderView();
-    var footerHTML = new FooterView();
-    var formHTML = new FormView();
-    var movieCollection = new MovieCollection();
-    movieCollection.fetch().then(function () {
-      var moviesView = new MoviesView({collection: movieCollection});
-      self.$el.find('section').html();
-      self.$el.find('header').html(headerHTML.render().el);
-      self.$el.find('footer').html(footerHTML.render().el);
-      self.$el.find('aside').html(formHTML.render().el);
-    });
-
-
-  }
-
-});
-
-},{"./footerView":1,"./formView":2,"./headerView":3,"./movieCollection":6,"./movieCollectionView":7,"backbone":10,"jquery":11,"underscore":12}],5:[function(require,module,exports){
-var $ = require('jquery');
-var LayoutView = require('./layoutView');
-
-$(function () {
-  new LayoutView();
-});
-
-},{"./layoutView":4,"jquery":11}],6:[function(require,module,exports){
-var Backbone = require('backbone');
-var MovieModel = require('./movieModel');
+var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/bbjetchs2015',
-  model: MovieModel,
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
+  model: IronFundModel,
   initialize: function () {
 
   }
 });
 
-},{"./movieModel":8,"backbone":10}],7:[function(require,module,exports){
+},{"./ironFundModel":6,"backbone":10}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
 Backbone.$ = $;
-var MovieView = require('./movieModelView');
+var IronFundView = require('./ironFundModelView');
 
 module.exports = Backbone.View.extend({
   el: '.content',
@@ -147,39 +109,39 @@ module.exports = Backbone.View.extend({
     // console.log(this.collection);
     this.addAll();
   },
-  addOne: function (movieModel) {
-    console.log("movie model", movieModel);
-    var movieView = new MovieView({model: movieModel});
-    this.$el.append(movieView.render().el);
+  addOne: function (ironFundModel) {
+    console.log("iron fund model", ironFundModel);
+    var ironFundView = new IronFundView({model: ironFundModel});
+    this.$el.append(ironFundView.render().el);
   },
   addAll: function () {
     _.each(this.collection.models, this.addOne, this);
   }
 });
 
-},{"./movieModelView":9,"backbone":10,"jquery":11,"underscore":12}],8:[function(require,module,exports){
+},{"./ironFundModelView":7,"backbone":10,"jquery":11,"underscore":12}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/bbjetchs2015',
-  idAttribute: '_id',
-  defaults: function () {
-    // write your if statement here
-    return {
-      cover: "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg",
-      title: "Back to the Future",
-      releasedate: "1985",
-      plot: "In this 1980s sci-fi classic, small-town California teen Marty McFly (Michael J. Fox) is thrown back into the '50s when an experiment by his eccentric scientist friend Doc Brown (Christopher Lloyd) goes awry. Traveling through time in a modified DeLorean car, Marty encounters young versions of his parents (Crispin Glover, Lea Thompson), and must make sure that they fall in love or he'll cease to exist. Even more dauntingly, Marty has to return to his own time and save the life of Doc Brown.",
-      rating: "5 stars"
-    };
-  },
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2015',
+  // idAttribute: '_id',
+  // defaults: function () {
+  //   // write your if statement here
+  //   return {
+  //     cover: "https://upload.wikimedia.org/wikipedia/en/d/d2/Back_to_the_Future.jpg",
+  //     title: "Back to the Future",
+  //     releasedate: "1985",
+  //     plot: "In this 1980s sci-fi classic, small-town California teen Marty McFly (Michael J. Fox) is thrown back into the '50s when an experiment by his eccentric scientist friend Doc Brown (Christopher Lloyd) goes awry. Traveling through time in a modified DeLorean car, Marty encounters young versions of his parents (Crispin Glover, Lea Thompson), and must make sure that they fall in love or he'll cease to exist. Even more dauntingly, Marty has to return to his own time and save the life of Doc Brown.",
+  //     rating: "5 stars"
+  //   };
+  // },
   initialize: function () {
 
   }
 });
 
-},{"backbone":10}],9:[function(require,module,exports){
+},{"backbone":10}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -191,14 +153,14 @@ module.exports = Backbone.View.extend({
   tagName: 'article',
   model: null, // just a placeholder
   initialize: function () {},
-  template: _.template(tmpl.movie),
+  template: _.template(tmpl.project),
 
   events: {
-    'click .deleteMovie': 'deleteMovie',
-    'click .editMovie' : 'editMovie',
+    'click .deleteProject': 'deleteProject',
+    'click .editProject' : 'editProject',
   },
 
-  deleteMovie: function(event) {
+  deleteProject: function(event) {
     event.preventDefault();
     this.model.destroy();
     this.$el.remove();
@@ -208,12 +170,54 @@ module.exports = Backbone.View.extend({
     var markup = this.template(this.model.toJSON());
     this.$el.html(markup);
     // in order to call .el off of render we need to return this
-    // movieViewInstance.render().el - yields all markup and data from model
+    // projectViewInstance.render().el - yields all markup and data from model
     return this;
   }
 });
 
-},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],10:[function(require,module,exports){
+},{"./templates":13,"backbone":10,"jquery":11,"underscore":12}],8:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var HeaderView = require('./headerView');
+var FooterView = require('./footerView');
+var FormView = require('./formView');
+var IronFundView = require('./ironFundCollectionView');
+var IronFundCollection = require('./ironFundCollection');
+
+
+module.exports = Backbone.View.extend({
+  el: '#layoutView',
+  initialize: function () {
+    var self = this;
+    console.log(HeaderView);
+    var headerHTML = new HeaderView();
+    var footerHTML = new FooterView();
+    var formHTML = new FormView();
+    var ironFundCollection = new IronFundCollection();
+    ironFundCollection.fetch().then(function () {
+      var ironFundView = new IronFundView({collection: ironFundCollection});
+      self.$el.find('section').html();
+      self.$el.find('header').html(headerHTML.render().el);
+      self.$el.find('footer').html(footerHTML.render().el);
+      self.$el.find('aside').html(formHTML.render().el);
+    });
+
+
+  }
+
+});
+
+},{"./footerView":1,"./formView":2,"./headerView":3,"./ironFundCollection":4,"./ironFundCollectionView":5,"backbone":10,"jquery":11,"underscore":12}],9:[function(require,module,exports){
+var $ = require('jquery');
+var LayoutView = require('./layoutView');
+
+$(function () {
+  new LayoutView();
+});
+
+},{"./layoutView":8,"jquery":11}],10:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -12875,40 +12879,69 @@ return jQuery;
 
 },{}],13:[function(require,module,exports){
 module.exports = {
-  movie: [
+  project: [
       // "<div class='<%= \"row\" %>'>",
       // "<div class='<%= \"col-sm-6 col-md-4\" %>'>",
       "<div class='<%= \"thumbnail\" %>'>",
-      "<img src='<%= cover %>' >",
-      "<div class='<%= \"caption\" %>'>",
+      // "<img src='<%= photo %>'>",
+      "<div class='<%= \"title\" %>'>",
       "<h3><%= title %></h3>",
-      "<h4><%= releasedate %></h4>",
-      "<h5><%= rating %></h5>",
-      "<p><%= plot %></p>",
-      "<p>",
-      "<button class='<%= \"btn btn-primary editMovie\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %>",
-      "</button>  ",
-      "<button class='<%= \"btn btn-danger deleteMovie\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %>",
+      "<h4><%= startDate %></h4>",
+      "<h4><%= finishDate %></h4>",
+      "<p><%= description %></p>",
+      // "<h4><%= balance %></h4>",
+      "<h4><%= goal %></h4>",
+      "<div class='<%= \"progress\" %>'>",
+      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
+      "</div>",
+
+      "<form class='<%= \"form-inline\" %>'>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
+      "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "</div>",
+      // "<form class='<%= \"form-inline\" %>'>",
+      "<div class='<%= \"form-group donateNow\"%>'>",
+      "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
       "</button>",
-      "</p>",
+
+      "</div>",
+      "</form>",
       "</div>",
       "</div>",
       // "</div>",
       // "</div>",
 
   ].join(""),
-  form: [
-    "<form>",
-      "<p><input type='text' class='form-control' placeholder='Title' name='title'></p>",
-      "<p><input type='text' class='form-control' placeholder='Release Date' name='releasedate'></p>",
-      "<p><input type='text' class='form-control' placeholder='Image URL' name='coverPhoto'></p>",
-      "<p><input type='text' class='form-control' placeholder='Rating' name='rating'></p>",
-      "<p><textarea class='form-control' rows='3' name='plot' placeholder='Summary'></textarea></p>",
-      "<p><input type='submit' class='btn btn-warning' value='add movie'></p>",
-    "</form>"
-  ].join(""),
+ form: [
+      '<form class = "first-form" role="form">',
+      '<div class="form-group">',
+      '<label for="title">Fund Title:</label>',
+      '<input type="text" class="form-control" id="title">',
+      '</div>',
+      '<div class="form-group description">',
+      '<label for="release">Description:</label>',
+      '<input type="text" class="form-control description" id="description">',
+      '</div>',
+      '<div class="form-group">',
+      '<label for="plot">Finish Date:</label>',
+      '<input type="text" value = "09/01/2015"class="form-control" id="finishDate">',
+      '</div>',
+      '<div class="form-group">',
+      '<label for="rating">Funding Goal:</label>',
+      '<input type="text" class="form-control" id="Goal">',
+      '</div>',
+      '<label for="cover">Cover Img:</label>',
+      '<input class = "form-group" type="file" name="pic" id="image" accept="image/*">',
+      '<button  id= "submitted"class="btn btn-default">Create New Fund</button>',
+      '</form>',
+      '<body>',
+ ].join(""),
   header: [
-    "<h2>Awesome Movies</h2>",
+    "<h2>Iron Fund</h2>",
     // "<nav>",
     // "<ul>",
     // "<li>home</li>",
@@ -12918,7 +12951,7 @@ module.exports = {
   footer: [
     "<div class='<%= \"footer-links\" %>'>",
     "<a href='<%= \"#\" %>'><%= \"Home\" %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-    "<a href='<%= \"#\" %>'><%= \"Add a Movie\" %></a>",
+    "<a href='<%= \"#\" %>'><%= \"Add a Project\" %></a>",
     // "<h2>Footer</h2>",
     // "<nav>",
     // "<ul>",
@@ -12928,4 +12961,4 @@ module.exports = {
   ].join(""),
 };
 
-},{}]},{},[5]);
+},{}]},{},[9]);
