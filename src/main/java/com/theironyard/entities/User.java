@@ -15,7 +15,7 @@ public class User {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int id;
+    public Integer id;
 
     @Column(nullable = false)
     public String username;
@@ -25,10 +25,10 @@ public class User {
 
 
     @Column(nullable = false)
-    public boolean admin = false;
+    public Boolean admin = false;
 
     public User(){}
-    public User(int id, String username) {
+    public User(Integer id, String username) {
 
         this.id = id;
         this.username = username;

@@ -104,7 +104,7 @@ public class ironFundController {
     }
 
     @RequestMapping("/donate")
-    public void donate(HttpSession session, HttpServletResponse response, double donate, int id, double amount) throws Exception {
+    public void donate(HttpSession session, HttpServletResponse response, Double donate, Integer id, Double amount) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             response.sendRedirect("403");
@@ -126,7 +126,7 @@ public class ironFundController {
           String title,
           String description,
           String finishDate,
-          double goal,
+          Double goal,
           HttpSession session,
           HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
@@ -144,11 +144,11 @@ public class ironFundController {
     }
     @RequestMapping (path = "/all", method = RequestMethod.PATCH)
     public void editProject (
-            int id,
+            Integer id,
             String title,
             String description,
             HttpSession session,
-            double goal,
+            Double goal,
             HttpServletResponse response)
             throws Exception {
         String username = (String) session.getAttribute("username");
@@ -165,7 +165,7 @@ public class ironFundController {
     }
 
     @RequestMapping(path = "/all", method = RequestMethod.DELETE)
-    public void delete(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    public void delete(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null || !projects.findOne(id).user.username.equals(username)) {
             response.sendRedirect("403");
@@ -174,7 +174,7 @@ public class ironFundController {
     }
 
     @RequestMapping("/single")
-    public Project single(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    public Project single(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             response.sendRedirect("403");
@@ -229,7 +229,7 @@ public class ironFundController {
     }
 
     @RequestMapping("/user")
-    public User user(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    public User user(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             throw new Exception("Not logged in.");
