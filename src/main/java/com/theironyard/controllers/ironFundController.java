@@ -121,7 +121,7 @@ public class ironFundController {
         donations.save(d);
     }
 
-    @RequestMapping (name = "/all", method = RequestMethod.POST)
+    @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
           String title,
           String description,
@@ -142,7 +142,7 @@ public class ironFundController {
         projects.save(project);
 
     }
-    @RequestMapping (name = "/all", method = RequestMethod.PATCH)
+    @RequestMapping (path = "/all", method = RequestMethod.PATCH)
     public void editProject (
             int id,
             String title,
@@ -164,7 +164,7 @@ public class ironFundController {
 
     }
 
-    @RequestMapping(name = "/all", method = RequestMethod.DELETE)
+    @RequestMapping(path = "/all", method = RequestMethod.DELETE)
     public void delete(HttpSession session, HttpServletResponse response, int id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null || !projects.findOne(id).user.username.equals(username)) {
@@ -181,9 +181,9 @@ public class ironFundController {
         }
         Project p = projects.findOne(id);
         return p;
-}
+    }
 
-    @RequestMapping(name = "/all", method = RequestMethod.GET)
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Project> all(HttpSession session, HttpServletResponse response) throws Exception {
 //        String username = (String) session.getAttribute("username");
 //        if (username==null) {
