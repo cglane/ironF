@@ -29,7 +29,7 @@ public class User {
     @Column(nullable = false)
     public String password;
 
-    /*
+
     @Column(nullable = false)
     public boolean admin = false;
 
@@ -53,7 +53,7 @@ public class User {
 
      @Column(nullable = false)
      public double donated;
-     */
+
 
     
 }

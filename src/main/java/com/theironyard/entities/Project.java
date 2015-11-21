@@ -14,7 +14,6 @@ public class Project {
 
     @ManyToOne
     public User user;
-    public User user;
 
     @OneToMany(mappedBy = "p")
     public List<Donation> donationList;
