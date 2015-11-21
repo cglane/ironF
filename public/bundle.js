@@ -120,8 +120,18 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
+var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":8,"backbone":13}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -156,9 +166,8 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
 
-  idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {
@@ -253,26 +262,42 @@ module.exports = Backbone.View.extend({
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
+        var balance = currModel.get('balance');
+        var updatedBalance;
         var id = this.id;
         if(id == "ten"){
           donation = 10;
+          updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
+          updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
+          updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }
-        console.log(donation);
+        console.log('current model',currModel);
+        console.log(currModel.get('balance'));
+
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
-      var value = $(this).closest('div').find('input').val();
+      var value = parseInt($(this).closest('div').find('input').val());
+      var balance = currModel.get('balance');
       if(e.which == 13){
         if(value === '' || isNaN(value)){
           console.log('invalid input');
         }else{
+          var updatedBalance = balance + value;
+          currModel.set('balance',updatedBalance);
+          console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
+          $(this).closest('div').find('input').val('');
           console.log('thank you for your donation');
+          console.log(currModel.get('balance'));
         }
       }
     });
@@ -13049,18 +13074,42 @@ module.exports = Backbone.Router.extend({
 },{"backbone":13,"jquery":14,"underscore":15}],17:[function(require,module,exports){
 module.exports = {
   project: [
-    "<div class='<%= \"thumbnail\" %>'>",
-    // "<img src='<%= photo %>'>",
-    "<div class='<%= \"title\" %>'>",
-    "<h3 class = 'titles'><%= title %></h3>",
-    // "<h4><%= startDate %></h4>",
-    "<h4 class = 'finish-date'><%= finishdate %></h4>",
-    "<p class = 'description'><%= description %></p>",
-    // "<h4><%= balance %></h4>",
-    "<h4 class = 'goal'><%= goal %></h4>",
-    "<div class='<%= \"progress\" %>'>",
-    "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
-    "</div>",
+      "<div class='<%= \"thumbnail\" %>'>",
+      // "<img src='<%= photo %>'>",
+      "<div class='<%= \"title\" %>'>",
+      "<h3 class = 'titles'><%= title %></h3>",
+      // "<h4><%= startDate %></h4>",
+      "<h4 class = 'finish-date'><%= finishDate %></h4>",
+      "<p class = 'description'><%= description %></p>",
+      // "<h4><%= balance %></h4>",
+      "<h4 class = 'goal'><%= goal %></h4>",
+      "<div class='<%= \"progress\" %>'>",
+      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= balance%></div>",
+      "</div>",
+
+      "<form class='<%= \"form-inline\" %>'>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
+      "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "</div>",
+      "<div class='<%= \"form-group\"%>'>",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
+      "</div>",
+      // "<form class='<%= \"form-inline\" %>'>",
+      "<div class='<%= \"form-group donateNow\"%>'>",
+      // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
+      "</button>",
+
+      "</div>",
+      "</form>",
+      "</div>",
+      "</div>",
+      // "</div>",
+      // "</div>",
+
 
     "<form class='<%= \"form-inline\" %>'>",
     "<div class='<%= \"form-group\"%>'>",
@@ -13091,28 +13140,28 @@ module.exports = {
     // "</div>",
   ].join(""),
   form: [
-     '<form class = "first-form" role="form">',
-     '<div class="form-group">',
-     '<label for="title">Fund Title:</label>',
-     '<input type="text" class="form-control" id="title">',
-     '</div>',
-     '<div class="form-group">',
-     '<label for="release">Description:</label>',
-     '<input type="text" class="form-control description" id="description">',
-     '</div>',
-     '<div class="form-group">',
-     '<label for="plot">Finish Date:</label>',
-     '<input type="text" value = "09/01/2015" class="form-control" id="finishDate">',
-     '</div>',
-     '<div class="form-group">',
-     '<label for="rating">Funding Goal:</label>',
-     '<input type="text" class="form-control" id="Goal">',
-     '</div>',
-     '<label for="cover">Cover Img:</label>',
-     '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
-     '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
-     '</form>',
-     '<body>',
+       '<form class = "first-form" role="form">',
+       '<div class="form-group">',
+       '<label for="title">Fund Title:</label>',
+       '<input type="text" class="form-control" id="title">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="release">Description:</label>',
+       '<input type="text" class="form-control description" id="description">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="plot">Finish Date:</label>',
+       '<input type="datetime-local" class="form-control" id="finishDate">',
+       '</div>',
+       '<div class="form-group">',
+       '<label for="rating">Funding Goal:</label>',
+       '<input type="number" class="form-control" id="Goal">',
+       '</div>',
+       '<label for="cover">Cover Img:</label>',
+       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
+       '</form>',
+       '<body>',
   ].join(""),
 
   header: [

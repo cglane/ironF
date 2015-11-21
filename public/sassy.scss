@@ -47,11 +47,7 @@ aside{
   float: right;
 }
 .placeholder-for-donate{
-  -webkit-transition: all .3s ease .15s;
--moz-transition: all .3s ease .15s;
--o-transition: all .3s ease .15s;
--ms-transition: all .3s ease .15s;
-transition: all .3s ease .15s;
+
   button{
     width: 30%;
     margin-left:2%;
@@ -59,7 +55,7 @@ transition: all .3s ease .15s;
 
   }
   input{
-    margin-top: 8%;
+    margin-top: 6%;
     width: 80%;
     margin-left: 10%;
   }

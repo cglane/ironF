@@ -2,18 +2,27 @@ package com.theironyard.controllers;
 import com.theironyard.Stats;
 import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
+import com.theironyard.entities.Project;
 import com.theironyard.entities.User;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import com.theironyard.services.UserRepo;
 import com.theironyard.util.PasswordHash;
+import jdk.nashorn.internal.ir.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
@@ -35,7 +44,39 @@ public class ironFundController {
     @Autowired
     DonationRepo donations;
 
+    @PostConstruct
+    public void init() throws Exception {
+        if (users.count() == 0 ) {
+            User user = new User();
+            user.username = "Admin";
+            user.password = PasswordHash.createHash("1234");
+            users.save(user);
 
+            User user2 = new User();
+            user2.username = "Test";
+            user2.password = PasswordHash.createHash("4321");
+            users.save(user2);
+            if (projects.count()==0) {
+                Project project = new Project();
+                project.goal = 500.00;
+                project.user = user;
+                project.startDate = LocalDateTime.now();
+                project.finishDate = LocalDateTime.now().plusDays(2);
+                project.description = "Description for Project";
+                project.title = "Alice's Project";
+                projects.save(project);
+
+                Project project1 = new Project();
+                project1.goal = 500.00;
+                project1.user = user2;
+                project1.startDate = LocalDateTime.now();
+                project1.finishDate = LocalDateTime.now().plusDays(2);
+                project1.description = "Description for Project";
+                project1.title = "Test Project";
+                projects.save(project1);
+            }
+        }
+    }
 
     @RequestMapping("/login")
     public User login(
@@ -53,7 +94,7 @@ public class ironFundController {
             throw new Exception("Wrong Password.");
         }
         session.setAttribute("username", username);
-        User safeUser = new User(user.username);
+        User safeUser = new User(user.id, user.username);
         return safeUser;
     }
 
@@ -63,11 +104,12 @@ public class ironFundController {
     }
 
     @RequestMapping("/donate")
-    public void donate(HttpSession session, HttpServletResponse response, double donate, int id, double amount) throws Exception {
+    public void donate(HttpSession session, HttpServletResponse response, Double donate, Integer id, Double amount) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             response.sendRedirect("403");
         }
+
         Project p = projects.findOne(id);
         p.balance = donate + p.balance;
         projects.save(p);
@@ -79,12 +121,12 @@ public class ironFundController {
         donations.save(d);
     }
 
-    @RequestMapping ("/create")
+    @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
           String title,
           String description,
           String finishDate,
-          double goal,
+          Double goal,
           HttpSession session,
           HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
@@ -100,13 +142,13 @@ public class ironFundController {
         projects.save(project);
 
     }
-    @RequestMapping ("/edit")
+    @RequestMapping (path = "/all", method = RequestMethod.PATCH)
     public void editProject (
-            int id,
+            Integer id,
             String title,
             String description,
             HttpSession session,
-            double goal,
+            Double goal,
             HttpServletResponse response)
             throws Exception {
         String username = (String) session.getAttribute("username");
@@ -122,8 +164,8 @@ public class ironFundController {
 
     }
 
-    @RequestMapping("/delete")
-    public void delete(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    @RequestMapping(path = "/all", method = RequestMethod.DELETE)
+    public void delete(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null || !projects.findOne(id).user.username.equals(username)) {
             response.sendRedirect("403");
@@ -132,21 +174,21 @@ public class ironFundController {
     }
 
     @RequestMapping("/single")
-    public Project single(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    public Project single(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             response.sendRedirect("403");
         }
         Project p = projects.findOne(id);
         return p;
-}
+    }
 
-    @RequestMapping("/all")
+    @RequestMapping(path = "/all", method = RequestMethod.GET)
     public List<Project> all(HttpSession session, HttpServletResponse response) throws Exception {
-        String username = (String) session.getAttribute("username");
-        if (username==null) {
-            response.sendRedirect("403");
-        }
+//        String username = (String) session.getAttribute("username");
+//        if (username==null) {
+////            response.sendRedirect("403");
+//        }
 
         List<Project> all = (List<Project>) projects.findAll();
         return all;
@@ -180,23 +222,29 @@ public class ironFundController {
             throw new Exception("Not logged in.");
         }
         List<User> allUsers = (List<User>) users.findAll();
-        allUsers.stream()
-                .filter(pass -> pass.password != null)
-                .collect(Collectors.toList());
+        for (User user : allUsers) {
+            user.password = null;
+        }
         return allUsers;
     }
 
     @RequestMapping("/user")
-    public User user(HttpSession session, HttpServletResponse response, int id) throws Exception {
+    public User user(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
             throw new Exception("Not logged in.");
         }
         User user = users.findOneByUsername(username);
-        User safeUser = new User(user.projectList, user.donationList, user.username);
+        User safeUser = new User(user.id, user.username);
         return safeUser;
     }
 
-
-    
+//    public User findLargestDonator(int id) {
+//        User u = new User();
+//        List<Donation> donationList = (List<Donation>) donations.findAllDonations();
+//        for (Donation donation : donationList) {
+//
+//        }
+//    }
+//
 }

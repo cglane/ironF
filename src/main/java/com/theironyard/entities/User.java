@@ -2,6 +2,7 @@ package com.theironyard.entities;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -14,13 +15,7 @@ public class User {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int id;
-
-    @OneToMany(mappedBy = "user")
-    public List<Project> projectList;
-
-    @OneToMany(mappedBy = "u")
-    public List<Donation> donationList;
+    public Integer id;
 
     @Column(nullable = false)
     public String username;
@@ -28,25 +23,20 @@ public class User {
     @Column(nullable = false)
     public String password;
 
-//    @Column(nullable = false)
-//    public boolean admin = false;
-//
-//    @Column(nullable = false)
+
+    @Column(nullable = false)
+    public Boolean admin = false;
+
+    public User(){}
+    public User(Integer id, String username) {
+
+        this.id = id;
+        this.username = username;
+    }
+
+    //    @Column(nullable = false)
 //    public MultipartFile photo;
 
-//    @Column(nullable = false);
-//    public double donated;
-    public User(){}
 
-    public User(String username) {
-
-        this.username = username;
-    }
-    public User(List<Project> projectList, List<Donation> donationList, String username) {
-
-        this.projectList = projectList;
-        this.donationList = donationList;
-        this.username = username;
-    }
-
+    
 }

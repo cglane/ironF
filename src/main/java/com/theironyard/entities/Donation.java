@@ -12,10 +12,10 @@ public class Donation {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    public int id;
+    public Integer id;
 
     @Column(nullable = false)
-    public double amount;
+    public Double amount;
 
     @Column(nullable = false)
     public LocalDateTime date;
@@ -25,7 +25,4 @@ public class Donation {
 
     @ManyToOne
     public User u;
-
-
-
 }
