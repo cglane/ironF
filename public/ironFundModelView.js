@@ -80,10 +80,12 @@ module.exports = Backbone.View.extend({
           currModel.set('balance',updatedBalance);
         }
         console.log('current model',currModel);
+        console.log(currModel.get('balance'));
+
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
-      var value = $(this).closest('div').find('input').val();
+      var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
         if(value == '' || isNaN(value)){
