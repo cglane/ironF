@@ -7,9 +7,15 @@
 3 info using node@v4.2.0
 4 verbose stack Error: ENOENT: no such file or directory, open '/Users/Dustin/tiy_Docs/homework_assignments/ironF/package.json'
 4 verbose stack     at Error (native)
+<<<<<<< HEAD
 5 verbose cwd /Users/Dustin/tiy_Docs/homework_assignments/ironF
 6 error Darwin 14.5.0
 7 error argv "/Users/Dustin/.nvm/versions/node/v4.2.0/bin/node" "/Users/Dustin/.nvm/versions/node/v4.2.0/bin/npm" "run" "bundle"
+=======
+5 verbose cwd /Users/cglane/Desktop/Iron_Yard/ironF
+6 error Darwin 15.0.0
+7 error argv "/Users/cglane/.nvm/versions/node/v4.2.0/bin/node" "/Users/cglane/.nvm/versions/node/v4.2.0/bin/npm" "run" "bundle"
+>>>>>>> 938adb4d080e25c686212e2afb77244a2bf2521c
 8 error node v4.2.0
 9 error npm  v2.14.7
 10 error path /Users/Dustin/tiy_Docs/homework_assignments/ironF/package.json

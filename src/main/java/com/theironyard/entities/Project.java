@@ -10,7 +10,7 @@ import java.util.List;
 public class Project {
     @Id
     @GeneratedValue
-    public int id;
+    public Integer id;
 
     @ManyToOne
     public User user;
@@ -31,10 +31,10 @@ public class Project {
     public LocalDateTime finishDate;
 
     @Column (nullable = false)
-    public double balance = 0;
+    public Double balance = 0.0;
 
     @Column (nullable = false)
-    public double goal;
+    public Double goal;
 
 
 
