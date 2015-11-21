@@ -60,8 +60,8 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
     $('.donate-btn').on('click',function(){
-        // $('.body-container').removeClass('blur');
-        // $('.placeholder-for-donate').addClass('display-none');
+        $('.body-container').removeClass('blur');
+        $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
         var id = this.id;;
@@ -76,10 +76,13 @@ module.exports = Backbone.View.extend({
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
+      var value = $(this).closest('div').find('input').val();
       if(e.which == 13){
-        if($(this).closest('div').find('input').val() == ''){
-          console.log('empty input');
+        if(value == '' || isNaN(value)){
+          console.log('invalid input');
         }else{
+          $('.body-container').removeClass('blur');
+          $('.placeholder-for-donate').addClass('display-none');
           console.log('thank you for your donation');
         }
       }

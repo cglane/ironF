@@ -112,7 +112,6 @@ module.exports = {
     '</nav>',
     '</div>',
   ].join(""),
-<<<<<<< HEAD
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
@@ -121,13 +120,11 @@ module.exports = {
     '<button  class = "donate-btn" id= "fifty" class="btn btn-default">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
     '</div>'
-  ].join("")
-=======
+  ].join(""),
   login: [
 
   ].join(""),
   createuser: [
 
   ].join(""),
->>>>>>> 582a85935d1d06a182bf8d6b64c8ba60054a0e25
 };
