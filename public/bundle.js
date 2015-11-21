@@ -120,18 +120,8 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],6:[function(require,module,exports){
-var Backbone = require('backbone');
-var IronFundModel = require('./ironFundModel');
-
-module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2021',
-  model: IronFundModel,
-  initialize: function () {
-
-  }
-});
-
-},{"./ironFundModel":8,"backbone":12}],7:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./ironFundModel":8,"backbone":12,"dup":1}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -166,9 +156,8 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2021',
+  urlRoot: '/all',
 
-  idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {
@@ -267,10 +256,12 @@ module.exports = Backbone.View.extend({
           currModel.set('balance',updatedBalance);
         }
         console.log('current model',currModel);
+        console.log(currModel.get('balance'));
+
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
-      var value = $(this).closest('div').find('input').val();
+      var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
         if(value == '' || isNaN(value)){
