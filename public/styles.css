@@ -46,11 +46,6 @@ aside {
   float: right; }
 
 .placeholder-for-donate {
-  -webkit-transition: all .3s ease .15s;
-  -moz-transition: all .3s ease .15s;
-  -o-transition: all .3s ease .15s;
-  -ms-transition: all .3s ease .15s;
-  transition: all .3s ease .15s;
   position: absolute;
   background-color: #6495ED;
   font-size: 2em;
@@ -64,7 +59,7 @@ aside {
     margin-left: 2%;
     margin-top: 1%; }
   .placeholder-for-donate input {
-    margin-top: 8%;
+    margin-top: 6%;
     width: 80%;
     margin-left: 10%; }
 

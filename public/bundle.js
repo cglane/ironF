@@ -270,6 +270,7 @@ module.exports = Backbone.View.extend({
         }else{
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
+          $(this).closest('div').find('input').val('')
           console.log('thank you for your donation');
         }
       }
