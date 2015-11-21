@@ -9,6 +9,7 @@ import com.theironyard.services.UserRepo;
 import com.theironyard.util.PasswordHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -79,7 +80,7 @@ public class ironFundController {
         donations.save(d);
     }
 
-    @RequestMapping ("/create")
+    @RequestMapping (name = "/all", method = RequestMethod.POST)
     public void addProject (
           String title,
           String description,
@@ -100,7 +101,7 @@ public class ironFundController {
         projects.save(project);
 
     }
-    @RequestMapping ("/edit")
+    @RequestMapping (name = "/all", method = RequestMethod.PATCH)
     public void editProject (
             int id,
             String title,
@@ -122,7 +123,7 @@ public class ironFundController {
 
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping(name = "/all", method = RequestMethod.DELETE)
     public void delete(HttpSession session, HttpServletResponse response, int id) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null || !projects.findOne(id).user.username.equals(username)) {
@@ -141,7 +142,7 @@ public class ironFundController {
         return p;
 }
 
-    @RequestMapping("/all")
+    @RequestMapping(name = "/all", method = RequestMethod.GET)
     public List<Project> all(HttpSession session, HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
         if (username==null) {
@@ -197,6 +198,12 @@ public class ironFundController {
         return safeUser;
     }
 
-
-    
+//    public User findLargestDonator(int id) {
+//        User u = new User();
+//        List<Donation> donationList = (List<Donation>) donations.findAllDonations();
+//        for (Donation donation : donationList) {
+//
+//        }
+//    }
+//
 }
