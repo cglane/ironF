@@ -29,7 +29,6 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
-      percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();

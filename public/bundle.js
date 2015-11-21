@@ -82,7 +82,6 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
-      percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();
@@ -229,6 +228,10 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
+       this.$el.find('.titles').attr('contenteditable','false');
+       this.$el.find('.finish-date').attr('contenteditable','false');
+       this.$el.find('.description').attr('contenteditable','false');
+       this.$el.find('.goal').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
