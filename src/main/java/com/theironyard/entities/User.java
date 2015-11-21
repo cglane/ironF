@@ -2,6 +2,7 @@ package com.theironyard.entities;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -28,11 +29,9 @@ public class User {
     @Column(nullable = false)
     public String password;
 
-//    @Column(nullable = false)
-//    public boolean admin = false;
-//
-//    @Column(nullable = false)
-//    public MultipartFile photo;
+
+    @Column(nullable = false)
+    public boolean admin = false;
 
 //    @Column(nullable = false);
 //    public double donated;
@@ -49,4 +48,12 @@ public class User {
         this.username = username;
     }
 
+    @Column(nullable = false)
+    public MultipartFile photo;
+
+     @Column(nullable = false)
+     public double donated;
+
+
+    
 }
