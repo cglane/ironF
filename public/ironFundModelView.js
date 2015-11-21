@@ -15,6 +15,7 @@ module.exports = Backbone.View.extend({
     'click .deleteProject': 'deleteProject',
     'click .editProject' : 'editProject',
     "click .confirm-edit"  : "close",
+    'click .donateNow':'onDonateNow',
   },
 
   deleteProject: function(event) {
@@ -29,14 +30,17 @@ module.exports = Backbone.View.extend({
   },
   editProject:function(event){
     event.preventDefault();
-    this.$el.attr('contenteditable','true');
+    this.$el.find('.titles').attr('contenteditable','true');
+    this.$el.find('.finish-date').attr('contenteditable','true');
+    this.$el.find('.description').attr('contenteditable','true');
+    this.$el.find('.goal').attr('contenteditable','true');
     this.$el.find('.confirm-edit').removeClass('display-none');
   },
   close:function(event){
     event.preventDefault();
     // console.log( $(event.target.closest('h3')));
         var object = {
-          title: this.$el.find('.title').text(),
+          title: this.$el.find('.titles').text(),
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
@@ -48,10 +52,40 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
-       console.log(this.model);
        this.$el.find('.confirm-edit').addClass('display-none');
-
   },
+  onDonateNow:function(event){
+    var currModel = this.model;
+    event.preventDefault();
+    $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
+    $('.body-container').addClass('blur');
+    $('.donate-btn').on('click',function(){
+        // $('.body-container').removeClass('blur');
+        // $('.placeholder-for-donate').addClass('display-none');
+        console.log(this.id);
+        var donation;
+        var id = this.id;;
+        if(id == "ten"){
+          donation = 10;
+        }else if (id == "twenty") {
+          donation = 20;
+        }else if(id == "fifty"){
+          donation = 50;
+        }
+        console.log(donation);
+        // console.log(this.find('input[id = "donation-input"]'))
+    });
+    $('.placeholder-for-donate').on('keypress',function(e){
+      if(e.which == 13){
+        if($(this).closest('div').find('input').val() == ''){
+          console.log('empty input');
+        }else{
+          console.log('thank you for your donation');
+        }
+      }
+    });
+  },
+
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);

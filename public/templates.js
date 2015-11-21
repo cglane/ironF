@@ -5,7 +5,7 @@ module.exports = {
       "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
       "<div class='<%= \"title\" %>'>",
-      "<h3 class = 'title'><%= title %></h3>",
+      "<h3 class = 'titles'><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
       "<h4 class = 'finish-date'><%= finishdate %></h4>",
       "<p class = 'description'><%= description %></p>",
@@ -27,7 +27,7 @@ module.exports = {
       "</div>",
       // "<form class='<%= \"form-inline\" %>'>",
       "<div class='<%= \"form-group donateNow\"%>'>",
-      "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
+      // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
       "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
       "</button>",
 
@@ -78,4 +78,13 @@ module.exports = {
     '</nav>',
     '</div>',
   ].join(""),
+  donate:[
+    '<div class = "donate">',
+    '<p>How much would you like to donate?</p>',
+    '<button  class = "donate-btn" id= "ten" class="btn btn-default">$10</button>',
+    '<button class = "donate-btn"  id= "twenty" class="btn btn-default">$20</button>',
+    '<button  class = "donate-btn" id= "fifty" class="btn btn-default">$50</button>',
+    '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
+    '</div>'
+  ].join("")
 };
