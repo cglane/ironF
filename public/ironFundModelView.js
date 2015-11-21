@@ -48,7 +48,7 @@ module.exports = Backbone.View.extend({
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
-        }
+        };
         console.log(object);
        this.model.set(object);
        this.model.save();
@@ -64,7 +64,7 @@ module.exports = Backbone.View.extend({
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
-        var id = this.id;;
+        var id = this.id;
         if(id == "ten"){
           donation = 10;
         }else if (id == "twenty") {
@@ -78,7 +78,7 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = $(this).closest('div').find('input').val();
       if(e.which == 13){
-        if(value == '' || isNaN(value)){
+        if(value == '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           $('.body-container').removeClass('blur');

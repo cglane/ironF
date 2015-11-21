@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: '/',
+  url: '/all',
   model: IronFundModel,
   initialize: function () {
 
@@ -156,7 +156,7 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: '/',
+  urlRoot: '/all',
 
   // idAttribute: '_id',
   // defaults: function () {
@@ -225,7 +225,7 @@ module.exports = Backbone.View.extend({
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
-        }
+        };
         console.log(object);
        this.model.set(object);
        this.model.save();
@@ -241,7 +241,7 @@ module.exports = Backbone.View.extend({
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
-        var id = this.id;;
+        var id = this.id;
         if(id == "ten"){
           donation = 10;
         }else if (id == "twenty") {
@@ -255,7 +255,7 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = $(this).closest('div').find('input').val();
       if(e.which == 13){
-        if(value == '' || isNaN(value)){
+        if(value == '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           $('.body-container').removeClass('blur');
@@ -13006,37 +13006,32 @@ return jQuery;
 },{}],16:[function(require,module,exports){
 module.exports = {
   project: [
-      // "<div class='<%= \"row\" %>'>",
-      // "<div class='<%= \"col-sm-6 col-md-4\" %>'>",
-      "<div class='<%= \"thumbnail\" %>'>",
+      "<div class='thumbnail'>",
       // "<img src='<%= photo %>'>",
-      "<div class='<%= \"title\" %>'>",
+      "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
       // "<h4><%= startDate %></h4>",
       "<h4 class = 'finish-date'><%= finishdate %></h4>",
       "<p class = 'description'><%= description %></p>",
       // "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
-      "<div class='<%= \"progress\" %>'>",
-      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= \"40%\"%></div>",
+      "<div class='progress'>",
+      "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width: 40%;'>40%</div>",
       "</div>",
-
-      "<form class='<%= \"form-inline\" %>'>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
+      "<form class='form-inline'>",
+      "<div class='form-group'>",
+      "<button class='btn btn-primary editProject' role='button' type='submit' name='edit'>Edit</button>",
       "</div>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "<div class='form-group'>",
+      "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete</button>",
       "</div>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
+      "<div class='form-group'>",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'</button> ",
       "</div>",
-      // "<form class='<%= \"form-inline\" %>'>",
-      "<div class='<%= \"form-group donateNow\"%>'>",
+      "<form class='form-inline'>",
+      "<div class='form-group donateNow'>",
       // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
-      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
-      "</button>",
-
+      "<button class='btn btn-primary donateNow' role='button' type='submit' id='donateNow'>Donate Now</button>",
       "</div>",
       "</form>",
       "</div>",
