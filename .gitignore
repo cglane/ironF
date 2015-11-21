@@ -5,6 +5,7 @@ node_modules
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio
 
 *.iml
+*.db
 
 ## Directory-based project format:
 .idea/
