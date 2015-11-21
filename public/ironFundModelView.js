@@ -64,27 +64,38 @@ module.exports = Backbone.View.extend({
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
+        var balance = currModel.get('balance');
         var id = this.id;;
         if(id == "ten"){
           donation = 10;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if (id == "twenty") {
           donation = 20;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }else if(id == "fifty"){
           donation = 50;
+          var updatedBalance = balance + donation;
+          currModel.set('balance',updatedBalance);
         }
-        console.log(donation);
+        console.log('current model',currModel);
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = $(this).closest('div').find('input').val();
+      var balance = currModel.get('balance');
       if(e.which == 13){
         if(value == '' || isNaN(value)){
           console.log('invalid input');
         }else{
+          var updatedBalance = balance + value;
+          currModel.set('balance',updatedBalance);
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('')
           console.log('thank you for your donation');
+          console.log(currModel.get('balance'));
         }
       }
     });
