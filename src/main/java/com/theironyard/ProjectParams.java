@@ -9,4 +9,5 @@ public class ProjectParams {
     public String description;
     public String finishDate;
     public Double goal;
+    public Double balance;
 }

@@ -4,28 +4,14 @@ import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.FileItemFactory;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
-import org.apache.tomcat.util.http.fileupload.RequestContext;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -102,28 +88,30 @@ public class ironFundController {
 //        session.invalidate();
 //    }
 
-    @RequestMapping("/donate")
-    public void donate(HttpSession session, HttpServletResponse response, Double donate, Integer id, Double amount) throws Exception {
+    @RequestMapping(path = "/all/{id}", method = RequestMethod.PATCH)
+    public @ResponseBody ProjectParams donate(HttpSession session,
+                                              HttpServletResponse response,
+                                              @RequestBody ProjectParams projectParams,
+                                              @PathVariable("id") Integer id) throws Exception {
 //        String username = (String) session.getAttribute("username");
 //        if (username==null) {
 //            response.sendRedirect("403");
 //        }
 
         Project p = projects.findOne(id);
-        p.balance = donate + p.balance;
+        p.balance = projectParams.balance + p.balance;
         projects.save(p);
         Donation d = new Donation();
-        d.amount = amount;
+        d.amount = projectParams.balance;
         d.date = LocalDate.now();
 //        d.u = users.findOneByUsername(username);
         d.p = projects.findOne(id);
         donations.save(d);
+        return null;
     }
 
     @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
-          MultipartFile image,
-          HttpServletRequest request,
           @RequestBody ProjectParams projectParams,
           HttpServletResponse response) throws Exception {
 //        String username = (String) session.getAttribute("username");
@@ -131,40 +119,11 @@ public class ironFundController {
 //            response.sendRedirect("403");
 //        }
         Project project = new Project();
-        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-        if (isMultipart) {
-
-            FileItemFactory factory = new DiskFileItemFactory();
-
-            ServletFileUpload upload = new ServletFileUpload(factory);
-
-            List items = upload.parseRequest((RequestContext) request);
-            Iterator iterator = items.iterator();
-            while (iterator.hasNext()) {
-                FileItem item = (FileItem) iterator.next();
-                if (!item.isFormField() && !item.getName().equals("")) {
-                    String fileName = item.getName();
-                    String root = "/";
-                    File path = new File(root);
-                    if (!path.exists()) {
-                        boolean status = path.mkdirs();
-                    }
-
-                    File uploadedFile = new File(path + "/" + fileName);
-                    System.out.println("File Path:-"
-                            + uploadedFile.getAbsolutePath());
-
-                    item.write(uploadedFile);
-                    project.imageName = item.getName();
-                }
-            }
-        }
         project.title = projectParams.title;
         project.description = projectParams.description;
         project.finishDate = LocalDate.parse(projectParams.finishDate);
         project.startDate = LocalDate.now();
         project.goal = projectParams.goal;
-        project.originalName = image.getOriginalFilename();
 
         projects.save(project);
         response.sendRedirect("/");
