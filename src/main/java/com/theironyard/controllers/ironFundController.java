@@ -176,10 +176,10 @@ public class ironFundController {
 //        }
 
         List<Project> all = (List<Project>) projects.findAll();
-//        for (Project p : all){
-//            p.percentage = (int) Math.round(p.balance / p.goal)*100;
+        for (Project p : all){
+            p.percentage = (int) Math.round(p.balance / p.goal)*100;
 //            p.user.password = "NYB";
-//        }
+        }
         return all;
     }
 //
