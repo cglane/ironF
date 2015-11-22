@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: '/all',
+  url: '/http://tiny-tiny.herokuapp.com/collections/ironfund2020',
   model: IronFundModel,
   initialize: function () {
 
@@ -120,8 +120,18 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
+var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":8,"backbone":13}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -156,7 +166,7 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: '/all',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
 
   // defaults: function () {
   //   // write your if statement here
@@ -13103,35 +13113,6 @@ module.exports = {
       "</div>",
       // "</div>",
       // "</div>",
-
-
-    "<form class='<%= \"form-inline\" %>'>",
-    "<div class='<%= \"form-group\"%>'>",
-    "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
-    "</div>",
-    "<div class='<%= \"form-group\"%>'>",
-    "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
-    "</div>",
-    "<div class='<%= \"form-group\"%>'>",
-    "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
-    "</div>",
-    // "<form class='<%= \"form-inline\" %>'>",
-    "<div class='<%= \"form-group donateNow\"%>'>",
-    // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
-    "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
-    "</button>",
-    "</div>",
-    "</form>",
-    "</div>",
-    "</div>",
-    // "</div>",
-    // "</div>",
-    "</div>",
-    "</form>",
-    "</div>",
-    "</div>",
-    // "</div>",
-    // "</div>",
   ].join(""),
   form: [
        '<form class = "first-form" role="form">',
@@ -13179,7 +13160,6 @@ module.exports = {
   // <!-- Collect the nav links, forms, and other content for toggling -->
     '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
-    '<li><a href="#">Link</a></li>',
     '<li class="show-login">',
     '<a class="show-login-form" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
@@ -13254,11 +13234,11 @@ module.exports = {
     '</div>',
     '<div class="form-group">',
     '<div class="col-sm-offset-4 col-sm-4">',
-    '<div class="checkbox">',
-    '<label>',
-    '<input type="checkbox"> Remember me',
-    '</label>',
-    '</div>',
+    // '<div class="checkbox">',
+    // '<label>',
+    // '<input type="checkbox"> Remember me',
+    // '</label>',
+    // '</div>',
     '</div>',
     '</div>',
     '<div class="form-group">',
