@@ -3,14 +3,14 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: '/all',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
   model: IronFundModel,
   initialize: function () {
 
   }
 });
 
-},{"./ironFundModel":8,"backbone":12}],2:[function(require,module,exports){
+},{"./ironFundModel":8,"backbone":13}],2:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -31,7 +31,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],3:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -50,7 +50,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],4:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -64,7 +64,7 @@ module.exports = Backbone.View.extend({
   template: _.template(tmpl.form),
   // model: null, // just here as placeholder, but need a model up on instantiation
   events: {
-    'submit form': 'onAddProject'
+    'submit form': 'onAddProject',
   },
   initialize: function () {
     if(!this.model) {
@@ -100,16 +100,35 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundCollection":6,"./ironFundModel":8,"./templates":16,"backbone":12,"jquery":13,"underscore":14}],5:[function(require,module,exports){
+},{"./ironFundCollection":6,"./ironFundModel":8,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
+var LoginView = require('./loginView');
+var LayoutView = require('./layoutView');
 
 module.exports = Backbone.View.extend({
   initialize: function () {},
   template: _.template(tmpl.header),
+  events: {
+    'click .signin-create-acct' : 'onSigninCreateAcct',
+  },
+
+  onSigninCreateAcct: function (event) {
+    event.preventDefault();
+    // $('.body-container').addClass('.display-none');
+    // $('.placeholder-login-form').removeClass('.display-none');
+    console.log('this is hiding the body-container');
+    // $('.signIn').on('click',function(){
+    //     $('.body-container').removeClass('.display-none');
+    //     console.log('this is hiding the body-container');
+    //     $('.placeholder-login-form').addClass('.display-none');
+
+      // });
+},
+
   render: function () {
     var markup = this.template({});
     this.$el.html(markup);
@@ -119,9 +138,9 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],6:[function(require,module,exports){
+},{"./layoutView":10,"./loginView":11,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":8,"backbone":12,"dup":1}],7:[function(require,module,exports){
+},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -151,12 +170,12 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./IronFundCollection":1,"./ironFundModel":8,"./ironFundModelView":9,"backbone":12,"jquery":13,"underscore":14}],8:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":8,"./ironFundModelView":9,"backbone":13,"jquery":14,"underscore":15}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: '/all',
+  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
 
   // defaults: function () {
   //   // write your if statement here
@@ -173,7 +192,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":12}],9:[function(require,module,exports){
+},{"backbone":13}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -224,7 +243,7 @@ module.exports = Backbone.View.extend({
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
-        }
+        };
         console.log(object);
        this.model.set(object);
        this.model.save();
@@ -246,7 +265,7 @@ module.exports = Backbone.View.extend({
         var donation;
         var balance = currModel.get('balance');
         var updatedBalance;
-        var id = this.id;;
+        var id = this.id;
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
@@ -269,7 +288,7 @@ module.exports = Backbone.View.extend({
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
-        if(value == '' || isNaN(value)){
+        if(value === '' || isNaN(value)){
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
@@ -294,7 +313,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":16,"backbone":12,"jquery":13,"underscore":14}],10:[function(require,module,exports){
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -305,7 +324,9 @@ var FormView = require('./formView');
 var IronFundView = require('./ironFundCollectionView');
 var IronFundCollection = require('./ironFundCollection');
 var ModelView = require('./ironFundModelView');
-var DonateView = require("./donateView")
+var DonateView = require("./donateView");
+var LoginView = require('./loginView');
+// var CreateUserView = require('./createUserView');
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
@@ -314,6 +335,7 @@ module.exports = Backbone.View.extend({
     var footerHTML = new FooterView();
     var ironFundCollection = new IronFundCollection();
     var donateHTML = new DonateView();
+    var loginHTML = new LoginView();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
       var formHTML = new FormView({collection:ironFundCollection});
@@ -322,14 +344,34 @@ module.exports = Backbone.View.extend({
       self.$el.find('footer').html(footerHTML.render().el);
       self.$el.find('aside').html(formHTML.render().el);
       self.$el.find('.placeholder-for-donate').html(donateHTML.render().el);
+      self.$el.find('.placeholder-for-login-form').html(loginHTML.render().el);
     });
-
 
   }
 
 });
 
-},{"./donateView":2,"./footerView":3,"./formView":4,"./headerView":5,"./ironFundCollection":6,"./ironFundCollectionView":7,"./ironFundModelView":9,"backbone":12,"jquery":13,"underscore":14}],11:[function(require,module,exports){
+},{"./donateView":2,"./footerView":3,"./formView":4,"./headerView":5,"./ironFundCollection":6,"./ironFundCollectionView":7,"./ironFundModelView":9,"./loginView":11,"backbone":13,"jquery":14,"underscore":15}],11:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+  tagName: 'article',
+  initialize: function () {},
+  template: _.template(tmpl.login),
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],12:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 var Router = require('./router');
@@ -340,7 +382,7 @@ $(function () {
   // Backbone.history.start();
 });
 
-},{"./layoutView":10,"./router":15,"jquery":13}],12:[function(require,module,exports){
+},{"./layoutView":10,"./router":16,"jquery":14}],13:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2238,7 +2280,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":13,"underscore":14}],13:[function(require,module,exports){
+},{"jquery":14,"underscore":15}],14:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11450,7 +11492,7 @@ return jQuery;
 
 }));
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13000,7 +13042,7 @@ return jQuery;
   }
 }.call(this));
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 var _ = require('underscore');
@@ -13031,11 +13073,9 @@ module.exports = Backbone.Router.extend({
 
 });
 
-},{"backbone":12,"jquery":13,"underscore":14}],16:[function(require,module,exports){
+},{"backbone":13,"jquery":14,"underscore":15}],17:[function(require,module,exports){
 module.exports = {
   project: [
-      // "<div class='<%= \"row\" %>'>",
-      // "<div class='<%= \"col-sm-6 col-md-4\" %>'>",
       "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
       "<div class='<%= \"title\" %>'>",
@@ -13071,7 +13111,6 @@ module.exports = {
       "</div>",
       // "</div>",
       // "</div>",
-
   ].join(""),
   form: [
        '<form class = "first-form" role="form">',
@@ -13102,38 +13141,30 @@ module.exports = {
     '<nav class="navbar navbar-inverse navbar-fixed-top">',
     '<div class="container-fluid">',
       // <!-- Brand and toggle get grouped for better mobile display -->
-      '<div class="navbar-header">',
-        '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">',
-          '<span class="sr-only">Toggle navigation</span>',
-          '<span class="icon-bar"></span>',
-          '<span class="icon-bar"></span>',
-          '<span class="icon-bar"></span>',
-        '</button>',
-        '<a class="navbar-brand" href="#">Iron Fund</a>',
-        '<ul class="nav navbar-nav">',
-        '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>',
-        '<li><a href="#">Add a Project</a></li>',
-        '</ul>',
-      '</div>',
+    '<div class="navbar-header">',
+    '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">',
+    '<span class="sr-only">Toggle navigation</span>',
+    '<span class="icon-bar"></span>',
+    '<span class="icon-bar"></span>',
+    '<span class="icon-bar"></span>',
+    '</button>',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<ul class="nav navbar-nav">',
+    '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>',
+    '<li><a href="#">Add a Project</a></li>',
+    '</ul>',
+    '</div>',
 
-      // <!-- Collect the nav links, forms, and other content for toggling -->
-      '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
-        '<ul class="nav navbar-nav navbar-right">',
-          // '<li><a href="#">Link</a></li>',
-          '<li class="dropdown">',
-            '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>',
-            '<ul class="dropdown-menu">',
-              '<li><a href="#">Action</a></li>',
-              '<li><a href="#">Another action</a></li>',
-              '<li><a href="#">Something else here</a></li>',
-              '<li role="separator" class="divider"></li>',
-              '<li><a href="#">Separated link</a></li>',
-            '</ul>',
-          '</li>',
-        '</ul>',
-      '</div>', //<!-- /.navbar-collapse -->
+  // <!-- Collect the nav links, forms, and other content for toggling -->
+    '<div class="signin-create-acct collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
+    '<ul class="nav navbar-nav navbar-right">',
+    '<li class="signin-create-acct">',
+    '<a class="signin-create-acct" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '</li>',
+    '</ul>',
+    '</div>', //<!-- /.navbar-collapse -->
     '</div>', //<!-- /.container-fluid -->
-'</nav>',
+    '</nav>',
   ].join(""),
   footer: [
     '<div class="footer-links">',
@@ -13156,11 +13187,67 @@ module.exports = {
     '</div>'
   ].join(""),
   login: [
-
+    '<div class="login-form">',
+    '<form class="form-horizontal">',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Email">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<div class="checkbox">',
+    '<label>',
+    '<input type="checkbox"> Remember me',
+    '</label>',
+    '</div>',
+    '</div>',
+    '</div>',
+    '<div class="signIn form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<button type="submit" name="submit" class="btn btn-default">Sign in</button>',
+    '<a class="createUser" href="#">Create New Account</a>',
+    '</div>',
+    '</div>',
+    '</form>',
+    '</div>',
   ].join(""),
   createuser: [
-
+    '<div class="createuser-form">',
+    '<form class="form-horizontal">',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Email">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-4 col-sm-offset-4">',
+    '<input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    // '<div class="checkbox">',
+    // '<label>',
+    // '<input type="checkbox"> Remember me',
+    // '</label>',
+    // '</div>',
+    '</div>',
+    '</div>',
+    '<div class="form-group">',
+    '<div class="col-sm-offset-4 col-sm-4">',
+    '<button type="submit" name="submit" class="btn btn-default">Create New Account</button>',
+    '<a class="createUser" href="#">Sig-in to Existing Account</a>',
+    '</div>',
+    '</div>',
+    '</form>',
+    '</div>',
   ].join(""),
 };
 
-},{}]},{},[11]);
+},{}]},{},[12]);

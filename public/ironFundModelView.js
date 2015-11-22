@@ -48,7 +48,7 @@ module.exports = Backbone.View.extend({
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
-        }
+        };
         console.log(object);
        this.model.set(object);
        this.model.save();
@@ -70,7 +70,7 @@ module.exports = Backbone.View.extend({
         var donation;
         var balance = currModel.get('balance');
         var updatedBalance;
-        var id = this.id;;
+        var id = this.id;
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
@@ -93,7 +93,7 @@ module.exports = Backbone.View.extend({
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
-        if(value == '' || isNaN(value)){
+        if(value === '' || isNaN(value)){
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
