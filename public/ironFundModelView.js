@@ -52,6 +52,10 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
+       this.$el.find('.titles').attr('contenteditable','false');
+       this.$el.find('.finish-date').attr('contenteditable','false');
+       this.$el.find('.description').attr('contenteditable','false');
+       this.$el.find('.goal').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
@@ -102,7 +106,7 @@ module.exports = Backbone.View.extend({
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
-        if(value == '' || isNaN(value)) {
+        if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
@@ -118,8 +122,8 @@ module.exports = Backbone.View.extend({
         }
       }
     });
+  });
   },
-
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);
