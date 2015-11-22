@@ -39,7 +39,7 @@ module.exports = {
       // "</div>",
   ].join(""),
   form: [
-       '<form class = "first-form" role="form">',
+       '<form class = "first-form" enctype="multipart/form-data" role="form">',
        '<div class="form-group">',
        '<label for="title">Fund Title:</label>',
        '<input type="text" required class="form-control" id="title">',
@@ -57,7 +57,7 @@ module.exports = {
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
-      //  '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',

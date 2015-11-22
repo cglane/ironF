@@ -27,12 +27,13 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
+      image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
     };
     this.model.set(newProject);
     this.model.save();
-    this.collection.add(this.model);
+    this.collection.render();
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.collection);
