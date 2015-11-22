@@ -13,8 +13,8 @@ public class Project {
     @GeneratedValue
     public Integer id;
 
-    @ManyToOne
-    public User user;
+//    @ManyToOne
+//    public User user;
 
     @OneToMany(mappedBy = "p")
     public List<Donation> donationList;

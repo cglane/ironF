@@ -1,19 +1,10 @@
 package com.theironyard.controllers;
 import com.theironyard.ProjectParams;
-import com.theironyard.Stats;
 import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
-import com.theironyard.entities.Project;
-import com.theironyard.entities.User;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
-import com.theironyard.services.UserRepo;
-import com.theironyard.util.PasswordHash;
-import jdk.nashorn.internal.ir.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,16 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 /**
  * Created by Agronis on 11/19/15.
@@ -40,8 +23,8 @@ import java.util.stream.Collectors;
 @RestController
 public class ironFundController {
 
-    @Autowired
-    UserRepo users;
+//    @Autowired
+//    UserRepo users;
 
     @Autowired
     ProjectRepo projects;
@@ -51,20 +34,20 @@ public class ironFundController {
 
     @PostConstruct
     public void init() throws Exception {
-        if (users.count() == 0 ) {
-            User user = new User();
-            user.username = "Admin";
-            user.password = PasswordHash.createHash("1234");
-            users.save(user);
-
-            User user2 = new User();
-            user2.username = "Test";
-            user2.password = PasswordHash.createHash("4321");
-            users.save(user2);
+//        if (users.count() == 0 ) {
+//            User user = new User();
+//            user.username = "Admin";
+//            user.password = PasswordHash.createHash("1234");
+//            users.save(user);
+//
+//            User user2 = new User();
+//            user2.username = "Test";
+//            user2.password = PasswordHash.createHash("4321");
+//            users.save(user2);
             if (projects.count()==0) {
                 Project project = new Project();
                 project.goal = 500.00;
-                project.user = user;
+//                project.user = user;
                 project.startDate = LocalDate.now();
                 project.finishDate = LocalDate.now().plusDays(2);
                 project.description = "Description for Project";
@@ -73,7 +56,7 @@ public class ironFundController {
 
                 Project project1 = new Project();
                 project1.goal = 500.00;
-                project1.user = user2;
+//                project1.user = user2;
                 project1.startDate = LocalDate.now();
                 project1.finishDate = LocalDate.now().plusDays(2);
                 project1.description = "Description for Project";
@@ -81,7 +64,7 @@ public class ironFundController {
                 projects.save(project1);
             }
         }
-    }
+
 
 //    @RequestMapping("/login")
 //    public User login(
@@ -199,27 +182,27 @@ public class ironFundController {
         }
         return all;
     }
-
-    @RequestMapping("/stats")
-    public Stats stats(HttpSession session, HttpServletResponse response) throws Exception {
-//        String username = (String) session.getAttribute("username");
-//        if (username==null) {
-//            response.sendRedirect("403");
-//        }
-        long last = donations.count();
-        Donation d = donations.findLast(last);
-        Stats s = new Stats();
-        s.totalDonations = projects.getTotalDonated();
-        s.totalProjects = projects.count();
-//        s.totalUsers = users.count();
-//        s.user = d.u.username;
-        s.date = d.date;
-        s.amount = d.amount;
-        String time = s.date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
-        s.project = d.p.title;
-        s.mostRecent = String.format("%s donated %f on %s towards %s" /**s.user*/, s.amount, time, s.project);
-        return s;
-    }
+//
+//    @RequestMapping("/stats")
+//    public Stats stats(HttpSession session, HttpServletResponse response) throws Exception {
+////        String username = (String) session.getAttribute("username");
+////        if (username==null) {
+////            response.sendRedirect("403");
+////        }
+//        long last = donations.count();
+//        Donation d = donations.findLast(last);
+//        Stats s = new Stats();
+//        s.totalDonations = projects.getTotalDonated();
+//        s.totalProjects = projects.count();
+////        s.totalUsers = users.count();
+////        s.user = d.u.username;
+//        s.date = d.date;
+//        s.amount = d.amount;
+//        String time = s.date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+//        s.project = d.p.title;
+//        s.mostRecent = String.format("%s donated %f on %s towards %s" /**s.user*/, s.amount, time, s.project);
+//        return s;
+//    }
 
 //    @RequestMapping("/allUsers")
 //    public List<User> allUsers(HttpSession session) throws Exception {
