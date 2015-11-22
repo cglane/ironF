@@ -13,6 +13,7 @@ import jdk.nashorn.internal.ir.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,10 +26,12 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -62,8 +65,8 @@ public class ironFundController {
                 Project project = new Project();
                 project.goal = 500.00;
                 project.user = user;
-                project.startDate = LocalDateTime.now();
-                project.finishDate = LocalDateTime.now().plusDays(2);
+                project.startDate = LocalDate.now();
+                project.finishDate = LocalDate.now().plusDays(2);
                 project.description = "Description for Project";
                 project.title = "Alice's Project";
                 projects.save(project);
@@ -71,8 +74,8 @@ public class ironFundController {
                 Project project1 = new Project();
                 project1.goal = 500.00;
                 project1.user = user2;
-                project1.startDate = LocalDateTime.now();
-                project1.finishDate = LocalDateTime.now().plusDays(2);
+                project1.startDate = LocalDate.now();
+                project1.finishDate = LocalDate.now().plusDays(2);
                 project1.description = "Description for Project";
                 project1.title = "Test Project";
                 projects.save(project1);
@@ -117,7 +120,7 @@ public class ironFundController {
         projects.save(p);
         Donation d = new Donation();
         d.amount = amount;
-        d.date = LocalDateTime.now();
+        d.date = LocalDate.now();
         d.u = users.findOneByUsername(username);
         d.p = projects.findOne(id);
         donations.save(d);
@@ -135,8 +138,8 @@ public class ironFundController {
         Project project = new Project();
         project.title = projectParams.title;
         project.description = projectParams.description;
-        project.finishDate = LocalDateTime.parse(projectParams.finishDate);
-        project.startDate = LocalDateTime.now();
+        project.finishDate = LocalDate.parse(projectParams.finishDate);
+        project.startDate = LocalDate.now();
         project.goal = projectParams.goal;
         projects.save(project);
 
@@ -192,6 +195,7 @@ public class ironFundController {
         List<Project> all = (List<Project>) projects.findAll();
         for (Project p : all){
             p.percentage = (int) Math.round(p.balance / p.goal)*100;
+            p.user.password = null;
         }
         return all;
     }
