@@ -80,13 +80,14 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
+      image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
       // percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();
-    this.collection.add(this.model);
+    this.collection.render();
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.collection);
@@ -241,7 +242,7 @@ module.exports = Backbone.View.extend({
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
-          finishdate: this.$el.find('.finish-date').text(),
+          finishDate: this.$el.find('.finish-date').text(),
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
@@ -13117,7 +13118,7 @@ module.exports = {
       // "</div>",
   ].join(""),
   form: [
-       '<form class = "first-form" role="form">',
+       '<form class = "first-form" enctype="multipart/form-data" role="form">',
        '<div class="form-group">',
        '<label for="title">Fund Title:</label>',
        '<input type="text" required class="form-control" id="title">',
@@ -13138,7 +13139,7 @@ module.exports = {
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
-      //  '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',
