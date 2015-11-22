@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Donation {
     public Double amount;
 
     @Column(nullable = false)
-    public LocalDateTime date;
+    public LocalDate date;
 
     @ManyToOne
     public Project p;
