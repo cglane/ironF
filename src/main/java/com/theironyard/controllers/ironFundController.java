@@ -5,12 +5,14 @@ import com.theironyard.entities.Project;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -141,12 +143,12 @@ public class ironFundController {
 //        if (username == null || !projects.findOne(id).user.username.equals(username)){
 //            response.sendRedirect("403");
 //        }
-
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("M/d/u");
         Project project = projects.findOne(id);
         project.title = projectParams.title;
         project.description = projectParams.description;
         project.goal = projectParams.goal;
-        project.finishDate = LocalDate.parse(projectParams.finishDate);
+        project.finishDate = LocalDate.parse(projectParams.finishDate, df);
         projects.save(project);
         return null;
     }
