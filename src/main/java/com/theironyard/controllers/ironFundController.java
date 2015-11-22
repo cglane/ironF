@@ -127,14 +127,15 @@ public class ironFundController {
         projects.save(project);
 
     }
-    @RequestMapping (path = "/all", method = RequestMethod.PATCH)
-    public void editProject (
-            Integer id,
+    @RequestMapping (path = "/all/{id}", method = RequestMethod.PUT)
+    public @ResponseBody ProjectParams projectParams (
             String title,
             String description,
             HttpSession session,
             Double goal,
-            HttpServletResponse response)
+            HttpServletResponse response,
+            @RequestBody ProjectParams projectParams,
+            @PathVariable("id") int id)
             throws Exception {
 //        String username = (String) session.getAttribute("username");
 //        if (username == null || !projects.findOne(id).user.username.equals(username)){
@@ -142,11 +143,12 @@ public class ironFundController {
 //        }
 
         Project project = projects.findOne(id);
-        project.title = title;
-        project.description = description;
-        project.goal = goal;
+        project.title = projectParams.title;
+        project.description = projectParams.description;
+        project.goal = projectParams.goal;
+        project.finishDate = LocalDate.parse(projectParams.finishDate);
         projects.save(project);
-
+        return null;
     }
 
     @RequestMapping(path = "/all/{id}", method = RequestMethod.DELETE)
