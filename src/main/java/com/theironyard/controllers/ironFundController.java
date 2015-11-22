@@ -1,4 +1,5 @@
 package com.theironyard.controllers;
+import com.theironyard.ProjectParams;
 import com.theironyard.Stats;
 import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
@@ -12,6 +13,10 @@ import jdk.nashorn.internal.ir.PropertyKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.format.annotation.DateTimeFormat;
+<<<<<<< HEAD
+=======
+import org.springframework.web.bind.annotation.RequestBody;
+>>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -123,10 +128,14 @@ public class ironFundController {
 
     @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
+<<<<<<< HEAD
           String title,
           String description,
           String finishDate,
           Double goal,
+=======
+          @RequestBody ProjectParams projectParams,
+>>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
           HttpSession session,
           HttpServletResponse response) throws Exception {
         String username = (String) session.getAttribute("username");
@@ -134,11 +143,11 @@ public class ironFundController {
             response.sendRedirect("403");
         }
         Project project = new Project();
-        project.title = title;
-        project.description = description;
-        project.finishDate = LocalDateTime.parse(finishDate);
+        project.title = projectParams.title;
+        project.description = projectParams.description;
+        project.finishDate = LocalDateTime.parse(projectParams.finishDate);
         project.startDate = LocalDateTime.now();
-        project.goal = goal;
+        project.goal = projectParams.goal;
         projects.save(project);
 
     }
@@ -191,6 +200,9 @@ public class ironFundController {
 //        }
 
         List<Project> all = (List<Project>) projects.findAll();
+        for (Project p : all){
+            p.percentage = (int) Math.round(p.balance / p.goal)*100;
+        }
         return all;
     }
 

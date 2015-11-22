@@ -78,7 +78,11 @@ module.exports = Backbone.View.extend({
         var donation;
         var balance = currModel.get('balance');
         var updatedBalance;
+<<<<<<< HEAD
         var id = this.id;
+=======
+        var id = this.id;;
+>>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
