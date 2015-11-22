@@ -73,6 +73,7 @@ module.exports = Backbone.View.extend({
   },
   onAddProject: function (evt) {
     evt.preventDefault();
+
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -80,14 +81,11 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
-      image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
       // percentage: Math.round(goal/balance),
     };
-    this.model.save(newProject,{ iframe: true,
-                              files: this.$('form :file'),
-                              data: newProject });
+    this.model.save(newProject);
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.model);
@@ -13118,7 +13116,7 @@ module.exports = {
       // "</div>",
   ].join(""),
   form: [
-       '<form class = "first-form" enctype="multipart/form-data" role="form">',
+       '<form class = "first-form" role="form">',
        '<div class="form-group">',
        '<label for="title">Fund Title:</label>',
        '<input type="text" required class="form-control" id="title">',
@@ -13138,8 +13136,6 @@ module.exports = {
        '<label for="rating">Funding Goal:</label>',
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
-       '<label for="cover">Cover Img:</label>',
-       '<input class = "form-group" type="file"name="file" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',
