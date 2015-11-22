@@ -24,6 +24,6 @@ public class Donation {
     @ManyToOne
     public Project p;
 
-    @ManyToOne
-    public User u;
+//    @ManyToOne
+//    public User u;
 }
