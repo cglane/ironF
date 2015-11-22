@@ -4,6 +4,7 @@ var Backbone = require('backbone');
 module.exports = Backbone.Model.extend({
   urlRoot: '/all',
 
+  // idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {

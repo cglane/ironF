@@ -30,13 +30,14 @@ module.exports = Backbone.View.extend({
       image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
+      // percentage: Math.round(goal/balance),
     };
-    this.model.set(newProject);
-    this.model.save();
-    this.collection.render();
+    this.model.save(newProject,{ iframe: true,
+                              files: this.$('form :file'),
+                              data: newProject });
     // console.log("this.model:", this.model);
     // console.log("this:", this);
-    console.log("this.collection:", this.collection);
+    console.log("this.collection:", this.model);
     this.$el.find('input, value').val('');
   },
   render: function () {
