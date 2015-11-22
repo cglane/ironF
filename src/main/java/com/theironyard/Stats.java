@@ -1,4 +1,5 @@
 package com.theironyard;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -13,7 +14,7 @@ public class Stats {
     public String user;
     public double amount;
     public String project;
-    public LocalDateTime date;
+    public LocalDate date;
     public String mostRecent;
 
 
