@@ -17,7 +17,7 @@ module.exports = Backbone.View.extend({
       console.log('user logged in, showing body-container');
       $('.body-container').removeClass('display-none');
       $('.placeholder-login-form').addClass('display-none');
-      // $('.signin-create-acct').addClass('display-none');
+      $('header').html('loggedInHeader');
       // $('.signin-create-acct').addClass('display-none');
     },
 
