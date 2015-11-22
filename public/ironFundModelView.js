@@ -44,7 +44,7 @@ module.exports = Backbone.View.extend({
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
-          finishdate: this.$el.find('.finish-date').text(),
+          finishDate: this.$el.find('.finish-date').text(),
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
