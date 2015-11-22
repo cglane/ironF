@@ -1,5 +1,6 @@
 package com.theironyard.entities;
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class Project {
     public String description;
 
     @Column(nullable = false)
-    public LocalDateTime startDate;
+    public LocalDate startDate;
 
     @Column (nullable = false)
-    public LocalDateTime finishDate;
+    public LocalDate finishDate;
 
     @Column (nullable = false)
     public Double balance = 0.0;
