@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  url: '/all',
   model: IronFundModel,
   initialize: function () {
 
@@ -82,7 +82,6 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
-      percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();
@@ -157,7 +156,7 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  urlRoot: '/all',
 
   // defaults: function () {
   //   // write your if statement here
@@ -229,6 +228,10 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
+       this.$el.find('.titles').attr('contenteditable','false');
+       this.$el.find('.finish-date').attr('contenteditable','false');
+       this.$el.find('.description').attr('contenteditable','false');
+       this.$el.find('.goal').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){

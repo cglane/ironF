@@ -52,6 +52,10 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
+       this.$el.find('.titles').attr('contenteditable','false');
+       this.$el.find('.finish-date').attr('contenteditable','false');
+       this.$el.find('.description').attr('contenteditable','false');
+       this.$el.find('.goal').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
