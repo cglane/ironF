@@ -80,10 +80,10 @@ module.exports = {
     '</div>',
 
   // <!-- Collect the nav links, forms, and other content for toggling -->
-    '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
+    '<div class="signin-create-acct collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
-    '<li class="show-login">',
-    '<a class="show-login-form" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '<li class="signin-create-acct">',
+    '<a class="signin-create-acct" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->
@@ -132,7 +132,7 @@ module.exports = {
     '</div>',
     '</div>',
     '</div>',
-    '<div class="form-group">',
+    '<div class="signIn form-group">',
     '<div class="col-sm-offset-4 col-sm-4">',
     '<button type="submit" name="submit" class="btn btn-default">Sign in</button>',
     '<a class="createUser" href="#">Create New Account</a>',

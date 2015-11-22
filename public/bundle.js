@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: '/http://tiny-tiny.herokuapp.com/collections/ironfund2020',
+  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
   model: IronFundModel,
   initialize: function () {
 
@@ -106,10 +106,29 @@ var $ = require('jquery');
 Backbone.$ = $;
 var _ = require('underscore');
 var tmpl = require('./templates');
+var LoginView = require('./loginView');
+var LayoutView = require('./layoutView');
 
 module.exports = Backbone.View.extend({
   initialize: function () {},
   template: _.template(tmpl.header),
+  events: {
+    'click .signin-create-acct' : 'onSigninCreateAcct',
+  },
+
+  onSigninCreateAcct: function (event) {
+    event.preventDefault();
+    // $('.body-container').addClass('.display-none');
+    // $('.placeholder-login-form').removeClass('.display-none');
+    console.log('this is hiding the body-container');
+    // $('.signIn').on('click',function(){
+    //     $('.body-container').removeClass('.display-none');
+    //     console.log('this is hiding the body-container');
+    //     $('.placeholder-login-form').addClass('.display-none');
+
+      // });
+},
+
   render: function () {
     var markup = this.template({});
     this.$el.html(markup);
@@ -119,19 +138,9 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
-var Backbone = require('backbone');
-var IronFundModel = require('./ironFundModel');
-
-module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
-  model: IronFundModel,
-  initialize: function () {
-
-  }
-});
-
-},{"./ironFundModel":8,"backbone":13}],7:[function(require,module,exports){
+},{"./layoutView":10,"./loginView":11,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -202,19 +211,7 @@ module.exports = Backbone.View.extend({
     'click .editProject' : 'editProject',
     "click .confirm-edit"  : "close",
     'click .donateNow':'onDonateNow',
-    'click .show-login-form' : 'onShowLogin',
   },
-
-  onShowLogin: function (evt) {
-    console.log('hello');
-    $('.placeholder-login-form').stop(true,false).removeClass('display-none', {duration:500});
-    $('.body-container').addClass('blur');
-    $('.show-login-form').on('click',function(onShowLogin){
-        $('.body-container').addClass('display-none');
-        console.log('hello');
-        $('.placeholder-login-form').removeClass('display-none');
-      });
-},
 
   deleteProject: function(event) {
     event.preventDefault();
@@ -362,6 +359,7 @@ var _ = require('underscore');
 var tmpl = require('./templates');
 
 module.exports = Backbone.View.extend({
+  tagName: 'article',
   initialize: function () {},
   template: _.template(tmpl.login),
   render: function () {
@@ -13158,10 +13156,10 @@ module.exports = {
     '</div>',
 
   // <!-- Collect the nav links, forms, and other content for toggling -->
-    '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
+    '<div class="signin-create-acct collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
     '<ul class="nav navbar-nav navbar-right">',
-    '<li class="show-login">',
-    '<a class="show-login-form" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '<li class="signin-create-acct">',
+    '<a class="signin-create-acct" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->
@@ -13210,7 +13208,7 @@ module.exports = {
     '</div>',
     '</div>',
     '</div>',
-    '<div class="form-group">',
+    '<div class="signIn form-group">',
     '<div class="col-sm-offset-4 col-sm-4">',
     '<button type="submit" name="submit" class="btn btn-default">Sign in</button>',
     '<a class="createUser" href="#">Create New Account</a>',

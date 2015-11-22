@@ -16,19 +16,7 @@ module.exports = Backbone.View.extend({
     'click .editProject' : 'editProject',
     "click .confirm-edit"  : "close",
     'click .donateNow':'onDonateNow',
-    'click .show-login-form' : 'onShowLogin',
   },
-
-  onShowLogin: function (evt) {
-    console.log('hello');
-    $('.placeholder-login-form').stop(true,false).removeClass('display-none', {duration:500});
-    $('.body-container').addClass('blur');
-    $('.show-login-form').on('click',function(onShowLogin){
-        $('.body-container').addClass('display-none');
-        console.log('hello');
-        $('.placeholder-login-form').removeClass('display-none');
-      });
-},
 
   deleteProject: function(event) {
     event.preventDefault();
