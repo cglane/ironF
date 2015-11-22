@@ -63,45 +63,38 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
-    $('.donate-btn').on('click',function(){
+    $('.donate-btn').on('click',function(event){
+        event.preventDefault();
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
-        var id = this.id;
-        var balance = currModel.get('balance');
-        if(id == "ten"){
-          donation = 10;
-          var updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-        }else if (id == "twenty") {
-          donation = 20;
-          var updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-        }else if(id == "fifty"){
-          donation = 50;
-          var updatedBalance = balance + donation;
-        var balance = currModel.get('balance');
         var updatedBalance;
+        var balance=currModel.get('balance');
         var id = this.id;
+
+        balance = currModel.get('balance');
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
+          currModel.save('balance',updatedBalance);
+          // currModel.save();
         }else if (id == "twenty") {
           donation = 20;
           updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
+          currModel.save();
         }else if(id == "fifty"){
           donation = 50;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-        }
+          currModel.set('balance', updatedBalance);
+          currModel.save();
+      }
         console.log('current model',currModel);
         console.log(currModel.get('balance'));
 
         // console.log(this.find('input[id = "donation-input"]'))
-    }
+    });
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
@@ -117,13 +110,14 @@ module.exports = Backbone.View.extend({
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('');
+          currModel.save();
+
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
         }
       }
-    });
   });
-  },
+},
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);
