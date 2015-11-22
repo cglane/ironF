@@ -63,27 +63,33 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
-    $('.donate-btn').on('click',function(){
+    $('.donate-btn').on('click',function(event){
+        event.preventDefault();
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
-        var balance = currModel.get('balance');
         var updatedBalance;
+        var balance=currModel.get('balance');
         var id = this.id;
+        //delete this test line
+        balance = currModel.get('balance');
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
+          currModel.save('balance',updatedBalance);
+          // currModel.save();
         }else if (id == "twenty") {
           donation = 20;
           updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
+          currModel.save();
         }else if(id == "fifty"){
           donation = 50;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-        }
+          currModel.set('balance', updatedBalance);
+          currModel.save();
+      }
         console.log('current model',currModel);
         console.log(currModel.get('balance'));
 
@@ -93,22 +99,25 @@ module.exports = Backbone.View.extend({
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
-        if(value === '' || isNaN(value)){
+        if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
           currModel.set('balance',updatedBalance);
+          $('.body-container').removeClass('blur');
+          $('.placeholder-for-donate').addClass('display-none');
           console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('');
+          currModel.save();
+
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
         }
       }
-    });
-  },
-
+  });
+},
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);

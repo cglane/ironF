@@ -30,6 +30,7 @@ module.exports = Backbone.View.extend({
       image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
+      // percentage: Math.round(goal/balance),
     };
     this.model.set(newProject);
     this.model.save();
