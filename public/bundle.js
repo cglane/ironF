@@ -94,6 +94,7 @@ module.exports = Backbone.View.extend({
   },
   onAddProject: function (evt) {
     evt.preventDefault();
+
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -103,13 +104,12 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
+      // percentage: Math.round(goal/balance),
     };
-    this.model.set(newProject);
-    this.model.save();
-    this.collection.add(this.model);
+    this.model.save(newProject);
     // console.log("this.model:", this.model);
     // console.log("this:", this);
-    console.log("this.collection:", this.collection);
+    console.log("this.collection:", this.model);
     this.$el.find('input, value').val('');
   },
   render: function () {
@@ -155,8 +155,18 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./createUserView":2,"./layoutView":11,"./loginView":12,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],7:[function(require,module,exports){
-arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":9,"backbone":14,"dup":1}],8:[function(require,module,exports){
+var Backbone = require('backbone');
+var IronFundModel = require('./ironFundModel');
+
+module.exports = Backbone.Collection.extend({
+  url: '/all',
+  model: IronFundModel,
+  initialize: function () {
+
+  }
+});
+
+},{"./ironFundModel":9,"backbone":14}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -191,8 +201,9 @@ var Backbone = require('backbone');
 // this file contains the shape of our data
 
 module.exports = Backbone.Model.extend({
-  urlRoot: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  urlRoot: '/all',
 
+  // idAttribute: '_id',
   // defaults: function () {
   //   // write your if statement here
   //   return {
@@ -255,7 +266,7 @@ module.exports = Backbone.View.extend({
           // startdate: this.$el.find('input[id="startDate"]').val(),
           // startDate: new Date.getTime(),
           // photo: this.$el.find('input[id="image"]').val(),
-          finishdate: this.$el.find('.finish-date').text(),
+          finishDate: this.$el.find('.finish-date').text(),
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
           goal: this.$el.find('.goal').text()
@@ -274,27 +285,33 @@ module.exports = Backbone.View.extend({
     event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
-    $('.donate-btn').on('click',function(){
+    $('.donate-btn').on('click',function(event){
+        event.preventDefault();
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
         console.log(this.id);
         var donation;
-        var balance = currModel.get('balance');
         var updatedBalance;
+        var balance=currModel.get('balance');
         var id = this.id;
+        //delete this test line
+        balance = currModel.get('balance');
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
+          currModel.save('balance',updatedBalance);
+          // currModel.save();
         }else if (id == "twenty") {
           donation = 20;
           updatedBalance = balance + donation;
           currModel.set('balance',updatedBalance);
+          currModel.save();
         }else if(id == "fifty"){
           donation = 50;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-        }
+          currModel.set('balance', updatedBalance);
+          currModel.save();
+      }
         console.log('current model',currModel);
         console.log(currModel.get('balance'));
 
@@ -304,22 +321,25 @@ module.exports = Backbone.View.extend({
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
       if(e.which == 13){
-        if(value === '' || isNaN(value)){
+        if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
           currModel.set('balance',updatedBalance);
+          $('.body-container').removeClass('blur');
+          $('.placeholder-for-donate').addClass('display-none');
           console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('');
+          currModel.save();
+
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
         }
       }
-    });
-  },
-
+  });
+},
   render: function () {
     var markup = this.template(this.model.toJSON());
     this.$el.append(markup);
@@ -343,6 +363,7 @@ var ModelView = require('./ironFundModelView');
 var DonateView = require("./donateView");
 var LoginView = require('./loginView');
 var CreateUserView = require('./createUserView');
+
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {
@@ -13074,68 +13095,60 @@ return jQuery;
 }.call(this));
 
 },{}],17:[function(require,module,exports){
-var Backbone = require('backbone');
-var $ = require('jquery');
-var _ = require('underscore');
+// var Backbone = require('backbone');
+// var $ = require('jquery');
+// var _ = require('underscore');
+// var LayOutView = require('./layoutView');
+//
+//
+// module.exports = Backbone.Router.extend({
+//   routes: {
+//     // 'donate': 'donate',
+//     'about': 'about',
+//     // '': 'login'
+//   },
+//   initialize: function () {
+//     // new layoutView('login');
+//   },
+//   about: function () {
+//     new layoutView('about');
+//   },
+// });
 
-module.exports = Backbone.Router.extend({
-  routes: {
-    '': 'homePage',
-    'about': 'aboutPage',
-    'blahblah': 'someShit'
-  },
-  initialize: function (options) {
-    // if(!this.layout) {
-    //   this.layout = options.layout;
-    // }
-  },
-  someShit: function () {
-    console.log("some shits");
-  },
-  homePage: function () {
-    console.log("you've made it to home!!");
-  },
-  aboutPage: function () {
-    console.log("you've made it to the about page");
-  }
-
-
-
-
-});
-
-},{"backbone":14,"jquery":15,"underscore":16}],18:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = {
   project: [
+      "<div class='thumbnail'>",
       "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
-      "<div class='<%= \"title\" %>'>",
+      "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
-      // "<h4><%= startDate %></h4>",
-      "<h4 class = 'finish-date'><%= finishDate %></h4>",
+      "<h5>Start Date:</h5>",
+      "<h5 class = 'start-date'><%= startDate.monthValue%>/<%=startDate.dayOfMonth%>/<%=startDate.year%></h4>",
+      "<h4>Finish Date:</h4>",
+      "<h4 class = 'finish-date'><%= finishDate.monthValue%>/<%=finishDate.dayOfMonth%>/<%=finishDate.year%></h4>",
       "<p class = 'description'><%= description %></p>",
-      // "<h4><%= balance %></h4>",
+      "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
-      "<div class='<%= \"progress\" %>'>",
-      "<div class='<%= \"progress-bar progress-bar-success progress-bar-striped\"%>' role='<%= \"progressbar\"%>' aria-valuenow='<%= \"40\"%>' aria-valuemin='<%=\"0\"%>' aria-valuemax='<%= \"100\"%>' style='<%= \"width:40%\"%>'> <%= balance%></div>",
+      // "<div class='progress'>",
+      // "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width: 40%;'>40%</div>",
+      "<div class='progress'>",
+      "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width:<%=percentage%>%'> <%= balance%></div>",
       "</div>",
-
-      "<form class='<%= \"form-inline\" %>'>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='<%= \"btn btn-primary editProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"edit\"%>'> <%= \"Edit\" %></button>",
+      "<form class='form-inline'>",
+      "<div class='form-group'>",
+      "<button class='btn btn-primary editProject' role='button' type='submit' name='edit'>Edit</button>",
       "</div>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='<%= \"btn btn-danger deleteProject\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' name='<%= \"delete\"%>'> <%= \"Delete\" %></button>",
+      "<div class='form-group'>",
+      "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete</button>",
       "</div>",
-      "<div class='<%= \"form-group\"%>'>",
-      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
+      "<div class='form-group'>",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'</button> ",
       "</div>",
-      // "<form class='<%= \"form-inline\" %>'>",
-      "<div class='<%= \"form-group donateNow\"%>'>",
+      "<form class='form-inline'>",
+      "<div class='form-group donateNow'>",
       // "<input type='<%= \"text\" %>' class='<%= \"form-control btn\" %>' id='<%= \"title\" %>' id='<%= \"donationAmount\" %>' placeholder='<%= \"$100\" %>'>",
-      "<button class='<%= \"btn btn-primary donateNow\" %>' role='<%= \"button\"%>' type='<%= \"submit\"%>' id='<%= \"donateNow\"%>'> <%= \"Donate Now\" %>",
-      "</button>",
-
+      "<button class='btn btn-primary donateNow' role='button' type='submit' id='donateNow'>Donate Now</button>",
       "</div>",
       "</form>",
       "</div>",
@@ -13147,22 +13160,23 @@ module.exports = {
        '<form class = "first-form" role="form">',
        '<div class="form-group">',
        '<label for="title">Fund Title:</label>',
-       '<input type="text" class="form-control" id="title">',
+       '<input type="text" required class="form-control" id="title">',
        '</div>',
        '<div class="form-group">',
        '<label for="release">Description:</label>',
-       '<input type="text" class="form-control description" id="description">',
+       '<input type="text" required class="form-control description" id="description">',
        '</div>',
        '<div class="form-group">',
        '<label for="plot">Finish Date:</label>',
+      //  '<input type="datetime-local" value = "09/01/2015" class="form-control" id="finishDate">',
+      //  '<input type="datetime-local" class="form-control" id="finishDate">',
        '<input type="date" class="form-control" id="finishDate">',
+      //  '<input type="date" required class="form-control" id="finishDate">',
        '</div>',
        '<div class="form-group">',
        '<label for="rating">Funding Goal:</label>',
-       '<input type="number" class="form-control" id="Goal">',
+       '<input type="number" required class="form-control" id="Goal">',
        '</div>',
-       '<label for="cover">Cover Img:</label>',
-       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',
@@ -13240,9 +13254,9 @@ module.exports = {
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
-    '<button  class = "donate-btn" id= "ten" class="btn btn-default">$10</button>',
-    '<button class = "donate-btn"  id= "twenty" class="btn btn-default">$20</button>',
-    '<button  class = "donate-btn" id= "fifty" class="btn btn-default">$50</button>',
+    '<button class = " btn donate-btn" role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
+    '<button class = "btn donate-btn"  role="button" type="submit" id= "twenty" class="btn btn-default">$20</button>',
+    '<button class = "btn donate-btn" role="button" type="submit" id= "fifty" class="btn btn-default">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
     '</div>'
   ].join(""),

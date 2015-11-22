@@ -11,6 +11,7 @@ var ModelView = require('./ironFundModelView');
 var DonateView = require("./donateView");
 var LoginView = require('./loginView');
 var CreateUserView = require('./createUserView');
+
 module.exports = Backbone.View.extend({
   el: '#layoutView',
   initialize: function () {

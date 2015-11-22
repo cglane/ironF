@@ -20,6 +20,7 @@ module.exports = Backbone.View.extend({
   },
   onAddProject: function (evt) {
     evt.preventDefault();
+
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -29,13 +30,12 @@ module.exports = Backbone.View.extend({
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
+      // percentage: Math.round(goal/balance),
     };
-    this.model.set(newProject);
-    this.model.save();
-    this.collection.add(this.model);
+    this.model.save(newProject);
     // console.log("this.model:", this.model);
     // console.log("this:", this);
-    console.log("this.collection:", this.collection);
+    console.log("this.collection:", this.model);
     this.$el.find('input, value').val('');
   },
   render: function () {
