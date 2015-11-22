@@ -87,10 +87,9 @@ module.exports = Backbone.View.extend({
     };
     this.model.set(newProject);
     this.model.save();
-    this.collection.render();
     // console.log("this.model:", this.model);
     // console.log("this:", this);
-    console.log("this.collection:", this.collection);
+    console.log("this.collection:", this.model);
     this.$el.find('input, value').val('');
   },
   render: function () {
