@@ -5,19 +5,7 @@ import com.theironyard.entities.Project;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-import org.springframework.format.annotation.DateTimeFormat;
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 990bb53a55f6af7d57bf2e974416a932d7b8eaeb
-import org.springframework.web.bind.annotation.RequestBody;
->>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.PostConstruct;
@@ -119,14 +107,11 @@ public class ironFundController {
 
     @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
-<<<<<<< HEAD
           String title,
           String description,
           String finishDate,
           Double goal,
-=======
           @RequestBody ProjectParams projectParams,
->>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
           HttpSession session,
           HttpServletResponse response) throws Exception {
 //        String username = (String) session.getAttribute("username");
@@ -164,8 +149,8 @@ public class ironFundController {
 
     }
 
-    @RequestMapping(path = "/all", method = RequestMethod.DELETE)
-    public void delete(HttpSession session, HttpServletResponse response, Integer id) throws Exception {
+    @RequestMapping(path = "/all/{id}", method = RequestMethod.DELETE)
+    public void delete(HttpSession session, HttpServletResponse response, @PathVariable("id") int id) throws Exception {
 //        String username = (String) session.getAttribute("username");
 //        if (username==null || !projects.findOne(id).user.username.equals(username)) {
 //            response.sendRedirect("403");
@@ -192,7 +177,7 @@ public class ironFundController {
 
         List<Project> all = (List<Project>) projects.findAll();
         for (Project p : all){
-            p.percentage = (int) Math.round(p.balance / p.goal)*100;
+            p.percentage = (int) Math.round((p.balance / p.goal)*100);
 //            p.user.password = "NYB";
         }
         return all;
