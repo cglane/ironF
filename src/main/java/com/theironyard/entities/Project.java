@@ -37,7 +37,7 @@ public class Project {
     @Column (nullable = false)
     public Double goal;
 
-//    @Column (nullable = false)
-//    public int percentage;
+    @Column (nullable = false)
+    public int percentage;
 
 }
