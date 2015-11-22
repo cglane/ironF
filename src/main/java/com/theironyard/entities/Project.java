@@ -1,4 +1,6 @@
 package com.theironyard.entities;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,5 +41,8 @@ public class Project {
 
     @Column (nullable = false)
     public int percentage;
+
+    public String imageName;
+    public String originalName;
 
 }

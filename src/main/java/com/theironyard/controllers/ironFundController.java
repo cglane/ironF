@@ -4,15 +4,28 @@ import com.theironyard.entities.Donation;
 import com.theironyard.entities.Project;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileItemFactory;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -109,33 +122,56 @@ public class ironFundController {
 
     @RequestMapping (path = "/all", method = RequestMethod.POST)
     public void addProject (
-          String title,
-          String description,
-          String finishDate,
-          Double goal,
+          MultipartFile image,
+          HttpServletRequest request,
           @RequestBody ProjectParams projectParams,
-          HttpSession session,
           HttpServletResponse response) throws Exception {
 //        String username = (String) session.getAttribute("username");
 //        if (username == null) {
 //            response.sendRedirect("403");
 //        }
         Project project = new Project();
+        boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+        if (isMultipart) {
+
+            FileItemFactory factory = new DiskFileItemFactory();
+
+            ServletFileUpload upload = new ServletFileUpload(factory);
+
+            List items = upload.parseRequest((RequestContext) request);
+            Iterator iterator = items.iterator();
+            while (iterator.hasNext()) {
+                FileItem item = (FileItem) iterator.next();
+                if (!item.isFormField() && !item.getName().equals("")) {
+                    String fileName = item.getName();
+                    String root = "/";
+                    File path = new File(root);
+                    if (!path.exists()) {
+                        boolean status = path.mkdirs();
+                    }
+
+                    File uploadedFile = new File(path + "/" + fileName);
+                    System.out.println("File Path:-"
+                            + uploadedFile.getAbsolutePath());
+
+                    item.write(uploadedFile);
+                    project.imageName = item.getName();
+                }
+            }
+        }
         project.title = projectParams.title;
         project.description = projectParams.description;
         project.finishDate = LocalDate.parse(projectParams.finishDate);
         project.startDate = LocalDate.now();
         project.goal = projectParams.goal;
+        project.originalName = image.getOriginalFilename();
+
         projects.save(project);
+        response.sendRedirect("/");
 
     }
     @RequestMapping (path = "/all/{id}", method = RequestMethod.PUT)
     public @ResponseBody ProjectParams projectParams (
-            String title,
-            String description,
-            HttpSession session,
-            Double goal,
-            HttpServletResponse response,
             @RequestBody ProjectParams projectParams,
             @PathVariable("id") int id)
             throws Exception {
