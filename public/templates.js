@@ -57,7 +57,7 @@ module.exports = {
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
-       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<input class = "form-group" type="file"name="file" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',

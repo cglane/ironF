@@ -31,8 +31,9 @@ module.exports = Backbone.View.extend({
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
     };
-    this.model.set(newProject);
-    this.model.save();
+    this.model.save(newProject,{ iframe: true,
+                              files: this.$('form :file'),
+                              data: newProject });
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.model);

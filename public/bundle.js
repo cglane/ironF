@@ -84,8 +84,9 @@ module.exports = Backbone.View.extend({
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
     };
-    this.model.set(newProject);
-    this.model.save();
+    this.model.save(newProject,{ iframe: true,
+                              files: this.$('form :file'),
+                              data: newProject });
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.model);
@@ -13133,7 +13134,7 @@ module.exports = {
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
        '<label for="cover">Cover Img:</label>',
-       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
+       '<input class = "form-group" type="file"name="file" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',
