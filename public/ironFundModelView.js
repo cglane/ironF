@@ -64,6 +64,10 @@ module.exports = Backbone.View.extend({
         console.log(object);
        this.model.set(object);
        this.model.save();
+       this.$el.find('.titles').attr('contenteditable','false');
+       this.$el.find('.finish-date').attr('contenteditable','false');
+       this.$el.find('.description').attr('contenteditable','false');
+       this.$el.find('.goal').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
@@ -78,11 +82,7 @@ module.exports = Backbone.View.extend({
         var donation;
         var balance = currModel.get('balance');
         var updatedBalance;
-<<<<<<< HEAD
         var id = this.id;
-=======
-        var id = this.id;;
->>>>>>> 875e91202df89075f746e6eec41103cb707bb54f
         if(id == "ten"){
           donation = 10;
           updatedBalance = balance + donation;
