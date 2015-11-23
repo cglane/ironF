@@ -3,7 +3,7 @@ var Backbone = require('backbone');
 var IronFundModel = require('./ironFundModel');
 
 module.exports = Backbone.Collection.extend({
-  url: 'http://tiny-tiny.herokuapp.com/collections/ironfund2022',
+  url: '/all',
   model: IronFundModel,
   initialize: function () {
 
@@ -155,18 +155,8 @@ module.exports = Backbone.View.extend({
 });
 
 },{"./createUserView":2,"./layoutView":11,"./loginView":12,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],7:[function(require,module,exports){
-var Backbone = require('backbone');
-var IronFundModel = require('./ironFundModel');
-
-module.exports = Backbone.Collection.extend({
-  url: '/all',
-  model: IronFundModel,
-  initialize: function () {
-
-  }
-});
-
-},{"./ironFundModel":9,"backbone":14}],8:[function(require,module,exports){
+arguments[4][1][0].apply(exports,arguments)
+},{"./ironFundModel":9,"backbone":14,"dup":1}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -410,7 +400,7 @@ module.exports = Backbone.View.extend({
       console.log('user logged in, showing body-container');
       $('.body-container').removeClass('display-none');
       $('.placeholder-login-form').addClass('display-none');
-      $('header').html('loggedInHeader');
+      $('header').html('');
       // $('.signin-create-acct').addClass('display-none');
     },
 
@@ -13124,9 +13114,9 @@ module.exports = {
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
       "<h5>Start Date:</h5>",
-      "<h5 class = 'start-date'><%= startDate.monthValue%>/<%=startDate.dayOfMonth%>/<%=startDate.year%></h4>",
+      "<h5 class = 'start-date'><%= startDate%></h4>",
       "<h4>Finish Date:</h4>",
-      "<h4 class = 'finish-date'><%= finishDate.monthValue%>/<%=finishDate.dayOfMonth%>/<%=finishDate.year%></h4>",
+      "<h4 class = 'finish-date'><%= finishDate%></h4>",
       "<p class = 'description'><%= description %></p>",
       "<h4><%= balance %></h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
