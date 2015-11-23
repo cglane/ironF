@@ -4,7 +4,7 @@ var $ = require('jquery');
 Backbone.$ = $;
 var tmpl = require('./templates');
 // this file contains markup for the template
-
+var times = 0;
 module.exports = Backbone.View.extend({
   tagName: 'article',
   model: null, // just a placeholder
@@ -88,9 +88,9 @@ module.exports = Backbone.View.extend({
           updatedBalance = balance + donation;
           currModel.save('balance', updatedBalance);
       }
-      console.log(updatedBalance);
     that.$el.find('.balance-number').html(updatedBalance);
-
+    times++;
+    console.log('times',times);
         // console.log('current model',currModel);
         // console.log(currModel.get('balance'));
         // console.log(this.find('input[id = "donation-input"]'))
