@@ -286,6 +286,10 @@ module.exports = Backbone.View.extend({
         var balance=currModel.get('balance');
         // console.log('balance');
         var id = this.id;
+<<<<<<< HEAD
+=======
+        //delete this test line
+>>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
         balance = currModel.get('balance');
         if(id === "ten"){
           donation = 10;
@@ -13109,6 +13113,7 @@ module.exports = {
       // "<img src='<%= photo %>'>",
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
+<<<<<<< HEAD
       "<div class ='row inner'>",
       "<div class='col-md-12'>",
       "<div class='col-md-6 start'>",
@@ -13123,6 +13128,12 @@ module.exports = {
       "</div>",
       "<div class ='row inner'>",
       "<div class='col-md-12'>",
+=======
+      "<h5>Start Date:</h5>",
+      "<h5 class = 'start-date'><%= startDate%></h4>",
+      "<h4>Finish Date:</h4>",
+      "<h4 class = 'finish-date'><%= finishDate%></h4>",
+>>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
       "<p class = 'description'><%= description %></p>",
       "</div>",
       "</div>",
@@ -13163,7 +13174,7 @@ module.exports = {
       // "</div>",
   ].join(""),
   form: [
-       '<form class = "first-form" enctype="multipart/form-data" role="form">',
+       '<form class = "first-form" role="form">',
        '<div class="form-group">',
        '<label for="title">Fund Title:</label>',
        '<input type="text" required class="form-control" id="title">',
@@ -13183,8 +13194,6 @@ module.exports = {
        '<label for="rating">Funding Goal:</label>',
        '<input type="number" required class="form-control" id="Goal">',
        '</div>',
-       '<label for="cover">Cover Img:</label>',
-       '<input class = "form-group" type="file"name="pic" id= "image" accept="image/*">',
        '<button  id= "submitted" type= "submit" class="btn btn-default">Create New Fund</button>',
        '</form>',
        '<body>',
@@ -13213,6 +13222,35 @@ module.exports = {
     '<ul class="nav navbar-nav navbar-right">',
     '<li class="signin-create-acct">',
     '<a class="signin-create-acct" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sign-in / Create Account</a>',
+    '</li>',
+    '</ul>',
+    '</div>', //<!-- /.navbar-collapse -->
+    '</div>', //<!-- /.container-fluid -->
+    '</nav>',
+  ].join(""),
+  loggedInHeader: [
+    '<nav class="navbar navbar-inverse navbar-fixed-top">',
+    '<div class="container-fluid">',
+      // <!-- Brand and toggle get grouped for better mobile display -->
+    '<div class="navbar-header">',
+    '<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">',
+    '<span class="sr-only">Toggle navigation</span>',
+    '<span class="icon-bar"></span>',
+    '<span class="icon-bar"></span>',
+    '<span class="icon-bar"></span>',
+    '</button>',
+    '<a class="navbar-brand" href="#">Iron Fund</a>',
+    '<ul class="nav navbar-nav">',
+    '<li class="active"><a href="#">About <span class="sr-only">(current)</span></a></li>',
+    '<li><a href="#">Add a Project</a></li>',
+    '</ul>',
+    '</div>',
+
+  // <!-- Collect the nav links, forms, and other content for toggling -->
+    '<div class="logout-user collapse navbar-collapse" id="bs-example-navbar-collapse-1">',
+    '<ul class="nav navbar-nav navbar-right">',
+    '<li class="logout-user">',
+    '<a class="logout-user" type="submit" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Logout</a>',
     '</li>',
     '</ul>',
     '</div>', //<!-- /.navbar-collapse -->
@@ -13253,16 +13291,7 @@ module.exports = {
     '</div>',
     '</div>',
     '<div class="form-group">',
-    '<div class="col-sm-offset-4 col-sm-4">',
-    '<div class="checkbox">',
-    '<label>',
-    '<input type="checkbox"> Remember me',
-    '</label>',
-    '</div>',
-    '</div>',
-    '</div>',
-    '<div class="signIn form-group">',
-    '<div class="col-sm-offset-4 col-sm-4">',
+    '<div class="col-sm-offset-4 col-sm-4 signIn">',
     '<button type="submit" name="submit" class="btn btn-default">Sign in</button>',
     '<a class="createUser" href="#">Create New Account</a>',
     '</div>',
@@ -13272,7 +13301,7 @@ module.exports = {
   ].join(""),
   createuser: [
     '<div class="createuser-form">',
-    '<form class="form-horizontal">',
+    '<form class="form-horizontal" action="login" method="post">',
     '<div class="form-group">',
     '<div class="col-sm-4 col-sm-offset-4">',
     '<input type="text" name="username" class="form-control" id="inputEmail3" placeholder="Email">',
@@ -13281,15 +13310,6 @@ module.exports = {
     '<div class="form-group">',
     '<div class="col-sm-4 col-sm-offset-4">',
     '<input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">',
-    '</div>',
-    '</div>',
-    '<div class="form-group">',
-    '<div class="col-sm-offset-4 col-sm-4">',
-    // '<div class="checkbox">',
-    // '<label>',
-    // '<input type="checkbox"> Remember me',
-    // '</label>',
-    // '</div>',
     '</div>',
     '</div>',
     '<div class="form-group">',
