@@ -16,10 +16,10 @@ public class Project {
     public Integer id;
 
 //    @ManyToOne
-//    public User user;
-
-    @OneToMany(mappedBy = "p")
-    public List<Donation> donationList;
+////    public User user;
+//
+//    @OneToMany(mappedBy = "p")
+//    public List<Donation> donationList;
 
     @Column(nullable = false)
     public String title;
