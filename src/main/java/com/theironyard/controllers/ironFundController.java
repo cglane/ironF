@@ -132,9 +132,8 @@ public class ironFundController {
         project.goal = projectParams.goal;
 
         projects.save(project);
-        response.sendRedirect("/");
-
     }
+
     @RequestMapping (path = "/all/{id}", method = RequestMethod.PATCH)
     public @ResponseBody ProjectParams projectParams (
             @RequestBody ProjectParams projectParams,
