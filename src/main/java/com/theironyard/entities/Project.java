@@ -1,4 +1,6 @@
 package com.theironyard.entities;
+import org.springframework.web.multipart.MultipartFile;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,10 +16,10 @@ public class Project {
     public Integer id;
 
 //    @ManyToOne
-//    public User user;
-
-    @OneToMany(mappedBy = "p")
-    public List<Donation> donationList;
+////    public User user;
+//
+//    @OneToMany(mappedBy = "p")
+//    public List<Donation> donationList;
 
     @Column(nullable = false)
     public String title;
@@ -26,10 +28,10 @@ public class Project {
     public String description;
 
     @Column(nullable = false)
-    public LocalDate startDate;
+    public String startDate;
 
     @Column (nullable = false)
-    public LocalDate finishDate;
+    public String finishDate;
 
     @Column (nullable = false)
     public Double balance = 0.0;
@@ -39,5 +41,8 @@ public class Project {
 
     @Column (nullable = false)
     public int percentage;
+
+    public String imageName;
+    public String originalName;
 
 }

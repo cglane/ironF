@@ -58,6 +58,8 @@ module.exports = Backbone.View.extend({
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
+    // this.$el.off('click', '.donateNow');
+    // this.undelegateEvents();
     var currModel = this.model;
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
@@ -65,32 +67,27 @@ module.exports = Backbone.View.extend({
         event.preventDefault();
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
-        console.log(this.id);
         var donation;
         var updatedBalance;
         var balance=currModel.get('balance');
+        // console.log('balance');
         var id = this.id;
-        //delete this test line
         balance = currModel.get('balance');
-        if(id == "ten"){
+        if(id === "ten"){
           donation = 10;
           updatedBalance = balance + donation;
           currModel.save('balance',updatedBalance);
-          // currModel.save();
-        }else if (id == "twenty") {
+        }else if (id === "twenty") {
           donation = 20;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-          currModel.save();
-        }else if(id == "fifty"){
+          currModel.save('balance',updatedBalance);
+        }else if(id === "fifty"){
           donation = 50;
           updatedBalance = balance + donation;
-          currModel.set('balance', updatedBalance);
-          currModel.save();
+          currModel.save('balance', updatedBalance);
       }
-        console.log('current model',currModel);
-        console.log(currModel.get('balance'));
-
+        // console.log('current model',currModel);
+        // console.log(currModel.get('balance'));
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
@@ -101,14 +98,13 @@ module.exports = Backbone.View.extend({
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
-          currModel.set('balance',updatedBalance);
+          currModel.save('balance',updatedBalance);
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('');
-          currModel.save();
 
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
