@@ -286,10 +286,6 @@ module.exports = Backbone.View.extend({
         var balance=currModel.get('balance');
         // console.log('balance');
         var id = this.id;
-<<<<<<< HEAD
-=======
-        //delete this test line
->>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
         balance = currModel.get('balance');
         if(id === "ten"){
           donation = 10;
@@ -311,7 +307,7 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
-      if(e.which === 13){
+      if(e.which == 13){
         if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
@@ -13113,7 +13109,6 @@ module.exports = {
       // "<img src='<%= photo %>'>",
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
-<<<<<<< HEAD
       "<div class ='row inner'>",
       "<div class='col-md-12'>",
       "<div class='col-md-6 start'>",
@@ -13128,12 +13123,6 @@ module.exports = {
       "</div>",
       "<div class ='row inner'>",
       "<div class='col-md-12'>",
-=======
-      "<h5>Start Date:</h5>",
-      "<h5 class = 'start-date'><%= startDate%></h4>",
-      "<h4>Finish Date:</h4>",
-      "<h4 class = 'finish-date'><%= finishDate%></h4>",
->>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
       "<p class = 'description'><%= description %></p>",
       "</div>",
       "</div>",
