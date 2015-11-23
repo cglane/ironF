@@ -25,7 +25,7 @@ module.exports = {
       "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete</button>",
       "</div>",
       "<div class='form-group'>",
-      "<button class='btn btn-primary confirm-edit display-none' role='button'</button> ",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
       "</div>",
       "<form class='form-inline'>",
       "<div class='form-group donateNow'>",

@@ -19,7 +19,6 @@ module.exports = Backbone.View.extend({
     }
   },
   onAddProject: function (evt) {
-    evt.preventDefault();
 
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),

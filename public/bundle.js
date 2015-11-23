@@ -93,7 +93,6 @@ module.exports = Backbone.View.extend({
     }
   },
   onAddProject: function (evt) {
-    evt.preventDefault();
 
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
@@ -249,7 +248,6 @@ module.exports = Backbone.View.extend({
     this.$el.find('.confirm-edit').removeClass('display-none');
   },
   close:function(event){
-    event.preventDefault();
     // console.log( $(event.target.closest('h3')));
         var object = {
           title: this.$el.find('.titles').text(),
@@ -272,7 +270,6 @@ module.exports = Backbone.View.extend({
   },
   onDonateNow:function(event){
     var currModel = this.model;
-    event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
     $('.donate-btn').on('click',function(event){
@@ -13133,7 +13130,7 @@ module.exports = {
       "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete</button>",
       "</div>",
       "<div class='form-group'>",
-      "<button class='btn btn-primary confirm-edit display-none' role='button'</button> ",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
       "</div>",
       "<form class='form-inline'>",
       "<div class='form-group donateNow'>",

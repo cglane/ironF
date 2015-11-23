@@ -37,7 +37,6 @@ module.exports = Backbone.View.extend({
     this.$el.find('.confirm-edit').removeClass('display-none');
   },
   close:function(event){
-    event.preventDefault();
     // console.log( $(event.target.closest('h3')));
         var object = {
           title: this.$el.find('.titles').text(),
@@ -60,7 +59,6 @@ module.exports = Backbone.View.extend({
   },
   onDonateNow:function(event){
     var currModel = this.model;
-    event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
     $('.donate-btn').on('click',function(event){
