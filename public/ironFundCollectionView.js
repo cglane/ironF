@@ -18,7 +18,7 @@ module.exports = Backbone.View.extend({
   },
 
   addOne: function (ironFundModel) {
-    console.log('fired');
+    console.log('AddOne');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },

@@ -90,3 +90,37 @@ aside {
     margin-top: 6%;
     width: 80%;
     margin-left: 10%; }
+.inner {
+  margin: 0;
+  padding: 0;
+}
+.titles {
+  text-align: center;
+  text-decoration: underline;
+  font-family: 'Oswald';
+}
+.start {
+  float: left;
+  font-family: 'Oswald';
+
+}
+.finish{
+  text-align: right;
+  font-family: 'Oswald';
+
+}
+.balance {
+  float:left;
+  font-family: 'Oswald';
+
+}
+.goal {
+  text-align: right;
+  font-family: 'Oswald';
+
+}
+.description {
+  text-align: center;
+  font-family: 'Oswald';
+
+}
