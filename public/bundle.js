@@ -10,7 +10,28 @@ module.exports = Backbone.Collection.extend({
   }
 });
 
-},{"./ironFundModel":8,"backbone":13}],2:[function(require,module,exports){
+},{"./ironFundModel":9,"backbone":14}],2:[function(require,module,exports){
+var Backbone = require('backbone');
+var $ = require('jquery');
+Backbone.$ = $;
+var _ = require('underscore');
+var tmpl = require('./templates');
+
+module.exports = Backbone.View.extend({
+
+  initialize: function () {},
+  template: _.template(tmpl.createuser),
+  
+  render: function () {
+    var markup = this.template({});
+    this.$el.html(markup);
+    // in order to call .el off of render we need to return this
+    // projectViewInstance.render().el - yields all markup and data from model
+    return this;
+  }
+});
+
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],3:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -31,7 +52,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],3:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],4:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -50,7 +71,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],4:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],5:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -73,6 +94,7 @@ module.exports = Backbone.View.extend({
   },
   onAddProject: function (evt) {
     evt.preventDefault();
+
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -80,13 +102,11 @@ module.exports = Backbone.View.extend({
       // photo: this.$el.find('input[id="image"]').val(),
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
-      image:this.$el.find('input[id="image"]').val(),
       balance: 0,
       goal: this.$el.find('input[id="Goal"]').val(),
       // percentage: Math.round(goal/balance),
     };
-    this.model.set(newProject);
-    this.model.save();
+    this.model.save(newProject);
     // console.log("this.model:", this.model);
     // console.log("this:", this);
     console.log("this.collection:", this.model);
@@ -101,7 +121,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./ironFundCollection":6,"./ironFundModel":8,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],5:[function(require,module,exports){
+},{"./ironFundCollection":7,"./ironFundModel":9,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],6:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -109,6 +129,7 @@ var _ = require('underscore');
 var tmpl = require('./templates');
 var LoginView = require('./loginView');
 var LayoutView = require('./layoutView');
+var CreateUserView = require('./createUserView');
 
 module.exports = Backbone.View.extend({
   initialize: function () {},
@@ -119,16 +140,10 @@ module.exports = Backbone.View.extend({
 
   onSigninCreateAcct: function (event) {
     event.preventDefault();
-    // $('.body-container').addClass('.display-none');
-    // $('.placeholder-login-form').removeClass('.display-none');
-    console.log('this is hiding the body-container');
-    // $('.signIn').on('click',function(){
-    //     $('.body-container').removeClass('.display-none');
-    //     console.log('this is hiding the body-container');
-    //     $('.placeholder-login-form').addClass('.display-none');
-
-      // });
-},
+    $('.body-container').addClass('display-none');
+    $('.placeholder-login-form').removeClass('display-none');
+    console.log('this is hiding the body-container NOW');
+  },
 
   render: function () {
     var markup = this.template({});
@@ -139,9 +154,9 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./layoutView":10,"./loginView":11,"./templates":17,"backbone":13,"jquery":14,"underscore":15}],6:[function(require,module,exports){
+},{"./createUserView":2,"./layoutView":11,"./loginView":12,"./templates":18,"backbone":14,"jquery":15,"underscore":16}],7:[function(require,module,exports){
 arguments[4][1][0].apply(exports,arguments)
-},{"./ironFundModel":8,"backbone":13,"dup":1}],7:[function(require,module,exports){
+},{"./ironFundModel":9,"backbone":14,"dup":1}],8:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -171,7 +186,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./IronFundCollection":1,"./ironFundModel":8,"./ironFundModelView":9,"backbone":13,"jquery":14,"underscore":15}],8:[function(require,module,exports){
+},{"./IronFundCollection":1,"./ironFundModel":9,"./ironFundModelView":10,"backbone":14,"jquery":15,"underscore":16}],9:[function(require,module,exports){
 var Backbone = require('backbone');
 // this file contains the shape of our data
 
@@ -194,7 +209,7 @@ module.exports = Backbone.Model.extend({
   }
 });
 
-},{"backbone":13}],9:[function(require,module,exports){
+},{"backbone":14}],10:[function(require,module,exports){
 var Backbone = require('backbone');
 var _ = require('underscore');
 var $ = require('jquery');
@@ -320,7 +335,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],10:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],11:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -333,7 +348,7 @@ var IronFundCollection = require('./ironFundCollection');
 var ModelView = require('./ironFundModelView');
 var DonateView = require("./donateView");
 var LoginView = require('./loginView');
-// var CreateUserView = require('./createUserView');
+var CreateUserView = require('./createUserView');
 
 module.exports = Backbone.View.extend({
   el: '#layoutView',
@@ -344,6 +359,7 @@ module.exports = Backbone.View.extend({
     var ironFundCollection = new IronFundCollection();
     var donateHTML = new DonateView();
     var loginHTML = new LoginView();
+    var createuserHTML = new CreateUserView();
     ironFundCollection.fetch().then(function () {
       var ironFundView = new IronFundView({collection: ironFundCollection});
       var formHTML = new FormView({collection:ironFundCollection});
@@ -352,14 +368,15 @@ module.exports = Backbone.View.extend({
       self.$el.find('footer').html(footerHTML.render().el);
       self.$el.find('aside').html(formHTML.render().el);
       self.$el.find('.placeholder-for-donate').html(donateHTML.render().el);
-      self.$el.find('.placeholder-for-login-form').html(loginHTML.render().el);
+      self.$el.find('.placeholder-login-form').html(loginHTML.render().el);
+      self.$el.find('.placeholder-createuser-form').html(createuserHTML.render().el);
     });
 
   }
 
 });
 
-},{"./donateView":2,"./footerView":3,"./formView":4,"./headerView":5,"./ironFundCollection":6,"./ironFundCollectionView":7,"./ironFundModelView":9,"./loginView":11,"backbone":13,"jquery":14,"underscore":15}],11:[function(require,module,exports){
+},{"./createUserView":2,"./donateView":3,"./footerView":4,"./formView":5,"./headerView":6,"./ironFundCollection":7,"./ironFundCollectionView":8,"./ironFundModelView":10,"./loginView":12,"backbone":14,"jquery":15,"underscore":16}],12:[function(require,module,exports){
 var Backbone = require('backbone');
 var $ = require('jquery');
 Backbone.$ = $;
@@ -367,9 +384,22 @@ var _ = require('underscore');
 var tmpl = require('./templates');
 
 module.exports = Backbone.View.extend({
-  tagName: 'article',
+
   initialize: function () {},
   template: _.template(tmpl.login),
+  events: {
+    'click .signIn' : 'onSignIn',
+  },
+
+  onSignIn: function (event) {
+    event.preventDefault();
+      console.log('user logged in, showing body-container');
+      $('.body-container').removeClass('display-none');
+      $('.placeholder-login-form').addClass('display-none');
+      $('header').html('');
+      // $('.signin-create-acct').addClass('display-none');
+    },
+
   render: function () {
     var markup = this.template({});
     this.$el.html(markup);
@@ -379,7 +409,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./templates":17,"backbone":13,"jquery":14,"underscore":15}],12:[function(require,module,exports){
+},{"./templates":18,"backbone":14,"jquery":15,"underscore":16}],13:[function(require,module,exports){
 var $ = require('jquery');
 var LayoutView = require('./layoutView');
 var Router = require('./router');
@@ -390,7 +420,7 @@ $(function () {
   // Backbone.history.start();
 });
 
-},{"./layoutView":10,"./router":16,"jquery":14}],13:[function(require,module,exports){
+},{"./layoutView":11,"./router":17,"jquery":15}],14:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.2.3
 
@@ -2288,7 +2318,7 @@ $(function () {
 }));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":14,"underscore":15}],14:[function(require,module,exports){
+},{"jquery":15,"underscore":16}],15:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
@@ -11500,7 +11530,7 @@ return jQuery;
 
 }));
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -13050,7 +13080,7 @@ return jQuery;
   }
 }.call(this));
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 // var Backbone = require('backbone');
 // var $ = require('jquery');
 // var _ = require('underscore');
@@ -13071,7 +13101,7 @@ return jQuery;
 //   },
 // });
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = {
   project: [
       "<div class='thumbnail'>",
@@ -13203,7 +13233,7 @@ module.exports = {
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
-    '<button role="button" type="submit" id= "ten" class="btn btn-default donate-btn">$10</button>',
+    '<button role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
     '<button role="button" type="submit" id= "twenty" class="btn btn-default donate-btn">$20</button>',
     '<button role="button" type="submit" id= "fifty" class="btn btn-default donate-btn">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
@@ -13273,4 +13303,4 @@ module.exports = {
   ].join(""),
 };
 
-},{}]},{},[12]);
+},{}]},{},[13]);

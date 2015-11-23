@@ -129,7 +129,7 @@ module.exports = {
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
-    '<button role="button" type="submit" id= "ten" class="btn btn-default donate-btn">$10</button>',
+    '<button role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
     '<button role="button" type="submit" id= "twenty" class="btn btn-default donate-btn">$20</button>',
     '<button role="button" type="submit" id= "fifty" class="btn btn-default donate-btn">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
