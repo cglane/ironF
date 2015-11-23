@@ -95,7 +95,7 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
-      if(e.which === 13){
+      if(e.which == 13){
         if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{

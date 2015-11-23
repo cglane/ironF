@@ -286,10 +286,6 @@ module.exports = Backbone.View.extend({
         var balance=currModel.get('balance');
         // console.log('balance');
         var id = this.id;
-<<<<<<< HEAD
-=======
-        //delete this test line
->>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
         balance = currModel.get('balance');
         if(id === "ten"){
           donation = 10;
@@ -311,7 +307,7 @@ module.exports = Backbone.View.extend({
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
-      if(e.which === 13){
+      if(e.which == 13){
         if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
@@ -13109,32 +13105,26 @@ return jQuery;
 module.exports = {
   project: [
       "<div class='thumbnail'>",
-      "<div class='<%= \"thumbnail\" %>'>",
+      // "<div class='<%= \"thumbnail\" %>'>",
       // "<img src='<%= photo %>'>",
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
-<<<<<<< HEAD
+      "</div>",
       "<div class ='row inner'>",
-      "<div class='col-md-12'>",
+      "<div class='col-md-12 startEnd'>",
       "<div class='col-md-6 start'>",
       "<h4>Start Date:</h4>",
-      "<h4 class = 'start-date'><%= startDate.monthValue%>/<%=startDate.dayOfMonth%>/<%=startDate.year%></h4>",
+      "<h4 class = 'start-date'><%=startDate%></h4>",
       "</div>",
       "<div class='col-md-6 finish'>",
       "<h4>Finish Date:</h4>",
-      "<h4 class = 'finish-date'><%= finishDate.monthValue%>/<%=finishDate.dayOfMonth%>/<%=finishDate.year%></h4>",
+      "<h4 class = 'finish-date'><%= finishDate%></h4>",
       "</div>",
       "</div>",
       "</div>",
       "<div class ='row inner'>",
-      "<div class='col-md-12'>",
-=======
-      "<h5>Start Date:</h5>",
-      "<h5 class = 'start-date'><%= startDate%></h4>",
-      "<h4>Finish Date:</h4>",
-      "<h4 class = 'finish-date'><%= finishDate%></h4>",
->>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
-      "<p class = 'description'><%= description %></p>",
+      "<div class='col-md-12 contp'>",
+      "<p class = 'description pdesc'><%= description %></p>",
       "</div>",
       "</div>",
       "<div class ='row inner'>",
@@ -13150,17 +13140,17 @@ module.exports = {
       "</div>",
       "</div>",
       "<div class='progress'>",
-      "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width:<%=percentage%>%'> <%= balance%></div>",
+      "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width:<%=percentage%>%'> <%= percentage%>%&nbsp&nbsp&nbsp</div>",
       "</div>",
       "<form class='form-inline'>",
       "<div class='form-group'>",
       "<button class='btn btn-primary editProject' role='button' type='submit' name='edit'>Edit</button>",
       "</div>",
       "<div class='form-group'>",
-      "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete</button>",
+      "<button class='btn btn-danger deleteProject' role='button' type='submit' name='delete'>Delete&nbsp<span class='glyphicon glyphicon-trash'></span></button>",
       "</div>",
       "<div class='form-group'>",
-      "<button class='btn btn-primary confirm-edit display-none' role='button'</button> ",
+      "<button class='btn btn-primary confirm-edit display-none' role='button'>Confirm Edit</button> ",
       "</div>",
       "<form class='form-inline'>",
       "<div class='form-group donateNow'>",
@@ -13274,7 +13264,7 @@ module.exports = {
     '<button role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
     '<button role="button" type="submit" id= "twenty" class="btn btn-default donate-btn">$20</button>',
     '<button role="button" type="submit" id= "fifty" class="btn btn-default donate-btn">$50</button>',
-    '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
+    '<input type="text" name = "donation-input" class="form-control btn otherAmount"  placeholder="Other Amount">',
     '</div>'
   ].join(""),
   login: [
