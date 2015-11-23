@@ -93,7 +93,7 @@ module.exports = Backbone.View.extend({
     }
   },
   onAddProject: function (evt) {
-
+    evt.preventDefault();
     var newProject = {
       title: this.$el.find('input[id="title"]').val(),
       // startdate: this.$el.find('input[id="startDate"]').val(),
@@ -102,7 +102,7 @@ module.exports = Backbone.View.extend({
       finishDate: this.$el.find('input[id="finishDate"]').val(),
       description: this.$el.find('input[id="description"]').val(),
       balance: 0,
-      goal: this.$el.find('input[id="Goal"]').val(),
+      goal: this.$el.find('input[id="Goal-number"]').val(),
       // percentage: Math.round(goal/balance),
     };
     this.model.save(newProject);
@@ -244,10 +244,11 @@ module.exports = Backbone.View.extend({
     this.$el.find('.titles').attr('contenteditable','true');
     this.$el.find('.finish-date').attr('contenteditable','true');
     this.$el.find('.description').attr('contenteditable','true');
-    this.$el.find('.goal').attr('contenteditable','true');
+    this.$el.find('.goal-number').attr('contenteditable','true');
     this.$el.find('.confirm-edit').removeClass('display-none');
   },
   close:function(event){
+    event.preventDefault();
     // console.log( $(event.target.closest('h3')));
         var object = {
           title: this.$el.find('.titles').text(),
@@ -257,7 +258,7 @@ module.exports = Backbone.View.extend({
           finishDate: this.$el.find('.finish-date').text(),
           description: this.$el.find('.description').text(),
           // balance: this.$el.find('input[name="balance"]').val(),
-          goal: this.$el.find('.goal').text()
+          goal: this.$el.find('.goal-number').text()
         };
         console.log(object);
        this.model.set(object);
@@ -265,17 +266,18 @@ module.exports = Backbone.View.extend({
        this.$el.find('.titles').attr('contenteditable','false');
        this.$el.find('.finish-date').attr('contenteditable','false');
        this.$el.find('.description').attr('contenteditable','false');
-       this.$el.find('.goal').attr('contenteditable','false');
+       this.$el.find('.goal-number').attr('contenteditable','false');
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
     // this.$el.off('click', '.donateNow');
     // this.undelegateEvents();
+    event.preventDefault();
     var currModel = this.model;
+    var that = this;
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
     $('.body-container').addClass('blur');
-    $('.donate-btn').on('click',function(event){
-        event.preventDefault();
+    $('.donate-btn').on('click',function(e){
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
         var donation;
@@ -297,6 +299,9 @@ module.exports = Backbone.View.extend({
           updatedBalance = balance + donation;
           currModel.save('balance', updatedBalance);
       }
+      console.log(updatedBalance);
+    that.$el.find('.balance-number').html(updatedBalance);
+
         // console.log('current model',currModel);
         // console.log(currModel.get('balance'));
         // console.log(this.find('input[id = "donation-input"]'))
@@ -13128,11 +13133,11 @@ module.exports = {
       "<div class='col-md-12'>",
       "<div class='col-md-6 balance'>",
       "<h4>Balance:</h4>",
-      "<h4><%= balance %></h4>",
+      "<h4 class = 'balance-number'><%= balance %></h4>",
       "</div>",
       "<div class='col-md-6 goal'>",
       "<h4>Goal:</h4>",
-      "<h4 class = 'goal'><%= goal %></h4>",
+      "<h4 class = 'goal-number'><%= goal %></h4>",
       "</div>",
       "</div>",
       "</div>",
@@ -13258,7 +13263,7 @@ module.exports = {
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
-    '<button role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
+    '<button role="button" type="submit" id= "ten" class="btn btn-default donate-btn">$10</button>',
     '<button role="button" type="submit" id= "twenty" class="btn btn-default donate-btn">$20</button>',
     '<button role="button" type="submit" id= "fifty" class="btn btn-default donate-btn">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn otherAmount"  placeholder="Other Amount">',
