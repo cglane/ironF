@@ -177,7 +177,7 @@ module.exports = Backbone.View.extend({
   },
 
   addOne: function (ironFundModel) {
-    console.log('fired');
+    console.log('AddOne');
     var ironFundView = new IronFundView({model: ironFundModel});
     this.$el.append(ironFundView.render().el);
   },
@@ -271,6 +271,8 @@ module.exports = Backbone.View.extend({
        this.$el.find('.confirm-edit').addClass('display-none');
   },
   onDonateNow:function(event){
+    // this.$el.off('click', '.donateNow');
+    // this.undelegateEvents();
     var currModel = this.model;
     event.preventDefault();
     $('.placeholder-for-donate').stop(true,false).removeClass('display-none', {duration:500});
@@ -279,50 +281,48 @@ module.exports = Backbone.View.extend({
         event.preventDefault();
         $('.body-container').removeClass('blur');
         $('.placeholder-for-donate').addClass('display-none');
-        console.log(this.id);
         var donation;
         var updatedBalance;
         var balance=currModel.get('balance');
+        // console.log('balance');
         var id = this.id;
+<<<<<<< HEAD
+=======
         //delete this test line
+>>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
         balance = currModel.get('balance');
-        if(id == "ten"){
+        if(id === "ten"){
           donation = 10;
           updatedBalance = balance + donation;
           currModel.save('balance',updatedBalance);
-          // currModel.save();
-        }else if (id == "twenty") {
+        }else if (id === "twenty") {
           donation = 20;
           updatedBalance = balance + donation;
-          currModel.set('balance',updatedBalance);
-          currModel.save();
-        }else if(id == "fifty"){
+          currModel.save('balance',updatedBalance);
+        }else if(id === "fifty"){
           donation = 50;
           updatedBalance = balance + donation;
-          currModel.set('balance', updatedBalance);
-          currModel.save();
+          currModel.save('balance', updatedBalance);
       }
-        console.log('current model',currModel);
-        console.log(currModel.get('balance'));
-
+        // console.log('current model',currModel);
+        // console.log(currModel.get('balance'));
         // console.log(this.find('input[id = "donation-input"]'))
     });
     $('.placeholder-for-donate').on('keypress',function(e){
       var value = parseInt($(this).closest('div').find('input').val());
       var balance = currModel.get('balance');
-      if(e.which == 13){
+      if(e.which === 13){
         if(value === '' || isNaN(value)) {
           console.log('invalid input');
         }else{
           var updatedBalance = balance + value;
-          currModel.set('balance',updatedBalance);
+          currModel.save('balance',updatedBalance);
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           console.log("updated balance amount",currModel.get('balance'));
           $('.body-container').removeClass('blur');
           $('.placeholder-for-donate').addClass('display-none');
           $(this).closest('div').find('input').val('');
-          currModel.save();
 
           console.log('thank you for your donation');
           console.log(currModel.get('balance'));
@@ -13113,15 +13113,42 @@ module.exports = {
       // "<img src='<%= photo %>'>",
       "<div class='title'>",
       "<h3 class = 'titles'><%= title %></h3>",
+<<<<<<< HEAD
+      "<div class ='row inner'>",
+      "<div class='col-md-12'>",
+      "<div class='col-md-6 start'>",
+      "<h4>Start Date:</h4>",
+      "<h4 class = 'start-date'><%= startDate.monthValue%>/<%=startDate.dayOfMonth%>/<%=startDate.year%></h4>",
+      "</div>",
+      "<div class='col-md-6 finish'>",
+      "<h4>Finish Date:</h4>",
+      "<h4 class = 'finish-date'><%= finishDate.monthValue%>/<%=finishDate.dayOfMonth%>/<%=finishDate.year%></h4>",
+      "</div>",
+      "</div>",
+      "</div>",
+      "<div class ='row inner'>",
+      "<div class='col-md-12'>",
+=======
       "<h5>Start Date:</h5>",
       "<h5 class = 'start-date'><%= startDate%></h4>",
       "<h4>Finish Date:</h4>",
       "<h4 class = 'finish-date'><%= finishDate%></h4>",
+>>>>>>> bb1beb0ca3adef92c27de31111a99ceec14dafe1
       "<p class = 'description'><%= description %></p>",
+      "</div>",
+      "</div>",
+      "<div class ='row inner'>",
+      "<div class='col-md-12'>",
+      "<div class='col-md-6 balance'>",
+      "<h4>Balance:</h4>",
       "<h4><%= balance %></h4>",
+      "</div>",
+      "<div class='col-md-6 goal'>",
+      "<h4>Goal:</h4>",
       "<h4 class = 'goal'><%= goal %></h4>",
-      // "<div class='progress'>",
-      // "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuenow='40' aria-valuemin='0' aria-valuemax='100' style='width: 40%;'>40%</div>",
+      "</div>",
+      "</div>",
+      "</div>",
       "<div class='progress'>",
       "<div class='progress-bar progress-bar-success progress-bar-striped' role='progressbar' aria-valuemin='0' aria-valuemax='100' style='width:<%=percentage%>%'> <%= balance%></div>",
       "</div>",
@@ -13244,9 +13271,9 @@ module.exports = {
   donate:[
     '<div class = "donate">',
     '<p>How much would you like to donate?</p>',
-    '<button class = " btn donate-btn" role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
-    '<button class = "btn donate-btn"  role="button" type="submit" id= "twenty" class="btn btn-default">$20</button>',
-    '<button class = "btn donate-btn" role="button" type="submit" id= "fifty" class="btn btn-default">$50</button>',
+    '<button role="button" type="submit" id= "ten" class="btn btn-default">$10</button>',
+    '<button role="button" type="submit" id= "twenty" class="btn btn-default donate-btn">$20</button>',
+    '<button role="button" type="submit" id= "fifty" class="btn btn-default donate-btn">$50</button>',
     '<input type="text" name = "donation-input" class="form-control btn"  placeholder="Other Amount">',
     '</div>'
   ].join(""),
