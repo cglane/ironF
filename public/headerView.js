@@ -5,6 +5,7 @@ var _ = require('underscore');
 var tmpl = require('./templates');
 var LoginView = require('./loginView');
 var LayoutView = require('./layoutView');
+var CreateUserView = require('./createUserView');
 
 module.exports = Backbone.View.extend({
   initialize: function () {},
@@ -15,16 +16,10 @@ module.exports = Backbone.View.extend({
 
   onSigninCreateAcct: function (event) {
     event.preventDefault();
-    // $('.body-container').addClass('.display-none');
-    // $('.placeholder-login-form').removeClass('.display-none');
-    console.log('this is hiding the body-container');
-    // $('.signIn').on('click',function(){
-    //     $('.body-container').removeClass('.display-none');
-    //     console.log('this is hiding the body-container');
-    //     $('.placeholder-login-form').addClass('.display-none');
-
-      // });
-},
+    $('.body-container').addClass('display-none');
+    $('.placeholder-login-form').removeClass('display-none');
+    console.log('this is hiding the body-container NOW');
+  },
 
   render: function () {
     var markup = this.template({});
