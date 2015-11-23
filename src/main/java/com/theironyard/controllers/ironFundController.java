@@ -5,6 +5,7 @@ import com.theironyard.entities.Project;
 import com.theironyard.services.DonationRepo;
 import com.theironyard.services.ProjectRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,25 +42,25 @@ public class ironFundController {
 //            user2.username = "Test";
 //            user2.password = PasswordHash.createHash("4321");
 //            users.save(user2);
-            if (projects.count()==0) {
-                Project project = new Project();
-                project.goal = 500.00;
-//                project.user = user;
-                project.startDate = LocalDate.now();
-                project.finishDate = LocalDate.now().plusDays(2);
-                project.description = "Description for Project";
-                project.title = "Alice's Project";
-                projects.save(project);
-
-                Project project1 = new Project();
-                project1.goal = 500.00;
-//                project1.user = user2;
-                project1.startDate = LocalDate.now();
-                project1.finishDate = LocalDate.now().plusDays(2);
-                project1.description = "Description for Project";
-                project1.title = "Test Project";
-                projects.save(project1);
-            }
+//            if (projects.count()==0) {
+//                Project project = new Project();
+//                project.goal = 500.00;
+////                project.user = user;
+//                project.startDate = LocalDate.now();
+//                project.finishDate = LocalDate.now().plusDays(2);
+//                project.description = "Description for Project";
+//                project.title = "Alice's Project";
+//                projects.save(project);
+//
+//                Project project1 = new Project();
+//                project1.goal = 500.00;
+////                project1.user = user2;
+//                project1.startDate = LocalDate.now();
+//                project1.finishDate = LocalDate.now().plusDays(2);
+//                project1.description = "Description for Project";
+//                project1.title = "Test Project";
+//                projects.save(project1);
+//            }
         }
 
 
@@ -88,7 +89,7 @@ public class ironFundController {
 //        session.invalidate();
 //    }
 
-    @RequestMapping(path = "/all/{id}", method = RequestMethod.PATCH)
+    @RequestMapping(path = "/all/{id}", method = RequestMethod.PUT)
     public @ResponseBody ProjectParams donate(HttpSession session,
                                               HttpServletResponse response,
                                               @RequestBody ProjectParams projectParams,
@@ -100,6 +101,11 @@ public class ironFundController {
 
         Project p = projects.findOne(id);
         p.balance = projectParams.balance + p.balance;
+        p.title = projectParams.title;
+        p.description = projectParams.description;
+        p.finishDate = projectParams.finishDate;
+        p.startDate = projectParams.startDate;
+        p.goal = projectParams.goal;
         projects.save(p);
         Donation d = new Donation();
         d.amount = projectParams.balance;
@@ -121,15 +127,15 @@ public class ironFundController {
         Project project = new Project();
         project.title = projectParams.title;
         project.description = projectParams.description;
-        project.finishDate = LocalDate.parse(projectParams.finishDate);
-        project.startDate = LocalDate.now();
+        project.finishDate = LocalDate.parse(projectParams.finishDate).format(DateTimeFormatter.ofPattern("M/d/u"));
+        project.startDate = LocalDate.now().format(DateTimeFormatter.ofPattern("M/d/u"));
         project.goal = projectParams.goal;
 
         projects.save(project);
         response.sendRedirect("/");
 
     }
-    @RequestMapping (path = "/all/{id}", method = RequestMethod.PUT)
+    @RequestMapping (path = "/all/{id}", method = RequestMethod.PATCH)
     public @ResponseBody ProjectParams projectParams (
             @RequestBody ProjectParams projectParams,
             @PathVariable("id") int id)
@@ -143,7 +149,7 @@ public class ironFundController {
         project.title = projectParams.title;
         project.description = projectParams.description;
         project.goal = projectParams.goal;
-        project.finishDate = LocalDate.parse(projectParams.finishDate, df);
+        project.finishDate = projectParams.finishDate;
         projects.save(project);
         return null;
     }
@@ -173,11 +179,10 @@ public class ironFundController {
 //        if (username==null) {
 ////            response.sendRedirect("403");
 //        }
-
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("M/d/u");
         List<Project> all = (List<Project>) projects.findAll();
         for (Project p : all){
             p.percentage = (int) Math.round((p.balance / p.goal)*100);
-//            p.user.password = "NYB";
         }
         return all;
     }

@@ -28,10 +28,10 @@ public class Project {
     public String description;
 
     @Column(nullable = false)
-    public LocalDate startDate;
+    public String startDate;
 
     @Column (nullable = false)
-    public LocalDate finishDate;
+    public String finishDate;
 
     @Column (nullable = false)
     public Double balance = 0.0;
